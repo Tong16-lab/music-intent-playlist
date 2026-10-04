@@ -32,7 +32,7 @@ python3 scripts/demo_recommendations.py --sample unsupported --lang en
 
 The first four use prewritten intent cards to demonstrate catalog selection and produce three linked tracks. `path` shows an arousal sequence of 3 → 2 → 1. `unsupported` refuses a lyric-language condition absent from the verified catalog. These examples **do not test request interpretation**. `--lang en` selects the English display; the underlying cards and selections are unchanged. [The demo page](reports/CLASSROOM_DEMO_EN.md) also explains the output.
 
-The current branch intentionally runs the fixed offline demonstration only. Its translated prompt and request examples have not been evaluated as an English-language model pipeline. To inspect or reproduce the scored live parser, check out commit `a39e3fc` and follow that commit's README with the original Chinese inputs. Never commit or display an API key.
+The current branch intentionally runs the fixed offline demonstration only. Its translated prompt and request examples have not been evaluated as an English-language model pipeline. To inspect or reproduce the scored live parser, check out commit `a39e3fc` and follow that commit's README with the original Chinese inputs. After cloning, run `git switch --detach a39e3fc` in the repository root; the README at that commit explains how to use a personal OpenRouter key and run the original Chinese-input live example. Never commit or display an API key.
 
 Local validation must pass before track selection. The output provides Jamendo page links, not embedded audio. Invalid cards, unguaranteed conditions, or fewer than three suitable songs are reported rather than silently filled.
 
