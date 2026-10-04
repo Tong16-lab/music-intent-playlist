@@ -1,0 +1,445 @@
+{
+  "synthetic": true,
+  "started_at": "2026-10-03T19:15:07+08:00",
+  "model": "google/gemini-3.5-flash-lite",
+  "candidate_version": "compact-dev-v2",
+  "score_version": "formal-scoring-v3",
+  "prompt_sha256": "1177a979ad7a42aa2a3d02c04563eed950c4ef74d9f081aa44bb1044742e3eb2",
+  "schema_sha256": "c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344",
+  "freeze_files": {
+    "synthetic_intents_test.csv": "69dc16ba94055e83053d60f47aa157f442984ca51d2f83e245ce6a358e388f2d",
+    "unsupported_conditions_test.csv": "c4b00d3867e29397d04ee37978ce7d6b911a9c742e1c99265b787f8e1b889e21",
+    "user_intents_v2_review.tsv": "b91615ad96ffc1af86e0fec3547e1f9221bb850e6301cf886df7ca4321c2c576"
+  },
+  "code_sha256": {
+    "data/COMPACT_DEV_PROMPT_v2.txt": "1177a979ad7a42aa2a3d02c04563eed950c4ef74d9f081aa44bb1044742e3eb2",
+    "data/COMPACT_DEV_SCHEMA_v1.json": "c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344",
+    "prototypes/compact_dev_request.py": "853984fd30ef5986892265f50d0b413caa9b42c635cee738b23f149d853576ee",
+    "prototypes/compact_dev_v2_request.py": "a3dcb688a1456bf6140ca1facf56dcd133c55809568bdf0f55aeb8cdd01646cf",
+    "prototypes/compact_intent_format.py": "2cf161912d9ff0260250eb6021606e7b628e9c96063f65bec3bbe97ee638ab43",
+    "scripts/evaluate_compact_dev.py": "9ee2a8cf336548c4fed70ec2aecf1bece7b5636b835a1a45e637496d098ef336",
+    "scripts/evaluate.py": "3d9f8f7be11b53691a88c564f0d70a1675c811e9b369a36a6fe2be7ac0e082cd",
+    "src/music_intent/intent.py": "748f39a4cbc82bf51ab5f905112fa092e82dde4e07073b2f18d598a482f0f701",
+    "src/music_intent/evaluation.py": "c022eebc4cd537215008b36afd73d1ecdfb3f02c5a243c4c622deacb26e962aa",
+    "src/music_intent/scoring_v3.py": "ba81372f4a837cf89cba18a3fed4b6d646b43262c566cdb5224c3abdb53d757e",
+    "src/music_intent/pricing.py": "39427e7a9a81de1242bb63e3ec2a6467673c3159535d0fcb9bcad76bd5185999"
+  },
+  "scores": {
+    "score_version": "formal-scoring-v3",
+    "total_cases": 30,
+    "attempted_calls": 3,
+    "valid_responses": 0,
+    "failed_calls": 30,
+    "stages": {
+      "api_success": 0,
+      "json_complete": 0,
+      "required_structure_complete": 0,
+      "conversion_complete": 0,
+      "local_valid": 0
+    },
+    "fields": {
+      "current_valence": {
+        "end_to_end": {
+          "correct": 0,
+          "denominator": 30
+        },
+        "valid_only": {
+          "correct": 0,
+          "denominator": 0
+        },
+        "baseline": {
+          "correct": 27,
+          "denominator": 30
+        },
+        "explicit": {
+          "gold_cases": 8,
+          "valid_cases": 0,
+          "ai_end_to_end_correct": 0,
+          "ai_valid_correct": 0,
+          "baseline_correct": 6,
+          "invalid_or_missing_cases": 8
+        },
+        "unspoken": {
+          "gold_cases": 22,
+          "valid_cases": 0,
+          "ai_end_to_end_exact": 0,
+          "ai_valid_exact": 0,
+          "ai_false_fills": 0,
+          "ai_no_order_classification_errors": 0,
+          "baseline_exact": 21,
+          "baseline_false_fills": 1,
+          "baseline_no_order_classification_errors": 0,
+          "invalid_or_missing_cases": 22
+        }
+      },
+      "current_arousal": {
+        "end_to_end": {
+          "correct": 0,
+          "denominator": 30
+        },
+        "valid_only": {
+          "correct": 0,
+          "denominator": 0
+        },
+        "baseline": {
+          "correct": 29,
+          "denominator": 30
+        },
+        "explicit": {
+          "gold_cases": 2,
+          "valid_cases": 0,
+          "ai_end_to_end_correct": 0,
+          "ai_valid_correct": 0,
+          "baseline_correct": 1,
+          "invalid_or_missing_cases": 2
+        },
+        "unspoken": {
+          "gold_cases": 28,
+          "valid_cases": 0,
+          "ai_end_to_end_exact": 0,
+          "ai_valid_exact": 0,
+          "ai_false_fills": 0,
+          "ai_no_order_classification_errors": 0,
+          "baseline_exact": 28,
+          "baseline_false_fills": 0,
+          "baseline_no_order_classification_errors": 0,
+          "invalid_or_missing_cases": 28
+        }
+      },
+      "target_valence": {
+        "end_to_end": {
+          "correct": 0,
+          "denominator": 30
+        },
+        "valid_only": {
+          "correct": 0,
+          "denominator": 0
+        },
+        "baseline": {
+          "correct": 20,
+          "denominator": 30
+        },
+        "explicit": {
+          "gold_cases": 11,
+          "valid_cases": 0,
+          "ai_end_to_end_correct": 0,
+          "ai_valid_correct": 0,
+          "baseline_correct": 1,
+          "invalid_or_missing_cases": 11
+        },
+        "unspoken": {
+          "gold_cases": 19,
+          "valid_cases": 0,
+          "ai_end_to_end_exact": 0,
+          "ai_valid_exact": 0,
+          "ai_false_fills": 0,
+          "ai_no_order_classification_errors": 0,
+          "baseline_exact": 19,
+          "baseline_false_fills": 0,
+          "baseline_no_order_classification_errors": 0,
+          "invalid_or_missing_cases": 19
+        }
+      },
+      "target_arousal": {
+        "end_to_end": {
+          "correct": 0,
+          "denominator": 30
+        },
+        "valid_only": {
+          "correct": 0,
+          "denominator": 0
+        },
+        "baseline": {
+          "correct": 23,
+          "denominator": 30
+        },
+        "explicit": {
+          "gold_cases": 11,
+          "valid_cases": 0,
+          "ai_end_to_end_correct": 0,
+          "ai_valid_correct": 0,
+          "baseline_correct": 4,
+          "invalid_or_missing_cases": 11
+        },
+        "unspoken": {
+          "gold_cases": 19,
+          "valid_cases": 0,
+          "ai_end_to_end_exact": 0,
+          "ai_valid_exact": 0,
+          "ai_false_fills": 0,
+          "ai_no_order_classification_errors": 0,
+          "baseline_exact": 19,
+          "baseline_false_fills": 0,
+          "baseline_no_order_classification_errors": 0,
+          "invalid_or_missing_cases": 19
+        }
+      },
+      "target_melodic_surprise": {
+        "end_to_end": {
+          "correct": 0,
+          "denominator": 30
+        },
+        "valid_only": {
+          "correct": 0,
+          "denominator": 0
+        },
+        "baseline": {
+          "correct": 26,
+          "denominator": 30
+        },
+        "explicit": {
+          "gold_cases": 7,
+          "valid_cases": 0,
+          "ai_end_to_end_correct": 0,
+          "ai_valid_correct": 0,
+          "baseline_correct": 3,
+          "invalid_or_missing_cases": 7
+        },
+        "unspoken": {
+          "gold_cases": 23,
+          "valid_cases": 0,
+          "ai_end_to_end_exact": 0,
+          "ai_valid_exact": 0,
+          "ai_false_fills": 0,
+          "ai_no_order_classification_errors": 0,
+          "baseline_exact": 23,
+          "baseline_false_fills": 0,
+          "baseline_no_order_classification_errors": 0,
+          "invalid_or_missing_cases": 23
+        }
+      },
+      "trajectory": {
+        "end_to_end": {
+          "correct": 0,
+          "denominator": 30
+        },
+        "valid_only": {
+          "correct": 0,
+          "denominator": 0
+        },
+        "baseline": {
+          "correct": 18,
+          "denominator": 30
+        },
+        "explicit": {
+          "gold_cases": 1,
+          "valid_cases": 0,
+          "ai_end_to_end_correct": 0,
+          "ai_valid_correct": 0,
+          "baseline_correct": 0,
+          "invalid_or_missing_cases": 1
+        },
+        "unspoken": {
+          "gold_cases": 29,
+          "valid_cases": 0,
+          "ai_end_to_end_exact": 0,
+          "ai_valid_exact": 0,
+          "ai_false_fills": 0,
+          "ai_no_order_classification_errors": 0,
+          "baseline_exact": 18,
+          "baseline_false_fills": 0,
+          "baseline_no_order_classification_errors": 11,
+          "invalid_or_missing_cases": 29
+        }
+      }
+    },
+    "core_cards": {
+      "end_to_end_correct": 0,
+      "end_to_end_denominator": 30,
+      "valid_correct": 0,
+      "valid_denominator": 0,
+      "baseline_correct": 12,
+      "baseline_denominator": 30
+    },
+    "requires_melody_present": {
+      "end_to_end_correct": 0,
+      "end_to_end_denominator": 30,
+      "valid_correct": 0,
+      "valid_denominator": 0
+    },
+    "unsupported": {
+      "status_end_to_end_correct": 0,
+      "status_end_to_end_denominator": 30,
+      "status_valid_correct": 0,
+      "status_valid_denominator": 0,
+      "exact_set_end_to_end_correct": 0,
+      "exact_set_end_to_end_denominator": 30,
+      "exact_set_valid_correct": 0,
+      "exact_set_valid_denominator": 0,
+      "expected_phrase_total": 14,
+      "unfulfilled_phrases_due_to_invalid": 14,
+      "unfulfilled_phrases_end_to_end": 14,
+      "valid_true_positive_phrases": null,
+      "valid_false_positive_phrases": null,
+      "valid_missed_phrases": null
+    },
+    "case_summaries": [
+      {
+        "case_id": "test_001",
+        "valid": false,
+        "error_category": "network"
+      },
+      {
+        "case_id": "test_002",
+        "valid": false,
+        "error_category": "network"
+      },
+      {
+        "case_id": "test_003",
+        "valid": false,
+        "error_category": "network"
+      },
+      {
+        "case_id": "test_004",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_005",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_006",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_007",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_008",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_009",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_010",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_011",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_012",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_013",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_014",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_015",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_016",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_017",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_018",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_019",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_020",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_021",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_022",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_023",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_024",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_025",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_026",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_027",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_028",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_029",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      },
+      {
+        "case_id": "test_030",
+        "valid": false,
+        "error_category": "not_attempted_after_stop"
+      }
+    ]
+  },
+  "tokens": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "reasoning_tokens": 0
+  },
+  "stopped_early": true,
+  "failure_groups": {
+    "api": 3
+  },
+  "error_categories": {
+    "network": 3
+  },
+  "reasoning_unavailable_calls": 3,
+  "cost_unavailable_calls": 3,
+  "estimated_cost_usd": 0
+}

@@ -1,0 +1,5 @@
+{
+  "started_at": "2026-10-03T17:29:58+08:00",
+  "model": "google/gemini-3.5-flash-lite",
+  "synthetic_dev_cases": 12
+}

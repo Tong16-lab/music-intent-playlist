@@ -1,0 +1,31 @@
+case_id,synthetic_role_id,utterance,split,current_valence,current_valence_evidence,current_arousal,current_arousal_evidence,target_valence,target_valence_evidence,target_arousal,target_arousal_evidence,target_melodic_surprise,target_melodic_surprise_evidence,trajectory,trajectory_evidence,ambiguous,ambiguity_note,review_status
+test_001,P05,刚吵完架，心里堵得慌，想听点能让我慢慢静下来的。,test,-1,心里堵得慌,3,心里堵得慌,0,静下来,1,慢慢静下来,,,from_to,想听点能让我慢慢静下来的,false,,needs_author_review
+test_002,P05,周末下午懒洋洋的，想听点暖暖的、轻松的。,test,,,,,1,暖暖的,1,轻松的,,,single_target,想听点暖暖的、轻松的,false,,needs_author_review
+test_003,P05,不要太吵的电子乐，也别给我放土嗨歌。,test,,,,,,,,,,,none,,false,,needs_author_review
+test_004,P06,最近压力特别大，想听点治愈的，简单点就好，别搞得太复杂。,test,-1,压力特别大,,,1,治愈的,,,1,别搞得太复杂,single_target,想听点治愈的,false,,needs_author_review
+test_005,P06,想听点让我“咦？”一下的，别一听就能猜到后面。,test,,,,,,,,,3,别一听就能猜到后面,none,,false,,needs_author_review
+test_006,P06,下雨天，感觉整个人都湿湿的，想听点忧伤的。,test,,,,,-1,忧伤的,,,,,single_target,想听点忧伤的,false,,needs_author_review
+test_007,P07,我现在困得睁不开眼，来点提神的，别放慢歌。,test,,,,,,,3,提神的,,,single_target,来点提神的,false,,needs_author_review
+test_008,P07,做饭的时候想放点轻快的。,test,,,,,1,轻快的,2,轻快的,,,single_target,想放点轻快的,false,,needs_author_review
+test_009,P07,我要看书，别放有人唱词的，会分心。,test,,,,,,,,,,,none,,false,,needs_author_review
+test_010,P08,刚失恋，想先听点难过的，哭一哭，然后慢慢好起来。,test,-1,刚失恋,,,1,慢慢好起来,,,,,from_to,先听点难过的，哭一哭，然后慢慢好起来,false,,needs_author_review
+test_011,P08,想听点劲儿大的，但别太绕，我听不懂那些复杂的。,test,,,,,,,3,劲儿大的,1,别太绕,single_target,想听点劲儿大的,false,,needs_author_review
+test_012,P08,别放那种慢悠悠的抒情歌，也别放口水歌，听着没感觉。,test,,,,,,,,,,,none,,false,,needs_author_review
+test_013,P09,今天太开心了，想听点更嗨的！,test,1,太开心了,,,1,更嗨的,3,更嗨的,,,single_target,想听点更嗨的,false,,needs_author_review
+test_014,P09,有点焦虑，想听点稳稳的，别忽然来个大变化吓我一跳。,test,-1,有点焦虑,,,0,稳稳的,1,稳稳的,1,别忽然来个大变化,single_target,想听点稳稳的,false,,needs_author_review
+test_015,P09,来点听着有新鲜感的吧，但别是土嗨歌那种。,test,,,,,,,,,2,新鲜感,none,,false,,needs_author_review
+test_016,P10,晚上走路回家，想听点安静的，再有点温柔的感觉。,test,,,,,1,温柔的感觉,1,安静的,,,single_target,想听点安静的,false,,needs_author_review
+test_017,P10,烦死了烦死了，想听点吵吵闹闹的发泄一下。,test,-1,烦死了烦死了,,,,,3,吵吵闹闹的发泄一下,,,single_target,想听点吵吵闹闹的发泄一下,false,,needs_author_review
+test_018,P10,别放英文歌，也不想听土嗨歌。,test,,,,,,,,,,,none,,false,,needs_author_review
+test_019,P11,先来点紧张刺激的，后面慢慢让我放松下来。,test,,,3,紧张刺激的,0,放松下来,1,放松下来,,,from_to,先来点紧张刺激的，后面慢慢让我放松下来,false,,needs_author_review
+test_020,P11,想听点不悲不喜的，平平淡淡那种。,test,,,,,0,不悲不喜的,,,,,single_target,想听点不悲不喜的,false,,needs_author_review
+test_021,P11,想要点出乎意料的感觉，但别太吵。,test,,,,,,,,,3,出乎意料的感觉,single_target,想要点出乎意料的感觉,true,来源表将 trajectory 标为 single_target，但未给出可靠 arousal 目标。,needs_author_review
+test_022,P12,有点孤单，想听点能陪着我的。,test,-1,有点孤单,,,,,,,,,single_target,想听点能陪着我的,true,来源表将 trajectory 标为 single_target，但目标情绪与唤醒度未说明。,needs_author_review
+test_023,P12,想听点让人觉得天亮了、有盼头的。,test,,,,,1,有盼头的,,,,,single_target,想听点让人觉得天亮了、有盼头的,false,,needs_author_review
+test_024,P12,别太悲，也别太闹，口水歌和土嗨歌都不要。,test,,,,,0,别太悲,,,,,single_target,别太悲，也别太闹,false,,needs_author_review
+test_025,P13,早上爬不起来，想用歌把自己叫醒，最好从软软的慢慢变得有精神。,test,,,1,从软软的,1,有精神,3,变得有精神,,,from_to,从软软的慢慢变得有精神,false,,needs_author_review
+test_026,P13,想听没人唱的，但得有个能跟着哼的调调。,test,,,,,,,,,,,none,,false,,needs_author_review
+test_027,P13,最好每首都有点不一样的小惊喜，别从头到尾一个样。,test,,,,,,,,,3,小惊喜,none,,false,,needs_author_review
+test_028,P14,终于考完了，整个人轻飘飘的，想听点放松又开心的。,test,1,终于考完了，整个人轻飘飘的,,,1,开心的,,,,,single_target,想听点放松又开心的,true,来源表明确提示 expected_arousal 依据不足。,needs_author_review
+test_029,P14,心情很低落，不想听太欢快的，就想安安静静待一会儿。,test,-1,心情很低落,,,,,1,安安静静,,,single_target,就想安安静静待一会儿,false,,needs_author_review
+test_030,P14,随便放吧。,test,,,,,,,,,,,none,,false,,needs_author_review

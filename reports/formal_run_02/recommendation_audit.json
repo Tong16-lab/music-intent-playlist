@@ -1,0 +1,13 @@
+{
+  "source_run": "formal_run_02",
+  "kind": "post_freeze_recommendation_layer_audit",
+  "input_cases": 30,
+  "catalog_tracks": 35,
+  "counts": {
+    "ready": 21,
+    "cannot_guarantee_constraint": 7,
+    "insufficient_catalog": 0,
+    "catalog_not_ready": 0,
+    "invalid_intent_card": 2
+  }
+}

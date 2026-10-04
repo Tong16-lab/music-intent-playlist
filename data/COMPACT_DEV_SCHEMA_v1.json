@@ -1,0 +1,152 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "current_valence",
+    "current_arousal",
+    "target_valence",
+    "target_arousal",
+    "target_melodic_surprise",
+    "trajectory",
+    "requires_melody_present",
+    "evidence",
+    "constraints"
+  ],
+  "properties": {
+    "current_valence": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Current human emotion only, not first-song target"
+    },
+    "current_arousal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Current human activation only"
+    },
+    "target_valence": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exact =N, inclusive lower >=N, inclusive upper <=N, or null. Local domain validation applies."
+    },
+    "target_arousal": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exact =N, inclusive lower >=N, inclusive upper <=N, or null. Local domain validation applies."
+    },
+    "target_melodic_surprise": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Requested melodic surprise"
+    },
+    "requires_melody_present": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "True only for an explicit request for a discernible melody; otherwise null"
+    },
+    "trajectory": {
+      "type": "string",
+      "description": "none, single_target, valence:A->B, arousal:A->B, or valence:A->B;arousal:C->D. Local validation applies."
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Exact contiguous substrings from the user's sentence; null when field absent",
+      "required": [
+        "current_valence",
+        "current_arousal",
+        "target_valence",
+        "target_arousal",
+        "target_melodic_surprise",
+        "trajectory",
+        "requires_melody_present"
+      ],
+      "properties": {
+        "current_valence": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_arousal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_valence": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_arousal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_melodic_surprise": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trajectory": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requires_melody_present": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "description": "Unsupported explicit song attributes; use [] when none",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence",
+          "classification",
+          "polarity"
+        ],
+        "properties": {
+          "evidence": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "unsupported_constraint"
+            ]
+          },
+          "polarity": {
+            "type": "string",
+            "enum": [
+              "include",
+              "exclude"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

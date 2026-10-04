@@ -1,0 +1,1 @@
+只输出符合所附 JSON Schema 的 JSON 对象，包含全部必填字段。原句未提及且 Schema 允许 null 的值填 null；trajectory 按 Schema 填 none 或 single_target。没有不支持条件时 constraints=[]。非空 evidence 必须是原句中逐字连续出现的片段；未使用的 evidence 填 null。不要解释。

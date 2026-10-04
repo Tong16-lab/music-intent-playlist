@@ -1,0 +1,31 @@
+case_id,synthetic_role_id,utterance,split,current_valence,current_valence_evidence,current_arousal,current_arousal_evidence,target_valence,target_valence_evidence,target_arousal,target_arousal_evidence,target_melodic_surprise,target_melodic_surprise_evidence,requires_melody_present,requires_melody_present_evidence,trajectory,trajectory_evidence,ambiguous,other_request_or_note,review_status
+test_001,P05,刚吵完架，心里堵得慌，想听点能让我慢慢静下来的。,test,-1,心里堵得慌,,,,,1,慢慢静下来,,,,,single_target,想听点能让我慢慢静下来的,false,不把“堵得慌”硬标为高唤醒，也不把“静下来”硬标为中性情绪。,approved
+test_002,P05,周末下午懒洋洋的，想听点暖暖的、轻松的。,test,,,,,1,暖暖的,,,,,,,single_target,想听点暖暖的、轻松的,false,“轻松”不自动等于低唤醒；“懒洋洋”未必是当前负面情绪。,approved
+test_003,P05,不要太吵的电子乐，也别给我放土嗨歌。,test,,,,,,,,,,,,,none,,false,电子乐是正向风格要求；三项均无可靠歌曲字段保证。,approved
+test_004,P06,最近压力特别大，想听点治愈的，简单点就好，别搞得太复杂。,test,-1,压力特别大,,,,,,,1,别搞得太复杂,,,none,,false,“治愈”是软体验目标；“复杂”按项目已确认口径映射低旋律意外感。,approved
+test_005,P06,想听点让我“咦？”一下的，别一听就能猜到后面。,test,,,,,,,,,3,别一听就能猜到后面,,,none,,false,按项目口径映射高旋律意外感。,approved
+test_006,P06,下雨天，感觉整个人都湿湿的，想听点忧伤的。,test,,,,,-1,忧伤的,,,,,,,single_target,想听点忧伤的,false,天气和“湿湿的”不单独推出用户当前情绪。,approved
+test_007,P07,我现在困得睁不开眼，来点提神的，别放慢歌。,test,,,1,困得睁不开眼,,,3,提神的,,,,,single_target,来点提神的,false,慢歌属速度要求，不能只凭 arousal 保证。,approved
+test_008,P07,做饭的时候想放点轻快的。,test,,,,,1,轻快的,2,轻快的,,,,,single_target,想放点轻快的,false,“轻快”同时表达较正向与中等活跃。,approved
+test_009,P07,我要看书，别放有人唱词的，会分心。,test,,,,,,,,,,,,,none,,false,要求涉及人声／歌词，现有歌曲标签不能保证。,approved
+test_010,P08,刚失恋，想先听点难过的，哭一哭，然后慢慢好起来。,test,,,,,-1,难过的,,,,,,,single_target,想先听点难过的,false,作者核定：“先”表示此刻想听难过的歌，“然后慢慢好起来”说的是人的状态，不规定三首歌的先后、首曲专属目标或后续歌曲情绪。target_valence=-1 是当前可执行的音乐目标。,approved
+test_011,P08,想听点劲儿大的，但别太绕，我听不懂那些复杂的。,test,,,,,,,3,劲儿大的,1,别太绕,,,single_target,想听点劲儿大的,false,“绕／复杂”按项目已确认口径映射低旋律意外感。,approved
+test_012,P08,别放那种慢悠悠的抒情歌，也别放口水歌，听着没感觉。,test,,,,,,,,,,,,,none,,false,慢速／抒情风格／口水歌均非现有可靠字段。,approved
+test_013,P09,今天太开心了，想听点更嗨的！,test,1,太开心了,,,1,更嗨的,3,更嗨的,,,,,single_target,想听点更嗨的,false,“嗨”在此按积极且高活跃的音乐表达处理。,approved
+test_014,P09,有点焦虑，想听点稳稳的，别忽然来个大变化吓我一跳。,test,-1,有点焦虑,,,,,,,1,别忽然来个大变化,,,none,,false,“稳稳的”不指定精确唤醒档位；“变化”按项目已确认口径映射旋律意外感。,approved
+test_015,P09,来点听着有新鲜感的吧，但别是土嗨歌那种。,test,,,,,,,,,2,新鲜感,,,none,,false,新鲜感映射中档旋律意外感是作者已确认的项目口径。,approved
+test_016,P10,晚上走路回家，想听点安静的，再有点温柔的感觉。,test,,,,,1,温柔的感觉,1,安静的,,,,,single_target,想听点安静的,false,“安静”低唤醒；“温柔”暂按正向音乐表达。,approved
+test_017,P10,烦死了烦死了，想听点吵吵闹闹的发泄一下。,test,-1,烦死了烦死了,,,,,3,吵吵闹闹的发泄一下,,,,,single_target,想听点吵吵闹闹的发泄一下,false,作者核定：“吵吵闹闹”指高能量音乐，不指音量大。,approved
+test_018,P10,别放英文歌，也不想听土嗨歌。,test,,,,,,,,,,,,,none,,false,英文歌词语言及土嗨歌类别均无可靠字段。,approved
+test_019,P11,先来点紧张刺激的，后面慢慢让我放松下来。,test,,,,,,,1,放松下来,,,,,"{""type"":""from_to"",""arousal"":{""from"":3,""to"":1}}",先来点紧张刺激的，后面慢慢让我放松下来,false,作者核定：歌曲活跃度从 3 逐渐降到 1；target_arousal=1 是终点。起点记在歌单路径内，不新增首曲字段，也不混入用户当前状态。,approved
+test_020,P11,想听点不悲不喜的，平平淡淡那种。,test,,,,,0,不悲不喜的,,,,,,,single_target,想听点不悲不喜的,false,中性情绪明确；“平平淡淡”不自动设定精确唤醒度。,approved
+test_021,P11,想要点出乎意料的感觉，但别太吵。,test,,,,,,,,,3,出乎意料的感觉,,,none,,false,仅有旋律偏好，不是情绪路径；吵是无法保证的音量要求。,approved
+test_022,P12,有点孤单，想听点能陪着我的。,test,-1,有点孤单,,,,,,,,,,,none,,false,“陪伴”是软愿望，不能作为必须保证的硬条件，也不自动推断目标音乐情绪。,approved
+test_023,P12,想听点让人觉得天亮了、有盼头的。,test,,,,,1,有盼头的,,,,,,,single_target,想听点让人觉得天亮了、有盼头的,false,“有盼头”按正向音乐表达；不保证听众实际心情改变。,approved
+test_024,P12,别太悲，也别太闹，口水歌和土嗨歌都不要。,test,,,,,0,别太悲,"{""relation"":""at_most"",""value"":2}",别太闹,,,,,single_target,别太悲，也别太闹,false,作者核定：“别太悲”按中性目标近似；“别太闹”是音乐活跃度≤2，不是音量要求，也不能强填为恰好 1 或 2。曲库活跃度未知时不能声称满足上限；口水歌／土嗨歌仍无法保证。,approved
+test_025,P13,早上爬不起来，想用歌把自己叫醒，最好从软软的慢慢变得有精神。,test,,,1,爬不起来,,,3,变得有精神,,,,,single_target,想用歌把自己叫醒,false,作者核定：“软软的”描述用户当前状态，不是首曲目标；不据此标音乐从低到高的明确路径。,approved
+test_026,P13,想听没人唱的，但得有个能跟着哼的调调。,test,,,,,,,,,,,true,能跟着哼的调调,none,,false,作者确认新增 requires_melody_present=true，证据为“能跟着哼的调调”，仅匹配歌曲 melody_present=yes；这不保证人人都能哼。“没人唱的”仍是当前曲库无法保证的人声条件。,approved
+test_027,P13,最好每首都有点不一样的小惊喜，别从头到尾一个样。,test,,,,,,,,,3,小惊喜,,,none,,false,“小惊喜”按作者已确认口径映射高旋律意外感。,approved
+test_028,P14,终于考完了，整个人轻飘飘的，想听点放松又开心的。,test,1,整个人轻飘飘的,,,1,开心的,,,,,,,single_target,想听点放松又开心的,false,“放松”不自动等于低唤醒；保留为软描述。,approved
+test_029,P14,心情很低落，不想听太欢快的，就想安安静静待一会儿。,test,-1,心情很低落,,,0,不想听太欢快的,1,安安静静,,,,,single_target,就想安安静静待一会儿,false,作者核定：结合“想安安静静待一会儿”，本项目将目标近似记为中性、低活跃；不宣称“不要太欢快”单独严格等于中性。,approved
+test_030,P14,随便放吧。,test,,,,,,,,,,,,,none,,false,没有可据以推断的情绪或旋律条件，应按探索推荐处理。,approved

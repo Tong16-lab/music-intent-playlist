@@ -1,0 +1,254 @@
+{
+  "synthetic_dev": true,
+  "version": "compact-dev-v1",
+  "prompt_sha256": "8d32673870f7798f8e46d63a13ea5d31fe5a66d813044fcfb13f526fa1412b2a",
+  "schema_sha256": "c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344",
+  "started_at": "2026-10-03T18:07:39+08:00",
+  "model": "google/gemini-3.5-flash-lite",
+  "expected_cases": 12,
+  "attempted_calls": 12,
+  "stopped_early": false,
+  "json_complete_calls": 12,
+  "required_structure_complete_calls": 12,
+  "conversion_complete_calls": 11,
+  "locally_valid_calls": 9,
+  "failure_groups": {
+    "structure": 1,
+    "field_value": 2
+  },
+  "failure_stages": {
+    "conversion": 1,
+    "local_validation": 2
+  },
+  "error_categories": {
+    "invalid_field_value": 3
+  },
+  "scores": {
+    "attempted_calls": 12,
+    "valid_responses": 9,
+    "failed_calls": 3,
+    "end_to_end": {
+      "denominator": 12,
+      "core_fields": {
+        "current_valence": 9,
+        "current_arousal": 7,
+        "target_valence": 7,
+        "target_arousal": 4,
+        "target_melodic_surprise": 8,
+        "trajectory": 7
+      },
+      "core_cards": 3,
+      "requires_melody_present": 9,
+      "unsupported_exact_sets": 3,
+      "cannot_guarantee_constraint_status": 6,
+      "unsupported_expected_phrases": 7,
+      "unsupported_unfulfilled_phrases": 4,
+      "unsupported_unfulfilled_due_to_call_failure": 0
+    },
+    "valid_only": {
+      "denominator": 9,
+      "core_fields": {
+        "current_valence": 9,
+        "current_arousal": 7,
+        "target_valence": 7,
+        "target_arousal": 4,
+        "target_melodic_surprise": 8,
+        "trajectory": 7
+      },
+      "core_cards": 3,
+      "requires_melody_present": 9,
+      "unsupported_exact_sets": 3,
+      "cannot_guarantee_constraint_status": 6,
+      "unsupported_expected_phrases": 7,
+      "unsupported_true_positive_phrases": 3,
+      "unsupported_false_positive_phrases": 7,
+      "unsupported_missed_phrases": 4
+    },
+    "keyword_baseline": {
+      "denominator": 12,
+      "core_fields": {
+        "current_valence": 9,
+        "current_arousal": 11,
+        "target_valence": 9,
+        "target_arousal": 8,
+        "target_melodic_surprise": 11,
+        "trajectory": 8
+      },
+      "core_cards": 5
+    }
+  },
+  "tokens": {
+    "prompt_tokens": 15247,
+    "completion_tokens": 2085,
+    "total_tokens": 17332,
+    "reasoning_tokens": 0
+  },
+  "reasoning_unavailable_calls": 0,
+  "cost_unavailable_calls": 0,
+  "estimated_cost_usd": 0.0097866,
+  "case_summaries": [
+    {
+      "case_id": "dev_001",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [
+        "current_arousal",
+        "target_valence",
+        "target_melodic_surprise"
+      ],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": true,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 1,
+      "unsupported_missed_count": 0,
+      "cannot_guarantee_constraint_wrong": true
+    },
+    {
+      "case_id": "dev_002",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [
+        "current_arousal",
+        "target_arousal"
+      ],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": false,
+      "unsupported_true_positive_count": 2,
+      "unsupported_false_positive_count": 0,
+      "unsupported_missed_count": 0,
+      "cannot_guarantee_constraint_wrong": false
+    },
+    {
+      "case_id": "dev_003",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [
+        "target_arousal",
+        "trajectory"
+      ],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": false,
+      "unsupported_true_positive_count": 1,
+      "unsupported_false_positive_count": 0,
+      "unsupported_missed_count": 0,
+      "cannot_guarantee_constraint_wrong": false
+    },
+    {
+      "case_id": "dev_004",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": false,
+      "failure_group": "structure",
+      "error_category": "invalid_field_value",
+      "error_field": "target_valence"
+    },
+    {
+      "case_id": "dev_005",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [
+        "target_valence",
+        "target_arousal"
+      ],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": true,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 1,
+      "unsupported_missed_count": 0,
+      "cannot_guarantee_constraint_wrong": true
+    },
+    {
+      "case_id": "dev_006",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": false,
+      "failure_group": "field_value",
+      "error_category": "invalid_field_value",
+      "error_field": "trajectory"
+    },
+    {
+      "case_id": "dev_007",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [
+        "target_arousal",
+        "trajectory"
+      ],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": false,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 0,
+      "unsupported_missed_count": 0,
+      "cannot_guarantee_constraint_wrong": false
+    },
+    {
+      "case_id": "dev_008",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [
+        "target_arousal"
+      ],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": true,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 1,
+      "unsupported_missed_count": 1,
+      "cannot_guarantee_constraint_wrong": false
+    },
+    {
+      "case_id": "dev_009",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": true,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 2,
+      "unsupported_missed_count": 2,
+      "cannot_guarantee_constraint_wrong": false
+    },
+    {
+      "case_id": "dev_010",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": true,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 1,
+      "unsupported_missed_count": 1,
+      "cannot_guarantee_constraint_wrong": false
+    },
+    {
+      "case_id": "dev_011",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": false,
+      "failure_group": "field_value",
+      "error_category": "invalid_field_value",
+      "error_field": "trajectory.arousal"
+    },
+    {
+      "case_id": "dev_012",
+      "json_complete": true,
+      "required_structure_complete": true,
+      "intent_valid": true,
+      "wrong_core_fields": [],
+      "requires_melody_present_wrong": false,
+      "unsupported_exact_set_wrong": true,
+      "unsupported_true_positive_count": 0,
+      "unsupported_false_positive_count": 1,
+      "unsupported_missed_count": 0,
+      "cannot_guarantee_constraint_wrong": true
+    }
+  ],
+  "valid_answer_mismatch_cases": 9
+}

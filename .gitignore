@@ -129,6 +129,10 @@ celerybeat.pid
 
 # Environments
 .env
+.env.txt
+.env.rtf
+.env.example.txt
+.env.example.rtf
 .venv
 env/
 venv/
@@ -179,3 +183,10 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Local-only predictions from synthetic development evaluation; never publish.
+/reports/private_dev_predictions/
+/reports/private_formal_predictions/
+
+# macOS Finder metadata
+.DS_Store
