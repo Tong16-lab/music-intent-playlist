@@ -22,7 +22,7 @@ from music_intent.openrouter_client import (  # noqa: E402
 from music_intent.pricing import estimate_standard_cost_usd  # noqa: E402
 
 MODEL = "google/gemini-3.5-flash-lite"
-SYNTHETIC_SENTENCE = "我现在有点烦，想听一首安静、有清楚旋律的音乐。"
+SYNTHETIC_SENTENCE = "I'm a bit annoyed right now and want to listen to some quiet music with a clear melody."
 PROMPT_FILE = ROOT / "data" / "FULL_SCHEMA_SHORT_PROMPT.txt"
 LEGACY_NUMERIC_ENUM_FIELDS = (
     "current_valence", "current_arousal", "target_valence", "target_arousal",

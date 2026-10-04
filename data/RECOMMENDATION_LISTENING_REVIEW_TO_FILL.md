@@ -1,20 +1,20 @@
-# 推荐演示：作者试听审核空白表
+# Recommendation Demo: Author Audit Blank Sheet
 
-只在实际打开原始页面并试听后填写。记录个人感受与歌曲匹配情况，不把表格当作多人用户研究结果。无需下载或上传音频。
+Fill in only after actually opening the original page and listening to the track. Record personal impressions and song matching, and do not treat the table as multi-user study results. No need to download or upload audio.
 
-| 演示样例 | 顺序 | track_id | 试听日期 | 是否播放成功 | 标签匹配是否合理 | 个人是否喜欢 | 备注／具体时间点 |
+| Demo Sample | Sequence | track_id | Listening Date | Playback Successful | Tag Matching Reasonable | Personally Liked | Notes / Specific Timestamp |
 | --- | ---: | --- | --- | --- | --- | --- | --- |
-| explore | 1 |track_0111374|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| explore | 2 |track_0114199|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| explore | 3 |track_0287980|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| calm | 1 |track_0111374|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| calm | 2 |track_0114199|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| calm | 3 |track_0579315|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| path | 1 |track_0287980|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| path | 2 |track_0938333|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| path | 3 |track_0111374|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| melody | 1 |track_0654634|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| melody | 2 |track_0844698|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
-| melody | 3 |track_0978031|2026-10-03  | 是 | 是 | 是 | 已试听，无额外意见 |
+| explore | 1 |track_0111374|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| explore | 2 |track_0114199|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| explore | 3 |track_0287980|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| calm | 1 |track_0111374|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| calm | 2 |track_0114199|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| calm | 3 |track_0579315|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| path | 1 |track_0287980|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| path | 2 |track_0938333|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| path | 3 |track_0111374|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| melody | 1 |track_0654634|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| melody | 2 |track_0844698|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
+| melody | 3 |track_0978031|2026-10-03  | Yes | Yes | Yes | Listened, no extra comments |
 
-`unsupported` 样例按规则不推荐歌曲，可在课堂记录老师对拒绝理由的意见，无须伪填试听。若原页面失效，填写“未播放成功”，不要猜测听感。
+`unsupported` samples do not recommend songs per rules. You can record the teacher's feedback on the rejection reason in class notes without fabricating listening evaluations. If the original page is broken, fill in "Playback not successful" and do not guess the listening experience.

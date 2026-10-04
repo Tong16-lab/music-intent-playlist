@@ -1,8 +1,8 @@
-# 冻结后第二次正式运行：推荐层离线审计
+# Second formal run after freezing: Recommendation layer offline audit
 
-仅使用已保存的本机私有预测、冻结的原句和 35 首正式曲库；没有 API 调用。这是推荐流程与条件可满足性检查，不是预先完成的推荐质量或用户喜好评估。
+Only saved local private predictions, frozen original sentences, and 35 formal music tracks are used; no API calls. This is a recommendation workflow and conditional satisfiability check, not a pre-completed recommendation quality or user preference evaluation.
 
-| 状态 | 数量 |
+| Status | Count |
 | --- | ---: |
 | `ready` | 21/30 |
 | `cannot_guarantee_constraint` | 7/30 |
@@ -10,4 +10,4 @@
 | `catalog_not_ready` | 0/30 |
 | `invalid_intent_card` | 2/30 |
 
-无效意图卡不参与推荐；`cannot_guarantee_constraint` 不选歌；曲库不足时不补足。模型意图判断成绩仍以本运行原始评估报告为准。
+Invalid intent cards do not participate in recommendation; `cannot_guarantee_constraint` selects no songs; deficiencies are not backfilled when the music library is insufficient. Model intent judgment scores are still subject to the original evaluation report of this run.

@@ -107,7 +107,7 @@ class RecommendationTests(unittest.TestCase):
             self.assertEqual(len({row["artist"] for row in first["tracks"]}), 3)
             output = render_result(first, intent)
             self.assertIn("https://www.jamendo.com/track/", output)
-            self.assertNotIn("许可已核实", output)
+            self.assertNotIn("License verified", output)
         self.assertEqual(recommend(samples["unsupported"][1], self.catalog)["status"],
                          "cannot_guarantee_constraint")
 
@@ -171,7 +171,7 @@ class RecommendationTests(unittest.TestCase):
         self.assertEqual([row["track_id"] for row in result["tracks"]], ["a", "c", "b"])
 
     def test_unsupported_is_not_filled(self):
-        card = minimal_intent(constraints=[{"evidence": "不要英文歌",
+        card = minimal_intent(constraints=[{"evidence": "No English songs",
                                              "classification": "unsupported_constraint",
                                              "polarity": "exclude"}])
         self.assertEqual(select_tracks(card, self.catalog),
@@ -181,13 +181,13 @@ class RecommendationTests(unittest.TestCase):
         with patch.object(demo_recommendations, "call_candidate_once",
                           side_effect=AssertionError("API called")):
             with self.assertRaisesRegex(ValueError, "live_mode_requires_allow_paid"):
-                demo_recommendations.live_intent("合成输入", False)
+                demo_recommendations.live_intent("synthetic input", False)
 
     def test_classroom_report_uses_fixed_cards(self):
         report = build_classroom_demo.build()
-        self.assertEqual(report.count("状态：`ready`"), 4)
-        self.assertIn("状态：`cannot_guarantee_constraint`", report)
-        self.assertIn("不调用模型", report)
+        self.assertEqual(report.count("Status: `ready`"), 4)
+        self.assertIn("Status: `cannot_guarantee_constraint`", report)
+        self.assertIn("Does not call model", report)
 
     def test_private_formal_audit_is_offline_and_complete(self):
         result = audit_script.audit()

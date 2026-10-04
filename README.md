@@ -4,7 +4,7 @@ An everyday Chinese request becomes either three ordered, linked songs with trac
 
 ## Submission map
 
-Start with the [English submission index](docs/ENGLISH_SUBMISSION_INDEX.md): it maps each preserved Chinese or machine-readable source to an English reading copy, including all 42 request cases and 35 catalog tracks.
+Start with the [submission index](docs/ENGLISH_SUBMISSION_INDEX.md). The current tree presents the project in English, including all 42 request cases and 35 catalog tracks.
 
 | Deliverable | Where to read it |
 | --- | --- |
@@ -16,7 +16,7 @@ Start with the [English submission index](docs/ENGLISH_SUBMISSION_INDEX.md): it 
 | Assistance and provenance disclosure | [Declaration](docs/AI_ASSISTANCE_DISCLOSURE.md) |
 | Recorded face-and-screen demonstration | [Watch the video](demo/demo.mp4) (6 min 48 sec); [speaking script](docs/VIDEO_SPEECH_SCRIPT_EN.md), [recording guide](docs/VIDEO_DEMO_PLAN.md), and [submission checklist](docs/SUBMISSION_CHECKLIST.md) |
 
-The recorded video is at [`demo/demo.mp4`](demo/demo.mp4). Historical run reports and the Chinese input/answer files remain in their evaluated form, with line- or case-linked English reading companions in the index. Do not replace the frozen Chinese inputs with English: that would change the evaluated task and invalidate the recorded hashes.
+The recorded video is at [`demo/demo.mp4`](demo/demo.mp4). At the author's request, the recording is unchanged; its meeting-app overlay contains some Chinese text. The measured 11/30 result belongs to a Chinese-input experiment. Its exact source files and frozen hashes are preserved in [commit `a39e3fc`](https://github.com/Tong16-lab/music-intent-playlist/tree/a39e3fc), not in the translated current tree. Current English tables, prompts, and reports are reading translations, **not an English-input evaluation**. Do not compare their hashes with the historical freeze record or present the historical score as an English-input result.
 
 ## Quick local demonstration
 
@@ -30,23 +30,9 @@ python3 scripts/demo_recommendations.py --sample melody --lang en
 python3 scripts/demo_recommendations.py --sample unsupported --lang en
 ```
 
-The first four use prewritten intent cards to demonstrate catalog selection and produce three linked tracks. `path` shows an arousal sequence of 3 → 2 → 1. `unsupported` refuses a lyric-language condition absent from the verified catalog. These examples **do not test request interpretation**. `--lang en` changes the visible labels and sample-sentence display only; the underlying cards and selections are unchanged. Without that flag the historical Chinese display remains available. [The English demo page](reports/CLASSROOM_DEMO_EN.md) also explains the output.
+The first four use prewritten intent cards to demonstrate catalog selection and produce three linked tracks. `path` shows an arousal sequence of 3 → 2 → 1. `unsupported` refuses a lyric-language condition absent from the verified catalog. These examples **do not test request interpretation**. `--lang en` selects the English display; the underlying cards and selections are unchanged. [The demo page](reports/CLASSROOM_DEMO_EN.md) also explains the output.
 
-For an optional live text request, create a local `.env` from the blank `.env.example` and fill in your own `OPENROUTER_API_KEY` and `OPENROUTER_MODEL=google/gemini-3.5-flash-lite`. Never commit or display the key. Check local configuration without showing it:
-
-```bash
-python3 scripts/check_config.py
-git check-ignore -v .env
-git ls-files .env
-```
-
-The last command should print nothing. A live run requires explicit paid-call permission and makes one OpenRouter request; it may fail if credentials or network access are unavailable:
-
-```bash
-python3 scripts/demo_recommendations.py --text "想听安静的歌" --allow-paid
-```
-
-The example Chinese request means “I want quiet music.” It is included only to illustrate the optional paid live mode; the recorded formal evaluation is already complete and should not be rerun for the demonstration.
+The current branch intentionally runs the fixed offline demonstration only. Its translated prompt and request examples have not been evaluated as an English-language model pipeline. To inspect or reproduce the scored live parser, check out commit `a39e3fc` and follow that commit's README with the original Chinese inputs. Never commit or display an API key.
 
 Local validation must pass before track selection. The output provides Jamendo page links, not embedded audio. Invalid cards, unguaranteed conditions, or fewer than three suitable songs are reported rather than silently filled.
 
@@ -56,13 +42,14 @@ Run from the repository root:
 
 ```bash
 python3 scripts/sync_v2_answers.py check
-python3 scripts/freeze_test_set.py verify
+python3 scripts/verify_historical_freeze.py
 python3 scripts/export_catalog.py check
-python3 scripts/audit_formal_recommendations.py --check
-PYTHONPYCACHEPREFIX=/tmp/pe6201-pycache python3 -m unittest discover -s tests -v
+python3 scripts/demo_recommendations.py --sample path --lang en
+python3 scripts/demo_recommendations.py --sample unsupported --lang en
+PYTHONPYCACHEPREFIX=/tmp/pe6201-pycache python3 -m unittest discover -s tests -p test_english_submission.py -v
 ```
 
-The routing audit reads the released, validated cards in `reports/formal_run_02/validated_cards_for_audit.jsonl`; it works on a fresh clone without private raw replies. This release contains case IDs, valid V2 cards, and fixed error codes only, not full provider responses or secrets. The catalog check reads the checked-in `data/catalog_source_snapshot.md`, not a document outside the repository. The second formal run's recorded results are in `reports/formal_run_02/evaluation.json` and `.md`; the first, connection-failed run is retained separately in `reports/evaluation.*`. Do not rerun the 30 paid cases to inspect their already recorded score.
+The historical-freeze verifier reads the exact original bytes at commit `a39e3fc` without changing this checkout. The routing audit is likewise bound to those original inputs and should be run from that commit, not against translated files. The catalog check reads the checked-in `data/catalog_source_snapshot.md`. The second formal run's recorded numbers are in `reports/formal_run_02/evaluation.json` and `.md`; the first, connection-failed run is retained separately in `reports/evaluation.*`. No paid rerun is needed to inspect the recorded score. The original regression suite remains runnable at commit `a39e3fc`. English translations of those test files are retained under `tests/historical_reading_copies/` for inspection but are not run in this branch because exact Chinese source spans and prompt hashes cannot be preserved by translation. The active five-test suite checks this branch's English text, synchronized tables and display wording, catalog demonstration, and original freeze.
 
 ## Code map
 

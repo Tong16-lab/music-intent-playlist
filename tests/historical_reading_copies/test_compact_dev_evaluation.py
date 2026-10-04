@@ -56,14 +56,14 @@ class CompactDevelopmentEvaluationTests(unittest.TestCase):
 
     def test_response_stages_are_separate_and_raw_is_private_only(self):
         _, schema, _ = load_versioned_format()
-        utterance = "想听安静的音乐"
+        utterance = "I want to listen to quiet music"
         wire = {"current_valence": None, "current_arousal": None,
                 "target_valence": None, "target_arousal": "=1",
                 "target_melodic_surprise": None, "trajectory": "single_target",
                 "requires_melody_present": None,
                 "evidence": {name: None for name in candidate.CORE_FIELDS + ("requires_melody_present",)},
                 "constraints": []}
-        wire["evidence"]["target_arousal"] = "安静"
+        wire["evidence"]["target_arousal"] = "quiet"
         content = json.dumps(wire, ensure_ascii=False)
         record, private = candidate.inspect_candidate_response(
             response(content), "dev_001", utterance, candidate.MODEL, schema)
@@ -88,7 +88,7 @@ class CompactDevelopmentEvaluationTests(unittest.TestCase):
         self.assertIsNone(private["converted_v2"])
 
         wrong_evidence = copy.deepcopy(wire)
-        wrong_evidence["evidence"]["target_arousal"] = "句中没有"
+        wrong_evidence["evidence"]["target_arousal"] = "Not present in sentence"
         record, private = candidate.inspect_candidate_response(
             response(json.dumps(wrong_evidence, ensure_ascii=False)), "dev_001", utterance,
             candidate.MODEL, schema)

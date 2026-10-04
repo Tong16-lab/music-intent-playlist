@@ -1,31 +1,31 @@
 case_id,utterance,unsupported_condition_phrases,expected_cannot_guarantee_constraint,draft_note,review_status
-test_001,刚吵完架，心里堵得慌，想听点能让我慢慢静下来的。,[],false,,needs_author_review
-test_002,周末下午懒洋洋的，想听点暖暖的、轻松的。,[],false,,needs_author_review
-test_003,不要太吵的电子乐，也别给我放土嗨歌。,"[""电子乐"", ""不要太吵"", ""别给我放土嗨歌""]",true,电子乐是正向风格要求；音量与土嗨歌也无法由现有曲库保证。,needs_author_review
-test_004,最近压力特别大，想听点治愈的，简单点就好，别搞得太复杂。,[],false,,needs_author_review
-test_005,想听点让我“咦？”一下的，别一听就能猜到后面。,[],false,,needs_author_review
-test_006,下雨天，感觉整个人都湿湿的，想听点忧伤的。,[],false,,needs_author_review
-test_007,我现在困得睁不开眼，来点提神的，别放慢歌。,"[""别放慢歌""]",true,,needs_author_review
-test_008,做饭的时候想放点轻快的。,[],false,,needs_author_review
-test_009,我要看书，别放有人唱词的，会分心。,"[""别放有人唱词的""]",true,,needs_author_review
-test_010,刚失恋，想先听点难过的，哭一哭，然后慢慢好起来。,[],false,,needs_author_review
-test_011,想听点劲儿大的，但别太绕，我听不懂那些复杂的。,[],false,,needs_author_review
-test_012,别放那种慢悠悠的抒情歌，也别放口水歌，听着没感觉。,"[""别放那种慢悠悠的抒情歌"", ""别放口水歌""]",true,,needs_author_review
-test_013,今天太开心了，想听点更嗨的！,[],false,,needs_author_review
-test_014,有点焦虑，想听点稳稳的，别忽然来个大变化吓我一跳。,[],false,,needs_author_review
-test_015,来点听着有新鲜感的吧，但别是土嗨歌那种。,"[""别是土嗨歌那种""]",true,,needs_author_review
-test_016,晚上走路回家，想听点安静的，再有点温柔的感觉。,[],false,,needs_author_review
-test_017,烦死了烦死了，想听点吵吵闹闹的发泄一下。,[],false,,needs_author_review
-test_018,别放英文歌，也不想听土嗨歌。,"[""别放英文歌"", ""不想听土嗨歌""]",true,,needs_author_review
-test_019,先来点紧张刺激的，后面慢慢让我放松下来。,[],false,,needs_author_review
-test_020,想听点不悲不喜的，平平淡淡那种。,[],false,,needs_author_review
-test_021,想要点出乎意料的感觉，但别太吵。,"[""别太吵""]",true,,needs_author_review
-test_022,有点孤单，想听点能陪着我的。,"[""能陪着我的""]",true,陪伴效果属主观效果；请作者确认是否应列为不可保证条件。,needs_author_review
-test_023,想听点让人觉得天亮了、有盼头的。,[],false,,needs_author_review
-test_024,别太悲，也别太闹，口水歌和土嗨歌都不要。,"[""别太闹"", ""口水歌"", ""土嗨歌""]",true,别太悲可由 valence 处理；别太闹是否指音量需作者核对。,needs_author_review
-test_025,早上爬不起来，想用歌把自己叫醒，最好从软软的慢慢变得有精神。,[],false,,needs_author_review
-test_026,想听没人唱的，但得有个能跟着哼的调调。,"[""没人唱的""]",true,,needs_author_review
-test_027,最好每首都有点不一样的小惊喜，别从头到尾一个样。,[],false,,needs_author_review
-test_028,终于考完了，整个人轻飘飘的，想听点放松又开心的。,[],false,,needs_author_review
-test_029,心情很低落，不想听太欢快的，就想安安静静待一会儿。,[],false,,needs_author_review
-test_030,随便放吧。,[],false,,needs_author_review
+test_001,"Just finished an argument, feeling blocked up inside, want to listen to something that can slowly help me calm down.",[],false,,needs_author_review
+test_002,"Lazy Sunday afternoon, I want to listen to something warm and relaxing.",[],false,,needs_author_review
+test_003,"No overly loud electronic music, and don't play cheesy club tracks for me either.","[""Electronic music"", ""Not too noisy"", ""Don't play cheesy club tracks for me""]",true,Electronic music is a positive style requirement; volume and cheesy club tracks cannot be guaranteed by the existing music library.,needs_author_review
+test_004,"I've been under a lot of pressure lately, I want to listen to something healing, keeping it simple is fine, don't make it too complicated.",[],false,,needs_author_review
+test_005,"I want to hear something that makes me go ""Huh?"", something where you can't guess what's coming next right away.",[],false,,needs_author_review
+test_006,"It's rainy, I feel all damp inside, I want to hear something melancholic.",[],false,,needs_author_review
+test_007,"I am so sleepy I can barely keep my eyes open, give me something energizing, don't play slow songs.","[""Don't play slow songs""]",true,,needs_author_review
+test_008,I want to play something upbeat while cooking.,[],false,,needs_author_review
+test_009,"I am going to read, don't play anything with vocals, it will distract me.","[""Don't play songs with vocals""]",true,,needs_author_review
+test_010,"Just went through a breakup, want to listen to something sad first to cry it out, and then slowly get better.",[],false,,needs_author_review
+test_011,"I want to hear something punchy, but not too convoluted; I don't understand those complex ones.",[],false,,needs_author_review
+test_012,"Don't play those slow ballads, and don't play bubblegum pop either; they feel underwhelming.","[""Don't play those slow sentimental ballads"", ""Don't play bubblegum pop songs""]",true,,needs_author_review
+test_013,"I'm so happy today, I want to hear something even more hype!",[],false,,needs_author_review
+test_014,"I'm a bit anxious, I want to hear something steady without any sudden big changes to startle me.",[],false,,needs_author_review
+test_015,"Give me something that sounds fresh, but not cheesy EDM.","[""Don't be like cheesy club tracks""]",true,,needs_author_review
+test_016,"Walking home at night, want to listen to something quiet with a gentle vibe.",[],false,,needs_author_review
+test_017,"Annoying, annoying, I want to listen to something noisy to vent.",[],false,,needs_author_review
+test_018,"Don't play English songs, and I don't want to hear cheesy club music either.","[""Don't play English songs"", ""Don't want to hear cheesy club tracks""]",true,,needs_author_review
+test_019,"Start with something tense and thrilling, and gradually help me relax later.",[],false,,needs_author_review
+test_020,"I want to listen to something neither sad nor happy, the plain and ordinary kind.",[],false,,needs_author_review
+test_021,"I want something unexpected, but not too noisy.","[""not too noisy""]",true,,needs_author_review
+test_022,"Feeling a bit lonely, I want something to keep me company.","[""something that can keep me company""]",true,The companionship effect is a subjective outcome; please have the author confirm whether it should be listed as an unguaranteed condition.,needs_author_review
+test_023,I want to hear something that makes it feel like dawn is breaking and brings hope.,[],false,,needs_author_review
+test_024,"Don't be too sad, and don't be too rowdy either; no cheesy pop songs or tacky EDM.","[""not too rowdy"", ""catchy pop songs"", ""over-the-top electronic music""]",true,"""Not too sad"" can be handled via valence; the author should verify whether ""not too rowdy"" refers to volume.",needs_author_review
+test_025,"I can't get up in the morning and want to use songs to wake myself up, preferably starting soft and slowly becoming energetic.",[],false,,needs_author_review
+test_026,"I want to hear something with no vocals, but it needs a tune I can hum along to.","[""instrumental only""]",true,,needs_author_review
+test_027,"Ideally, each song should have a little unexpected surprise, rather than sounding the same all the way through.",[],false,,needs_author_review
+test_028,"Exams are finally over, I feel weightless all over, and I want to hear something relaxing and happy.",[],false,,needs_author_review
+test_029,"I am feeling very low, don't want to hear anything too upbeat, just want to sit quietly for a while.",[],false,,needs_author_review
+test_030,Just play anything.,[],false,,needs_author_review

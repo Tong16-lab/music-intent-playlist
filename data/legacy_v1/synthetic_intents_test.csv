@@ -1,31 +1,31 @@
 case_id,synthetic_role_id,utterance,split,current_valence,current_valence_evidence,current_arousal,current_arousal_evidence,target_valence,target_valence_evidence,target_arousal,target_arousal_evidence,target_melodic_surprise,target_melodic_surprise_evidence,trajectory,trajectory_evidence,ambiguous,ambiguity_note,review_status
-test_001,P05,刚吵完架，心里堵得慌，想听点能让我慢慢静下来的。,test,-1,心里堵得慌,3,心里堵得慌,0,静下来,1,慢慢静下来,,,from_to,想听点能让我慢慢静下来的,false,,needs_author_review
-test_002,P05,周末下午懒洋洋的，想听点暖暖的、轻松的。,test,,,,,1,暖暖的,1,轻松的,,,single_target,想听点暖暖的、轻松的,false,,needs_author_review
-test_003,P05,不要太吵的电子乐，也别给我放土嗨歌。,test,,,,,,,,,,,none,,false,,needs_author_review
-test_004,P06,最近压力特别大，想听点治愈的，简单点就好，别搞得太复杂。,test,-1,压力特别大,,,1,治愈的,,,1,别搞得太复杂,single_target,想听点治愈的,false,,needs_author_review
-test_005,P06,想听点让我“咦？”一下的，别一听就能猜到后面。,test,,,,,,,,,3,别一听就能猜到后面,none,,false,,needs_author_review
-test_006,P06,下雨天，感觉整个人都湿湿的，想听点忧伤的。,test,,,,,-1,忧伤的,,,,,single_target,想听点忧伤的,false,,needs_author_review
-test_007,P07,我现在困得睁不开眼，来点提神的，别放慢歌。,test,,,,,,,3,提神的,,,single_target,来点提神的,false,,needs_author_review
-test_008,P07,做饭的时候想放点轻快的。,test,,,,,1,轻快的,2,轻快的,,,single_target,想放点轻快的,false,,needs_author_review
-test_009,P07,我要看书，别放有人唱词的，会分心。,test,,,,,,,,,,,none,,false,,needs_author_review
-test_010,P08,刚失恋，想先听点难过的，哭一哭，然后慢慢好起来。,test,-1,刚失恋,,,1,慢慢好起来,,,,,from_to,先听点难过的，哭一哭，然后慢慢好起来,false,,needs_author_review
-test_011,P08,想听点劲儿大的，但别太绕，我听不懂那些复杂的。,test,,,,,,,3,劲儿大的,1,别太绕,single_target,想听点劲儿大的,false,,needs_author_review
-test_012,P08,别放那种慢悠悠的抒情歌，也别放口水歌，听着没感觉。,test,,,,,,,,,,,none,,false,,needs_author_review
-test_013,P09,今天太开心了，想听点更嗨的！,test,1,太开心了,,,1,更嗨的,3,更嗨的,,,single_target,想听点更嗨的,false,,needs_author_review
-test_014,P09,有点焦虑，想听点稳稳的，别忽然来个大变化吓我一跳。,test,-1,有点焦虑,,,0,稳稳的,1,稳稳的,1,别忽然来个大变化,single_target,想听点稳稳的,false,,needs_author_review
-test_015,P09,来点听着有新鲜感的吧，但别是土嗨歌那种。,test,,,,,,,,,2,新鲜感,none,,false,,needs_author_review
-test_016,P10,晚上走路回家，想听点安静的，再有点温柔的感觉。,test,,,,,1,温柔的感觉,1,安静的,,,single_target,想听点安静的,false,,needs_author_review
-test_017,P10,烦死了烦死了，想听点吵吵闹闹的发泄一下。,test,-1,烦死了烦死了,,,,,3,吵吵闹闹的发泄一下,,,single_target,想听点吵吵闹闹的发泄一下,false,,needs_author_review
-test_018,P10,别放英文歌，也不想听土嗨歌。,test,,,,,,,,,,,none,,false,,needs_author_review
-test_019,P11,先来点紧张刺激的，后面慢慢让我放松下来。,test,,,3,紧张刺激的,0,放松下来,1,放松下来,,,from_to,先来点紧张刺激的，后面慢慢让我放松下来,false,,needs_author_review
-test_020,P11,想听点不悲不喜的，平平淡淡那种。,test,,,,,0,不悲不喜的,,,,,single_target,想听点不悲不喜的,false,,needs_author_review
-test_021,P11,想要点出乎意料的感觉，但别太吵。,test,,,,,,,,,3,出乎意料的感觉,single_target,想要点出乎意料的感觉,true,来源表将 trajectory 标为 single_target，但未给出可靠 arousal 目标。,needs_author_review
-test_022,P12,有点孤单，想听点能陪着我的。,test,-1,有点孤单,,,,,,,,,single_target,想听点能陪着我的,true,来源表将 trajectory 标为 single_target，但目标情绪与唤醒度未说明。,needs_author_review
-test_023,P12,想听点让人觉得天亮了、有盼头的。,test,,,,,1,有盼头的,,,,,single_target,想听点让人觉得天亮了、有盼头的,false,,needs_author_review
-test_024,P12,别太悲，也别太闹，口水歌和土嗨歌都不要。,test,,,,,0,别太悲,,,,,single_target,别太悲，也别太闹,false,,needs_author_review
-test_025,P13,早上爬不起来，想用歌把自己叫醒，最好从软软的慢慢变得有精神。,test,,,1,从软软的,1,有精神,3,变得有精神,,,from_to,从软软的慢慢变得有精神,false,,needs_author_review
-test_026,P13,想听没人唱的，但得有个能跟着哼的调调。,test,,,,,,,,,,,none,,false,,needs_author_review
-test_027,P13,最好每首都有点不一样的小惊喜，别从头到尾一个样。,test,,,,,,,,,3,小惊喜,none,,false,,needs_author_review
-test_028,P14,终于考完了，整个人轻飘飘的，想听点放松又开心的。,test,1,终于考完了，整个人轻飘飘的,,,1,开心的,,,,,single_target,想听点放松又开心的,true,来源表明确提示 expected_arousal 依据不足。,needs_author_review
-test_029,P14,心情很低落，不想听太欢快的，就想安安静静待一会儿。,test,-1,心情很低落,,,,,1,安安静静,,,single_target,就想安安静静待一会儿,false,,needs_author_review
-test_030,P14,随便放吧。,test,,,,,,,,,,,none,,false,,needs_author_review
+test_001,P05,"Just finished an argument, feeling blocked up inside, want to listen to something that can slowly help me calm down.",test,-1,Feeling stuffy and anxious,3,Feeling stuffy and anxious,0,Calm down,1,Slowly calm down,,,from_to,I want to listen to something that can help me slowly calm down,false,,needs_author_review
+test_002,P05,"Lazy Sunday afternoon, I want to listen to something warm and relaxing.",test,,,,,1,Warm,1,Relaxing,,,single_target,I want to listen to something warm and relaxing,false,,needs_author_review
+test_003,P05,"No overly loud electronic music, and don't play cheesy club tracks for me either.",test,,,,,,,,,,,none,,false,,needs_author_review
+test_004,P06,"I've been under a lot of pressure lately, I want to listen to something healing, keeping it simple is fine, don't make it too complicated.",test,-1,Extremely stressed,,,1,Healing,,,1,Keep it simple,single_target,I want to hear something healing,false,,needs_author_review
+test_005,P06,"I want to hear something that makes me go ""Huh?"", something where you can't guess what's coming next right away.",test,,,,,,,,,3,Don't make it predictable from the start,none,,false,,needs_author_review
+test_006,P06,"It's rainy, I feel all damp inside, I want to hear something melancholic.",test,,,,,-1,Melancholic,,,,,single_target,I want to hear something melancholic,false,,needs_author_review
+test_007,P07,"I am so sleepy I can barely keep my eyes open, give me something energizing, don't play slow songs.",test,,,,,,,3,energizing,,,single_target,give me something energizing,false,,needs_author_review
+test_008,P07,I want to play something upbeat while cooking.,test,,,,,1,upbeat,2,upbeat,,,single_target,want to play something upbeat,false,,needs_author_review
+test_009,P07,"I am going to read, don't play anything with vocals, it will distract me.",test,,,,,,,,,,,none,,false,,needs_author_review
+test_010,P08,"Just went through a breakup, want to listen to something sad first to cry it out, and then slowly get better.",test,-1,just broke up,,,1,slowly getting better,,,,,from_to,"listen to something sad first to cry it out, and then slowly get better",false,,needs_author_review
+test_011,P08,"I want to hear something punchy, but not too convoluted; I don't understand those complex ones.",test,,,,,,,3,punchy,1,not too convoluted,single_target,I want to hear something punchy,false,,needs_author_review
+test_012,P08,"Don't play those slow ballads, and don't play bubblegum pop either; they feel underwhelming.",test,,,,,,,,,,,none,,false,,needs_author_review
+test_013,P09,"I'm so happy today, I want to hear something even more hype!",test,1,so happy,,,1,even more hype,3,even more hype,,,single_target,I want to hear something even more hype,false,,needs_author_review
+test_014,P09,"I'm a bit anxious, I want to hear something steady without any sudden big changes to startle me.",test,-1,A bit anxious,,,0,Steady,1,Steady,1,No sudden major changes,single_target,Want to listen to something steady,false,,needs_author_review
+test_015,P09,"Give me something that sounds fresh, but not cheesy EDM.",test,,,,,,,,,2,Freshness,none,,false,,needs_author_review
+test_016,P10,"Walking home at night, want to listen to something quiet with a gentle vibe.",test,,,,,1,Gentle vibe,1,Quiet,,,single_target,Want to listen to something quiet,false,,needs_author_review
+test_017,P10,"Annoying, annoying, I want to listen to something noisy to vent.",test,-1,"Annoying, annoying",,,,,3,Noisy to vent,,,single_target,I want to listen to something noisy to vent,false,,needs_author_review
+test_018,P10,"Don't play English songs, and I don't want to hear cheesy club music either.",test,,,,,,,,,,,none,,false,,needs_author_review
+test_019,P11,"Start with something tense and thrilling, and gradually help me relax later.",test,,,3,Tense and thrilling,0,Relax,1,Relax,,,from_to,"Start with something tense and thrilling, and gradually help me relax later",false,,needs_author_review
+test_020,P11,"I want to listen to something neither sad nor happy, the plain and ordinary kind.",test,,,,,0,Neither sad nor happy,,,,,single_target,I want to hear something neither sad nor happy,false,,needs_author_review
+test_021,P11,"I want something unexpected, but not too noisy.",test,,,,,,,,,3,Unexpected feeling,single_target,I want something unexpected,true,"The source table marks trajectory as single_target, but does not provide a reliable arousal target.",needs_author_review
+test_022,P12,"Feeling a bit lonely, I want something to keep me company.",test,-1,Feeling a bit lonely,,,,,,,,,single_target,I want to hear something that can accompany me,true,"The source table marks trajectory as single_target, but the target emotion and arousal are not specified.",needs_author_review
+test_023,P12,I want to hear something that makes it feel like dawn is breaking and brings hope.,test,,,,,1,Full of hope,,,,,single_target,I want to hear something that makes people feel like dawn has broken and there is something to look forward to,false,,needs_author_review
+test_024,P12,"Don't be too sad, and don't be too rowdy either; no cheesy pop songs or tacky EDM.",test,,,,,0,Don't be too sad,,,,,single_target,"Don't be too sad, and don't be too rowdy",false,,needs_author_review
+test_025,P13,"I can't get up in the morning and want to use songs to wake myself up, preferably starting soft and slowly becoming energetic.",test,,,1,Starting soft,1,Energetic,3,Becoming energetic,,,from_to,Starting soft and slowly becoming energetic,false,,needs_author_review
+test_026,P13,"I want to hear something with no vocals, but it needs a tune I can hum along to.",test,,,,,,,,,,,none,,false,,needs_author_review
+test_027,P13,"Ideally, each song should have a little unexpected surprise, rather than sounding the same all the way through.",test,,,,,,,,,3,little surprise,none,,false,,needs_author_review
+test_028,P14,"Exams are finally over, I feel weightless all over, and I want to hear something relaxing and happy.",test,1,"Exams are finally over, I feel weightless all over",,,1,happy,,,,,single_target,want to hear something relaxing and happy,true,The source table clearly indicates insufficient basis for expected_arousal.,needs_author_review
+test_029,P14,"I am feeling very low, don't want to hear anything too upbeat, just want to sit quietly for a while.",test,-1,feeling very low,,,,,1,Peaceful and quiet,,,single_target,I just want to sit quietly for a while,false,,needs_author_review
+test_030,P14,Just play anything.,test,,,,,,,,,,,none,,false,,needs_author_review

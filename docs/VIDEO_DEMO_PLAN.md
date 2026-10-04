@@ -1,8 +1,8 @@
 # Face-and-screen demo plan and recording guide
 
-The [recorded demonstration](../demo/demo.mp4) is **6 min 48 sec**, below the instructor's eight-minute viewing cap. The file is present locally and has video and audio tracks; the author still needs to watch the complete file to confirm visible face and screen, clear speech and text, and no accidental disclosure before hand-in.
+The [recorded demonstration](../demo/demo.mp4) is **6 min 48 sec**, below the instructor's eight-minute viewing cap. The original recording is unchanged at the author's request, including some Chinese meeting-app overlay text. The file has video and audio tracks; the author should still watch the complete file to confirm visible face and screen, clear speech and text, and no accidental disclosure before hand-in.
 
-Use the [complete English speaking script](VIDEO_SPEECH_SCRIPT_EN.md) while rehearsing. Show English-facing pages and English terminal output so the instructor can follow each claim. The visible English request in each fixed demo is a display translation; the underlying prewritten Chinese intent card and selector are unchanged.
+Use the [English speaking script](VIDEO_SPEECH_SCRIPT_EN.md) while rehearsing. Show English-facing pages and English terminal output so the instructor can follow each claim. The recorded formal experiment used Chinese requests; the current fixed demo cards and displayed requests are English translations of the same offline selection examples, not a new model evaluation.
 
 | Time | What to show | What to say, briefly |
 | --- | --- | --- |

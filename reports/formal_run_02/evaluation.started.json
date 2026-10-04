@@ -1,14 +1,14 @@
 {
-  "started_at": "2026-10-03T19:38:01+08:00",
-  "model": "google/gemini-3.5-flash-lite",
   "candidate_version": "compact-dev-v2",
-  "run_label": "冻结后第二次正式运行",
-  "score_version": "formal-scoring-v3",
-  "prompt_sha256": "1177a979ad7a42aa2a3d02c04563eed950c4ef74d9f081aa44bb1044742e3eb2",
-  "schema_sha256": "c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344",
   "freeze_files": {
     "synthetic_intents_test.csv": "69dc16ba94055e83053d60f47aa157f442984ca51d2f83e245ce6a358e388f2d",
     "unsupported_conditions_test.csv": "c4b00d3867e29397d04ee37978ce7d6b911a9c742e1c99265b787f8e1b889e21",
     "user_intents_v2_review.tsv": "b91615ad96ffc1af86e0fec3547e1f9221bb850e6301cf886df7ca4321c2c576"
-  }
+  },
+  "model": "google/gemini-3.5-flash-lite",
+  "prompt_sha256": "1177a979ad7a42aa2a3d02c04563eed950c4ef74d9f081aa44bb1044742e3eb2",
+  "run_label": "Second official run after freezing",
+  "schema_sha256": "c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344",
+  "score_version": "formal-scoring-v3",
+  "started_at": "2026-10-03T19:38:01+08:00"
 }

@@ -28,7 +28,7 @@ class FormalV2PreparationTests(unittest.TestCase):
     def test_version_is_exactly_v2_and_request_diff_is_prompt_only(self):
         v1_prompt, v1_schema, _ = load_versioned_format()
         v2_prompt, v2_schema, digests = load_v2_format()
-        utterance = "人工合成的离线夹具句"
+        utterance = "Artificially synthesized offline fixture sentence"
         v1_request = build_candidate_request(utterance, evaluate.MODEL, v1_prompt, v1_schema)
         v2_request = build_v2_request(utterance, evaluate.MODEL, v2_prompt, v2_schema)
         self.assertEqual(VERSION, "compact-dev-v2")
@@ -65,7 +65,7 @@ class FormalV2PreparationTests(unittest.TestCase):
         runner.assert_called_once_with(
             output_dir=evaluate.SECOND_REPORTS,
             private_path=evaluate.SECOND_PRIVATE_FILE,
-            run_label="冻结后第二次正式运行")
+            run_label="second official run after freezing")
         self.assertNotEqual(evaluate.SECOND_REPORTS, evaluate.REPORTS)
         self.assertNotEqual(evaluate.SECOND_PRIVATE_FILE, evaluate.PRIVATE_FILE)
 
@@ -88,7 +88,7 @@ class FormalV2PreparationTests(unittest.TestCase):
             conditions = []
             for number in range(1, 31):
                 case_id = f"test_{number:03d}"
-                utterance = f"离线夹具编号 {number:02d}"
+                utterance = f"Offline fixture number {number:02d}"
                 answers.append({"case_id": case_id, "utterance": utterance,
                                 "split": "test", "review_status": "approved",
                                 "current_valence": "", "current_arousal": "",
@@ -162,7 +162,7 @@ class FormalV2PreparationTests(unittest.TestCase):
     def test_three_consecutive_api_failures_stop_and_keep_all_thirty_in_denominator(self):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)
-            answers = [{"case_id": f"test_{number:03d}", "utterance": f"离线夹具 {number}",
+            answers = [{"case_id": f"test_{number:03d}", "utterance": f"offline fixture {number}",
                         "review_status": "approved", "current_valence": "", "current_arousal": "",
                         "target_valence": "", "target_arousal": "", "target_melodic_surprise": "",
                         "trajectory": "none", "requires_melody_present": ""}

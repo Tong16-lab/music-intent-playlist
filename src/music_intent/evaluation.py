@@ -27,27 +27,27 @@ def keyword_baseline(utterance: str) -> dict[str, Any]:
     """Predeclared generic lexicon; never reads test answers or song titles."""
     text = utterance
     current_valence = None
-    if any(term in text for term in ("烦", "难过", "低落", "焦虑", "心慌", "孤单")):
+    if any(term in text for term in ("annoyed", "upset", "down", "anxious", "panicked", "lonely")):
         current_valence = -1
-    elif any(term in text for term in ("开心", "高兴", "心情好")):
+    elif any(term in text for term in ("happy", "glad", "in a good mood")):
         current_valence = 1
-    current_arousal = 1 if any(term in text for term in ("我现在困", "困得", "犯困")) else None
+    current_arousal = 1 if any(term in text for term in ("I am sleepy now", "so sleepy", "drowsy")) else None
     target_valence = None
-    if any(term in text for term in ("想听忧伤", "想听难过", "想听悲伤")):
+    if any(term in text for term in ("want to hear sad", "want to hear sorrowful", "want to hear melancholy")):
         target_valence = -1
-    elif any(term in text for term in ("欢快", "开心的歌", "阳光的歌")):
+    elif any(term in text for term in ("cheerful", "happy song", "sunny song")):
         target_valence = 1
-    elif any(term in text for term in ("不悲不喜", "平静的歌")):
+    elif any(term in text for term in ("neither sad nor happy", "calm song")):
         target_valence = 0
     target_arousal = None
-    if any(term in text for term in ("安静", "平静", "舒缓")):
+    if any(term in text for term in ("quiet", "calm", "soothing")):
         target_arousal = 1
-    elif any(term in text for term in ("提神", "带劲", "劲儿大", "激烈")):
+    elif any(term in text for term in ("refreshing", "energetic", "strong kick", "intense")):
         target_arousal = 3
     target_melodic_surprise = None
-    if any(term in text for term in ("别太复杂", "别太花哨", "别太绕")):
+    if any(term in text for term in ("don't be too complex", "not too fancy", "not too convoluted")):
         target_melodic_surprise = 1
-    elif any(term in text for term in ("惊喜", "出乎意料", "没想到")):
+    elif any(term in text for term in ("surprise", "unexpected", "did not expect")):
         target_melodic_surprise = 3
     has_target = any(value is not None for value in (target_valence, target_arousal))
     return {"current_valence": current_valence, "current_arousal": current_arousal,

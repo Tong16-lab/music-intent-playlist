@@ -19,10 +19,10 @@ VERSION = "compact-dev-v1"
 PROMPT_FILE = ROOT / "data" / "COMPACT_DEV_PROMPT_v1.txt"
 SCHEMA_FILE = ROOT / "data" / "COMPACT_DEV_SCHEMA_v1.json"
 
-OLD_RANGE = '明确的音乐情绪／活跃度边界可在原 target 字段用 {"relation":"at_least|at_most","value":整数}，不要把范围改成单个档位。'
-NEW_RANGE = 'target_valence、target_arousal 必须使用简写：精确档位写 "=N"，明确下限写 ">=N"，明确上限写 "<=N"，未提及写 null；不要把范围改成单个档位。'
-OLD_PATH = '只有明确要求歌曲按顺序变化，trajectory 才用 {"type":"from_to","arousal":{"from":起点,"to":终点}} 或同结构的 valence 路径；终点必须与对应 target 精确值相同。'
-NEW_PATH = '只有明确要求歌曲按顺序变化，trajectory 才用 "arousal:A->B" 或 "valence:A->B"；若两维都明确，可用 "valence:A->B;arousal:C->D"；终点必须与对应 target 的 "=N" 精确值相同。'
+OLD_RANGE = 'Clear music mood/arousal boundaries can be specified in the original target field using {"relation":"at_least|at_most","value":integer}, do not change the range to a single tier.'
+NEW_RANGE = 'target_valence and target_arousal must use shorthand notation: write exact tiers as "=N", clear lower bounds as ">=N", clear upper bounds as "<=N", and use null if not mentioned; do not change ranges to a single tier.'
+OLD_PATH = 'Only when the songs are explicitly requested to change in sequence, trajectory uses {"type":"from_to","arousal":{"from":start,"to":end}} or the same structure for valence paths; the end point must be identical to the corresponding target exact value.'
+NEW_PATH = 'Only when songs are explicitly requested to change in sequence, trajectory uses "arousal:A->B" or "valence:A->B"; if both dimensions are explicit, "valence:A->B;arousal:C->D" can be used; the end point must be identical to the corresponding target "=N" exact value.'
 
 
 def expected_prompt() -> str:

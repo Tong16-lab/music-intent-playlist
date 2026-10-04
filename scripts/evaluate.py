@@ -90,38 +90,38 @@ def cost(usage: dict[str, int], model: str) -> float | None:
 
 
 def _cell(correct: int, denominator: int) -> str:
-    return f"{correct}/{denominator}" if denominator else "未评估（分母 0）"
+    return f"{correct}/{denominator}" if denominator else "Unevaluated (denominator 0)"
 
 
 def render_report(result: dict[str, Any]) -> str:
     scores = result["scores"]
     n, valid = scores["total_cases"], scores["valid_responses"]
     stage = scores["stages"]
-    lines = ["# PE6201 V2 正式合成测试评估", "",
-             f"运行标识：**{result.get('run_label', '冻结后第一次正式运行')}**。",
-             ("第一次运行仅尝试 3/30 条，因连续三次 `network` 失败停止，有效结果 0；"
-              "本报告只统计第二次运行，不合并两次调用。"
-              if result.get("run_label") == "冻结后第二次正式运行" else
-              "本报告只统计本次运行。"), "",
-             "此报告只有在作者核对答案、冻结测试集并授权正式调用后才可生成。评估对象是合成表达，不是真人用户数据；不衡量尚未接入的正式歌曲曲库推荐效果。",
-             "", f"候选：`{result['candidate_version']}`；模型：`{result['model']}`；评分：`{scores['score_version']}`。",
-             f"提示词 SHA-256：`{result['prompt_sha256']}`；Schema SHA-256：`{result['schema_sha256']}`；新加坡运行时间：`{result['started_at']}`。",
-             f"冻结记录：`data/{MANIFEST.name}`。",
-             "", "## 调用与校验阶段", "",
-             f"实际调用 {scores['attempted_calls']}/{n}；API 返回可处理响应 {stage['api_success']}/{n}；完整 JSON {stage['json_complete']}/{n}；必填结构完整 {stage['required_structure_complete']}/{n}；简写转换完成 {stage['conversion_complete']}/{n}；V2 本地校验通过 {stage['local_valid']}/{n}。",
-             f"无有效意图卡 {scores['failed_calls']}/{n}；提前停止：{'是' if result['stopped_early'] else '否'}。阶段通过只说明数据可处理，不代表意图判断正确。",
-             "", "## 六个核心字段：主指标", "",
-             "端到端分母包含无效调用；仅有效输出分母只包含通过转换及本地校验的意图卡。关键词基线对同一批原话直接输出六字段，没有 API、JSON 或结构通过率。",
-             "", "| 字段 | AI 端到端 | AI 仅有效 | 关键词基线 |",
+    lines = ["# PE6201 V2 Official Synthesis Test Evaluation", "",
+             f"Run ID: **{result.get('run_label', 'First official run after freeze')}**.",
+             ("First run only tried 3/30 items, stopped due to three consecutive `network` failures, valid results 0;"
+              "This report only counts the second run and does not merge the two invocations."
+              if result.get("run_label") == "second official run after freezing" else
+              "This report only counts this run."), "",
+             "This report can only be generated after the author verifies the answers, freezes the test set, and authorizes the official invocation. The evaluated examples are not real user data; this test does not measure recommendation quality for the 35-track catalog.",
+             "", f"Candidate: `{result['candidate_version']}`; Model: `{result['model']}`; Score: `{scores['score_version']}`.",
+             f"Prompt SHA-256: `{result['prompt_sha256']}`; Schema SHA-256: `{result['schema_sha256']}`; Singapore runtime: `{result['started_at']}`.",
+             f"Frozen record: `data/{MANIFEST.name}`.",
+             "", "## Call and Validation Phase", "",
+             f"Actual calls {scores['attempted_calls']}/{n}; API returned processable responses {stage['api_success']}/{n}; Complete JSON {stage['json_complete']}/{n}; Required structure complete {stage['required_structure_complete']}/{n}; Shorthand conversion complete {stage['conversion_complete']}/{n}; V2 local validation passed {stage['local_valid']}/{n}.",
+             f"No valid intent card: {scores['failed_calls']}/{n}; stopped early: {'Yes' if result['stopped_early'] else 'No'}. Passing a stage means only that the data can be processed, not that the intent judgment is correct.",
+             "", "## Six Core Fields: Primary Metrics", "",
+             "End-to-end denominator includes invalid calls; valid-only output denominator contains only intent cards that passed conversion and local validation. The keyword baseline directly outputs the six fields for the same batch of raw utterances, with no API, JSON, or structural pass rate.",
+             "", "| Field | AI End-to-End | AI Valid-Only | Keyword Baseline |",
              "| --- | ---: | ---: | ---: |"]
     for field in CORE_FIELDS:
         item = scores["fields"][field]
         lines.append(f"| `{field}` | {_cell(item['end_to_end']['correct'], n)} | "
                      f"{_cell(item['valid_only']['correct'], valid)} | "
                      f"{_cell(item['baseline']['correct'], n)} |")
-    lines.extend(["", "## 按批准答案是否明确表达划分", "",
-                  "五个可空字段的非空批准答案属于明确表达子集，范围对象也算非空。`trajectory` 只有批准答案为 `from_to` 才算明确要求**歌曲顺序**；`single_target` 与 `none` 均属于未明确要求顺序。所有正确数都要求预测值与批准答案完全相等。",
-                  "", "| 字段 | 明确子集句数 | AI 端到端 | AI 仅有效 | 关键词基线 |",
+    lines.extend(["", "## Classified by Whether Approval Answer Clearly Expresses", "",
+                  "Approved nonnull answers for the five nullable fields form the explicit subset, including range objects. For `trajectory`, only `from_to` explicitly requests a **song order**; `single_target` and `none` do not. Correctness requires an exact match to the approved answer.",
+                  "", "| Field | Explicit Subset Utterances | AI End-to-End | AI Valid Only | Keyword Baseline |",
                   "| --- | ---: | ---: | ---: | ---: |"])
     for field in CORE_FIELDS:
         item = scores["fields"][field]["explicit"]
@@ -129,8 +129,8 @@ def render_report(result: dict[str, Any]) -> str:
                      f"{_cell(item['ai_end_to_end_correct'], item['gold_cases'])} | "
                      f"{_cell(item['ai_valid_correct'], item['valid_cases'])} | "
                      f"{_cell(item['baseline_correct'], item['gold_cases'])} |")
-    lines.extend(["", "未说明子集：五个可空字段的批准答案为 `null`；轨迹则指**未明确要求歌曲顺序**（包括 `single_target`、`none`）。AI 误填只在有效卡片内计算；失败调用另列未完成。轨迹的误填专指擅自输出 `from_to`，把 `single_target` 与 `none` 混淆另列。",
-                  "", "| 字段 | 未说明子集句数 | AI 端到端精确 | AI 仅有效精确 | AI 有效误填 | 无效未完成 | 关键词基线精确 | 基线误填 |",
+    lines.extend(["", "Unspecified subset: the five nullable fields have an approved value of `null`; trajectory means **no explicit song order** (including `single_target` and `none`). False fills are calculated only among valid AI cards; failed calls are separately counted as incomplete. For trajectory, a false fill means an unwarranted `from_to`; confusion between `single_target` and `none` is reported separately.",
+                  "", "| Field | Unspecified subset sentence count | AI end-to-end precision | AI valid-only precision | AI valid misfilled | Invalid unfinished | Keyword baseline precision | Baseline misfilled |",
                   "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"])
     for field in CORE_FIELDS:
         item = scores["fields"][field]["unspoken"]
@@ -142,42 +142,42 @@ def render_report(result: dict[str, Any]) -> str:
                      f"{_cell(item['baseline_exact'], item['gold_cases'])} | "
                      f"{_cell(item['baseline_false_fills'], item['gold_cases'])} |")
     no_order = scores["fields"]["trajectory"]["unspoken"]
-    lines.append(f"无顺序分类错误：AI {no_order['ai_no_order_classification_errors']}/{no_order['valid_cases']} 条有效卡片；关键词基线 {no_order['baseline_no_order_classification_errors']}/{no_order['gold_cases']}。")
+    lines.append(f"Unordered classification errors: AI {no_order['ai_no_order_classification_errors']}/{no_order['valid_cases']} valid cards; keyword baseline {no_order['baseline_no_order_classification_errors']}/{no_order['gold_cases']}.")
     card = scores["core_cards"]
     melody = scores["requires_melody_present"]
-    lines.extend(["", "## 严格补充指标与不支持条件", "",
-                  f"六字段整卡全对：AI 端到端 {_cell(card['end_to_end_correct'], n)}；仅有效 {_cell(card['valid_correct'], valid)}；关键词基线 {_cell(card['baseline_correct'], n)}。整卡是严格补充指标，不单独代表理解能力。",
-                  f"`requires_melody_present`：AI 端到端 {_cell(melody['end_to_end_correct'], n)}；仅有效 {_cell(melody['valid_correct'], valid)}。",
-                  "", "| 不支持条件指标 | AI 端到端 | AI 仅有效 |",
+    lines.extend(["", "## Strict Supplementary Indicators and Unsupported Conditions", "",
+                  f"Six-field full card all correct: AI end-to-end {_cell(card['end_to_end_correct'], n)}; valid only {_cell(card['valid_correct'], valid)}; keyword baseline {_cell(card['baseline_correct'], n)}. Full card is a strict supplementary metric and does not independently represent comprehension ability.",
+                  f"`requires_melody_present`: AI end-to-end {_cell(melody['end_to_end_correct'], n)}; valid only {_cell(melody['valid_correct'], valid)}.",
+                  "", "| Unsupported conditional metric | AI end-to-end | AI effective only |",
                   "| --- | ---: | ---: |"])
     condition = scores["unsupported"]
-    lines.append(f"| 是否正确判断存在无法保证条件 | {_cell(condition['status_end_to_end_correct'], n)} | "
+    lines.append(f"| Correctly identified existence of an unsupported condition | {_cell(condition['status_end_to_end_correct'], n)} | "
                  f"{_cell(condition['status_valid_correct'], valid)} |")
-    lines.append(f"| 截取原词集合完全一致 | {_cell(condition['exact_set_end_to_end_correct'], n)} | "
+    lines.append(f"| Exact set of extracted source phrases | {_cell(condition['exact_set_end_to_end_correct'], n)} | "
                  f"{_cell(condition['exact_set_valid_correct'], valid)} |")
     if valid:
-        lines.append(f"仅有效卡片的原词：精确命中 {condition['valid_true_positive_phrases']}、误报 {condition['valid_false_positive_phrases']}、漏报 {condition['valid_missed_phrases']}。")
+        lines.append(f"Original terms of valid cards only: exact hits {condition['valid_true_positive_phrases']}, false positives {condition['valid_false_positive_phrases']}, misses {condition['valid_missed_phrases']}.")
     else:
-        lines.append("没有有效卡片，原词命中／误报／漏报未评估。")
-    lines.append(f"端到端预期原词 {condition['expected_phrase_total']} 个、未完成 {condition['unfulfilled_phrases_end_to_end']} 个；其中 {condition['unfulfilled_phrases_due_to_invalid']} 个来自无效调用，不算模型原词漏报。")
+        lines.append("No valid cards; original term hit/false positive/false negative not evaluated.")
+    lines.append(f"End-to-end expected original terms: {condition['expected_phrase_total']}, unfulfilled: {condition['unfulfilled_phrases_end_to_end']}; of which {condition['unfulfilled_phrases_due_to_invalid']} are from invalid calls and are not counted as model original term omissions.")
     token = result["tokens"]
-    lines.extend(["", "## 用量、失败和限制", "",
-                  f"输入／完成／总 token：{token['prompt_tokens']}／{token['completion_tokens']}／{token['total_tokens']}；可取得推理 token：{token['reasoning_tokens']}（缺明细 {result['reasoning_unavailable_calls']} 次）。",
-                  f"按标准费率估算 USD {result['estimated_cost_usd']:.6f}；缺少可估数据 {result['cost_unavailable_calls']} 次。实际账单以服务商为准。",
-                  f"实际调用中的失败分组：{json.dumps(result['failure_groups'], ensure_ascii=False, sort_keys=True)}；安全错误类别：{json.dumps(result['error_categories'], ensure_ascii=False, sort_keys=True)}。", ""])
+    lines.extend(["", "## Usage, Failures, and Limits", "",
+                  f"Input/Completion/Total tokens: {token['prompt_tokens']}/{token['completion_tokens']}/{token['total_tokens']}; Reasoning tokens available: {token['reasoning_tokens']} (missing details {result['reasoning_unavailable_calls']} times).",
+                  f"Estimated at standard rate USD {result['estimated_cost_usd']:.6f}; missing data for estimation {result['cost_unavailable_calls']} calls. Actual bill subject to service provider.",
+                  f"Failure groups in actual invocation: {json.dumps(result['failure_groups'], ensure_ascii=False, sort_keys=True)}; Safety error categories: {json.dumps(result['error_categories'], ensure_ascii=False, sort_keys=True)}.", ""])
     for item in scores["case_summaries"]:
         if not item["valid"]:
-            lines.append(f"- `{item['case_id']}`：无有效卡片 / `{item['error_category']}`")
+            lines.append(f"- `{item['case_id']}`: No valid card / `{item['error_category']}`")
         elif item["wrong_core_fields"] or item["unsupported_exact_set_wrong"]:
-            wrong = ", ".join(item["wrong_core_fields"]) or "无"
-            lines.append(f"- `{item['case_id']}`：有效；错误核心字段：{wrong}；不支持条件状态错误：{item['unsupported_status_wrong']}；原词集合错误：{item['unsupported_exact_set_wrong']}。")
-    lines.extend(["", "关键词基线无需 JSON；结构通过率不是理解准确率。完整模型预测仅存于本机 Git 忽略目录，公开报告不含密钥、请求头或完整回复。冻结后不得暗改批准答案沿用本成绩。", ""])
+            wrong = ", ".join(item["wrong_core_fields"]) or "None"
+            lines.append(f"- `{item['case_id']}`: Valid; Wrong core fields: {wrong}; Unsupported condition status error: {item['unsupported_status_wrong']}; Original term set error: {item['unsupported_exact_set_wrong']}.")
+    lines.extend(["", "Keyword baseline does not require JSON; structural pass rate is not comprehension accuracy. Full model predictions exist only in the local Git-ignored directory; public reports contain no API keys, request headers, or full responses. After freezing, approved answer lineage must not be stealthily altered to maintain these scores.", ""])
     return "\n".join(lines)
 
 
 def run(*, output_dir: Path | None = None,
         private_path: Path | None = None,
-        run_label: str = "冻结后第一次正式运行") -> dict[str, Any]:
+        run_label: str = "First official run after freezing") -> dict[str, Any]:
     run_reports = output_dir or REPORTS
     run_started = (run_reports / STARTED.name) if output_dir else STARTED
     run_trace = (run_reports / TRACE.name) if output_dir else TRACE
@@ -185,7 +185,7 @@ def run(*, output_dir: Path | None = None,
     run_markdown = (run_reports / MARKDOWN.name) if output_dir else MARKDOWN
     run_private_file = private_path or PRIVATE_FILE
     run_private_dir = run_private_file.parent
-    previous_run = verify_previous_run() if run_label == "冻结后第二次正式运行" else None
+    previous_run = verify_previous_run() if run_label == "second official run after freezing" else None
     verify_manifest()
     validate_all(approved=True)
     key, model = get_settings()
@@ -307,7 +307,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.run_id == "second":
             run(output_dir=SECOND_REPORTS, private_path=SECOND_PRIVATE_FILE,
-                run_label="冻结后第二次正式运行")
+                run_label="second official run after freezing")
         else:
             run()
     except Exception:

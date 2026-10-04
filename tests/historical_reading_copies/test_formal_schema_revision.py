@@ -39,11 +39,11 @@ VALID = {
     "target_melodic_surprise": None, "trajectory": "single_target",
     "requires_melody_present": True,
     "evidence": {
-        "current_valence": "有点烦", "current_arousal": None,
-        "target_valence": None, "target_arousal": "安静",
+        "current_valence": "somewhat annoyed", "current_arousal": None,
+        "target_valence": None, "target_arousal": "quiet",
         "target_melodic_surprise": None,
-        "trajectory": "想听一首安静、有清楚旋律的音乐",
-        "requires_melody_present": "有清楚旋律",
+        "trajectory": "I want to listen to some quiet music with a clear melody",
+        "requires_melody_present": "clear melody present",
     },
     "constraints": [],
 }
@@ -87,12 +87,12 @@ class FormalSchemaRevisionTests(unittest.TestCase):
             old_node["enum"] = [*sorted(DOMAINS[name]), None]
         raw = json.dumps(rebuilt_old, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
         self.assertEqual(hashlib.sha256(raw.encode()).hexdigest(), OLD_SCHEMA_SHA256)
-        new_tail = ("from_to 的 trajectory 必须有原句逐字证据；none 的 trajectory 证据必须为 null。"
-                    "single_target 是由明确音乐目标推得的无顺序目标，其 trajectory 证据可为 null；"
-                    "若填写仍须是原句逐字片段。其他非空意图字段及每项约束都必须有原句逐字证据。"
-                    "不得输出额外字段、解释或歌曲。")
-        old_tail = ("所有非空意图字段及每项约束的 evidence 必须是原句中逐字连续出现的片段。"
-                    "不得输出额外字段、解释或歌曲。")
+        new_tail = ("The trajectory for from_to must have verbatim evidence from the original sentence; the trajectory evidence for none must be null."
+                    "single_target is an unordered target derived from a clear musical goal, whose trajectory evidence can be null;"
+                    "If filled in, it must still be a verbatim fragment of the original sentence. Other non-empty intent fields and each constraint must have verbatim evidence from the original sentence."
+                    "Do not output extra fields, explanations, or songs.")
+        old_tail = ("All nonempty intent fields and each constraint's evidence must be a verbatim contiguous span of the original sentence."
+                    "Do not output extra fields, explanations, or songs.")
         self.assertTrue(SYSTEM_PROMPT.endswith(new_tail))
         old_prompt = SYSTEM_PROMPT[:-len(new_tail)] + old_tail
         self.assertEqual(hashlib.sha256(old_prompt.encode()).hexdigest(), OLD_PROMPT_SHA256)
@@ -148,7 +148,7 @@ class FormalSchemaRevisionTests(unittest.TestCase):
             out_of_range["target_arousal"] = 99
             cases.append((out_of_range, "numeric_out_of_range"))
             bad_evidence = copy.deepcopy(VALID)
-            bad_evidence["evidence"]["target_arousal"] = "原句没有的片段"
+            bad_evidence["evidence"]["target_arousal"] = "Fragment not in original sentence"
             cases.append((bad_evidence, "evidence_not_in_utterance"))
             for intent, category in cases:
                 output = io.StringIO()

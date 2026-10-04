@@ -1,13 +1,13 @@
 case_id,synthetic_role_id,utterance,split,current_valence,current_valence_evidence,current_arousal,current_arousal_evidence,target_valence,target_valence_evidence,target_arousal,target_arousal_evidence,target_melodic_surprise,target_melodic_surprise_evidence,trajectory,trajectory_evidence,ambiguous,ambiguity_note,review_status
-dev_001,P01,加班到现在脑子嗡嗡的，想听点安静的让我缓缓，别太花里胡哨的。,dev,-1,脑子嗡嗡的,3,脑子嗡嗡的,0,缓缓,1,安静的让我缓缓,1,别太花里胡哨的,from_to,想听点安静的让我缓缓,false,,needs_author_review
-dev_002,P01,早上挤地铁已经够烦了，来点让人精神一点、心情亮堂点的，但别太吵。别给我放口水歌。,dev,-1,够烦了,,,1,心情亮堂点,2,精神一点,,,single_target,来点让人精神一点、心情亮堂点的,false,,needs_author_review
-dev_003,P01,睡前想放空一下，不想听有人唱的。,dev,,,,,0,放空一下,1,放空一下,,,single_target,想放空一下,false,,needs_author_review
-dev_004,P02,今天心里有点堵，想听点能陪我一起丧一会儿的。,dev,-1,心里有点堵,,,-1,丧一会儿,,,,,single_target,想听点能陪我一起丧一会儿的,false,,needs_author_review
-dev_005,P02,我在敲代码，想要有点带劲的，别太苦情，听着更没心思干活。,dev,,,,,,,2,有点带劲的,,,single_target,想要有点带劲的,false,,needs_author_review
-dev_006,P02,老听到那种一开头就知道下一句是啥的，腻了，想来点没想到的。,dev,,,,,,,,,3,没想到的,none,,false,,needs_author_review
-dev_007,P03,明天要考试，现在心慌得不行，想让自己慢慢踏实下来。,dev,-1,心慌得不行,3,心慌得不行,0,踏实下来,1,慢慢踏实下来,,,from_to,想让自己慢慢踏实下来,false,,needs_author_review
-dev_008,P03,今天心情特别好，想听点欢快的，但别放土嗨歌。,dev,1,心情特别好,,,1,欢快的,,,,,single_target,想听点欢快的,false,,needs_author_review
-dev_009,P03,别放摇滚也别放说唱，听着头疼。,dev,,,,,,,,,,,none,,false,,needs_author_review
-dev_010,P04,我要去跑步，想听特别带劲的，最好还有点出乎意料的地方，别是那种口水歌。,dev,,,,,,,3,特别带劲的,3,出乎意料的地方,single_target,想听特别带劲的,false,,needs_author_review
-dev_011,P04,有点烦，想先来点猛的发泄一下，然后慢慢软下来。,dev,-1,有点烦,3,先来点猛的,0,慢慢软下来,1,慢慢软下来,,,from_to,先来点猛的发泄一下，然后慢慢软下来,false,,needs_author_review
-dev_012,P04,随便来点不悲不喜的背景音乐就行。,dev,,,,,0,不悲不喜的,,,,,single_target,随便来点不悲不喜的背景音乐,false,,needs_author_review
+dev_001,P01,"Working overtime until my head is buzzing, I want to listen to something quiet to help me unwind, nothing too fancy.",dev,-1,Head is buzzing,3,Head is buzzing,0,Unwind,1,Quiet to help me unwind,1,Nothing too fancy,from_to,Want to listen to something quiet to help me unwind,false,,needs_author_review
+dev_002,P01,"Squeezing into the subway in the morning is annoying enough, give me something that brightens my mood and perks me up a bit, but not too loud. Don't play mainstream pop hits for me.",dev,-1,annoying enough,,,1,brighten my mood a bit,2,perk me up a bit,,,single_target,give me something that brightens my mood and perks me up a bit,false,,needs_author_review
+dev_003,P01,"Want to zone out before bed, don't want to hear vocals.",dev,,,,,0,zone out,1,zone out,,,single_target,want to zone out,false,,needs_author_review
+dev_004,P02,"Feeling a bit blocked up inside today, want to listen to something that can accompany me in feeling blue for a while.",dev,-1,feeling a bit blocked up inside,,,-1,Feel a bit down,,,,,single_target,I want to listen to something that can accompany me while I feel a bit down,false,,needs_author_review
+dev_005,P02,"I'm coding and want something energetic, not too sentimental, otherwise I won't feel like working.",dev,,,,,,,2,A bit energetic,,,single_target,Want something energetic,false,,needs_author_review
+dev_006,P02,I keep hearing songs where you know what the next line will be right from the start. I'm sick of it and want something unexpected.,dev,,,,,,,,,3,Unexpected,none,,false,,needs_author_review
+dev_007,P03,I have an exam tomorrow and I'm extremely anxious right now. I want to calm down and feel grounded.,dev,-1,Extremely anxious,3,Extremely anxious,0,Calm down,1,gradually settle down,,,from_to,I want to gradually settle down,false,,needs_author_review
+dev_008,P03,"I'm in a really great mood today and want to hear something upbeat, but please don't play generic club tracks.",dev,1,really great mood,,,1,upbeat,,,,,single_target,want to hear something upbeat,false,,needs_author_review
+dev_009,P03,"No rock and no rap either, it gives me a headache.",dev,,,,,,,,,,,none,,false,,needs_author_review
+dev_010,P04,"I'm going for a run and want something super high-energy, preferably with a few unexpected twists, and not those generic bubblegum pop songs.",dev,,,,,,,3,super high-energy,3,unexpected twists,single_target,I want to hear something really energetic,false,,needs_author_review
+dev_011,P04,"Feeling a bit annoyed, I want something intense first to vent, and then slowly mellow out.",dev,-1,Feeling a bit annoyed,3,Start with something intense first,0,Slowly mellow out,1,Slowly mellow out,,,from_to,"Start with something intense to vent first, and then slowly mellow out",false,,needs_author_review
+dev_012,P04,Just give me some background music that is neither sad nor happy.,dev,,,,,0,Neither sad nor happy,,,,,single_target,Just give me some background music that is neither sad nor happy,false,,needs_author_review

@@ -15,7 +15,7 @@ from music_intent.openrouter_client import (  # noqa: E402
 from music_intent.intent import response_schema  # noqa: E402
 
 
-UTTERANCE = "我现在有些焦躁，想听一首平静一点的歌。"
+UTTERANCE = "I am a bit anxious right now, and want to listen to a calmer song."
 MODEL = "google/gemini-3.5-flash-lite"
 VALID = {
     "current_valence": -1,
@@ -26,12 +26,12 @@ VALID = {
     "trajectory": {"type": "from_to", "arousal": {"from": 3, "to": 1}},
     "requires_melody_present": None,
     "evidence": {
-        "current_valence": "焦躁",
+        "current_valence": "anxious",
         "current_arousal": None,
         "target_valence": None,
-        "target_arousal": "平静一点",
+        "target_arousal": "calmer",
         "target_melodic_surprise": None,
-        "trajectory": "我现在有些焦躁，想听一首平静一点的歌",
+        "trajectory": "I am a bit anxious right now, and want to listen to a calmer song",
         "requires_melody_present": None,
     },
     "constraints": [],
@@ -133,10 +133,10 @@ class ResponseTests(unittest.TestCase):
 
     def test_evidence_and_constraint_errors(self):
         intent = copy.deepcopy(VALID)
-        intent["evidence"]["target_arousal"] = "原句没有的文字"
+        intent["evidence"]["target_arousal"] = "Text not in the original sentence"
         self.assert_failure(envelope(intent), "evidence_not_in_utterance", "target_arousal")
         intent = copy.deepcopy(VALID)
-        intent["constraints"] = [{"evidence": "摇滚", "classification": "unsupported_constraint"}]
+        intent["constraints"] = [{"evidence": "rock", "classification": "unsupported_constraint"}]
         self.assert_failure(envelope(intent), "invalid_constraint_format", "constraints[0]")
         intent["constraints"][0]["polarity"] = "include"
         self.assert_failure(envelope(intent), "evidence_not_in_utterance", "constraints[0].evidence")

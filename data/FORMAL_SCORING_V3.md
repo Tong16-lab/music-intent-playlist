@@ -1,34 +1,34 @@
-# 正式评估评分口径 v3（预先固定，尚无正式成绩）
+# Official Evaluation Scoring Criteria v3 (Fixed in advance, no official scores yet)
 
-本文件固定 `formal-scoring-v3` 的计分方式，适用于同一批已批准合成句的 AI 意图卡与现有关键词基线。正式测试集尚未冻结、尚未调用模型；不能根据未来结果修改本口径并沿用原成绩。旧开发报告保留其当时口径和原貌。
+This document fixes the scoring method for `formal-scoring-v3`, which applies to the same batch of approved example-sentence AI intent cards and existing keyword baselines. The official test set has not been frozen or called by the model yet; this criterion cannot be modified based on future results while retaining the original scores. Old development reports retain their criteria and original appearance at that time.
 
-## 分母与阶段
+## Denominator and Stages
 
-- 全集分母 `N` 是当前评估集的句数；正式评估预期 `N=30`。每句 AI 至多请求一次，失败或无有效意图卡仍占端到端分母，其字段、整卡及约束结果均记为**未完成**，不自动判成正确，也不记为模型对某词的误填或漏报。
-- 有效输出分母 `V` 是通过简写转换和现有 V2 取值、轨迹、约束、逐字证据校验的意图卡数。仅有效输出准确率为 `正确数/V`；若 `V=0`，写“未评估”，不能写 `0/0` 代表准确率。
-- 分别数 API 返回可处理响应、完整 JSON、Schema 必填结构完整、简写转换完成、本地校验通过。前一阶段成功不代表后一阶段成功，更不代表字段语义正确。
-- 关键词基线直接从**同一批原话**运行既有 `keyword_baseline`，用同一份已批准答案比较。它没有 API、JSON、Schema 或本地意图卡阶段，不给它虚构结构通过率。
+- The total dataset denominator `N` is the number of sentences in the current evaluation set; the official evaluation expects `N=30`. Each sentence requests the AI at most once; failures or missing valid intent cards still count towards the end-to-end denominator, and their fields, entire cards, and constraint results are recorded as **incomplete**, not automatically judged as correct, nor recorded as model misfilling or omission of a certain term.
+- The valid output denominator `V` is the number of intent cards that pass shorthand conversion, existing V2 value, trajectory, constraint, and verbatim evidence verification. The valid-output accuracy alone is `number of correct/V`; if `V=0`, write "Not evaluated", and do not write `0/0` to represent accuracy.
+- Count separately whether the API returns a processable response, complete JSON, complete Schema required structure, completed shorthand conversion, and passed local validation. Success in a previous stage does not imply success in a subsequent stage, let alone correct field semantics.
+- The keyword baseline runs the existing `keyword_baseline` directly from **the same batch of original prompts**, compared against the same set of approved answers. It has no API, JSON, Schema, or local intent card stages, and is not assigned a fictitious structural pass rate.
 
-## 六个核心字段
+## Six Core Fields
 
-每个字段同时报告 `端到端正确数/N` 与 `仅有效正确数/V`；正确要求预测值与批准答案**完全相等**。`{"relation":"at_least","value":0}` 与精确 `0` 不相等；`at_most` 与精确上限也不相等；`from_to` 对象与 `single_target` 不相等。六字段整卡仅当六项全部完全相等且意图卡有效才正确，作为严格补充指标，不单独代表全部理解能力。
+- Each field reports both `end-to-end correct count/N` and `valid-only correct count/V`; correctness requires the predicted value to be **completely identical** to the approved answer. `{"relation":"at_least","value":0}` is not equal to exact `0`; `at_most` is not equal to the exact upper limit either; a `from_to` object is not equal to `single_target`. An entire six-field card is correct only when all six items are completely identical and the intent card is valid, serving as a strict supplementary metric and not independently representing the full comprehension capability.
 
-对 `current_valence`、`current_arousal`、`target_valence`、`target_arousal`、`target_melodic_surprise`：
+For `current_valence`, `current_arousal`, `target_valence`, `target_arousal`, and `target_melodic_surprise`:
 
-- **明确表达子集**：批准答案非 `null`（范围对象也算非空）。报告子集句数 `E`、AI 端到端正确数 `C_E/E`、有效卡片中的正确数 `C_EV/E_V`，以及关键词基线 `C_B/E`。
-- **未说明子集**：批准答案为 `null`。报告子集句数 `U`、AI 端到端正确数 `C_U/U`、有效卡片中的正确数 `C_UV/U_V`、关键词基线 `C_BU/U`。仅对**有效卡片**计误填 `F/U_V`：批准答案为 `null`、预测却非 `null`；无效输出单列 `U-U_V` 个未完成，不算误填。
+- **Explicitly expressed subset**: Approved answers are not `null` (range objects are also considered non-empty). Report the number of subset sentences `E`, the AI end-to-end correct count `C_E/E`, the correct count within valid cards `C_EV/E_V`, and the keyword baseline `C_B/E`.
+- **Unspecified subset**: Approved answers are `null`. Report the number of subset sentences `U`, the AI end-to-end correct count `C_U/U`, the correct count within valid cards `C_UV/U_V`, and the keyword baseline `C_BU/U`. False positives `F/U_V` are counted **only for valid cards**: approved answer is `null` but the prediction is not `null`; invalid outputs are listed separately as `U-U_V` incomplete items and are not counted as false positives.
 
-`trajectory` 的 V2 定义单独处理：
+The V2 definition of `trajectory` is handled separately:
 
-- **明确要求歌曲顺序**仅指批准答案为 `{"type":"from_to",...}`；必须是歌曲编排的明确起终点。报告上述明确子集的完全匹配数。`single_target` 表示有音乐情绪／活跃度目标、但**未要求歌曲顺序**；`none` 表示没有可编码的音乐顺序或目标。两者都不算明确顺序。
-- **未明确要求歌曲顺序**子集包含批准答案 `single_target` 和 `none`。报告对这两个各自取值的完全匹配数；有效卡片中误填顺序 `F/U_V` 仅指预测为 `from_to`。把 `single_target` 误判为 `none`（或相反）仍算该字段错误，但单列为“无顺序分类错误”，不混成 `from_to` 误报。无效输出仍只算未完成。
+- **Explicitly requested song order** strictly means the approved answer is `{"type":"from_to",...}`; it must be explicit start and end points for song sequencing. Report the exact match count for the aforementioned explicit subset. `single_target` indicates there is a music mood/energy target but **no song order is requested**; `none` indicates there is no encodable music sequence or target. Neither counts as an explicit order.
+- **Unspecified song order** subset contains the approved answers `single_target` and `none`. Report the exact match counts for each of these two respective values; false positive orders in valid cards `F/U_V` refer strictly to predictions of `from_to`. Misclassifying `single_target` as `none` (or vice versa) is still considered an error for this field, but is listed separately as a "no-order classification error" rather than being mixed into `from_to` false alarms. Invalid outputs are still only counted as incomplete.
 
-关键词基线也在相同明确／未说明子集统计字段值是否完全相等和误填情况；基线所有 `N` 句均有输出，不设“仅有效卡片”分母。
+The keyword baseline also evaluates field value exact equality and false positive conditions in the same explicit/unspecified subsets; all `N` sentences in the baseline have outputs without a "valid cards only" denominator.
 
-## 约束与辅助字段
+## Constraints and Auxiliary Fields
 
-- `requires_melody_present` 单独报告端到端和仅有效准确数，不纳入六字段整卡。
-- `constraints` 分开评分：① 是否正确判断存在无法保证的条件，即 `constraints` 是否非空与批准答案的 `expected_cannot_guarantee_constraint` 是否一致；② 提取的原词**集合**是否与批准答案完全一致。两者都报告端到端 `正确数/N` 与仅有效 `正确数/V`，不并入六字段整卡。
-- 原词逐项命中、误报、漏报只在有效卡片内计算；无效调用对应的预期原词列为“端到端未完成”，不冒充模型漏报。V2 没有逐项核定 `polarity`，原词集合评分不把 `polarity` 作为批准标准答案。
+- `requires_melody_present` is reported separately for end-to-end and valid-only accuracy counts, and is not included in the six-field full-card evaluation.
+- `constraints` are scored separately: ① whether the presence of unguaranteed conditions is correctly judged, i.e., whether `constraints` being non-empty matches the approved answer's `expected_cannot_guarantee_constraint`; ② whether the extracted original-word **set** matches the approved answer exactly. Both report end-to-end `correct_count/N` and valid-only `correct_count/V`, and are not merged into the six-field full-card evaluation.
+- Original-word item-by-item hits, false positives, and false negatives are calculated only within valid cards; expected original words corresponding to invalid calls are listed as "end-to-end incomplete" rather than masquerading as model false negatives. V2 does not verify `polarity` item-by-item, and the original-word set scoring does not use `polarity` as an approved standard answer.
 
-报告保留案例 ID、预定义安全错误类别、已知字段名、计数、token 与估算费用；不得公开完整模型回复、密钥、请求头或模型生成的未知字段和值。
+Reports retain case IDs, predefined safety error categories, known field names, counts, tokens, and estimated costs; full model replies, API keys, request headers, or model-generated unknown fields and values must not be made public.

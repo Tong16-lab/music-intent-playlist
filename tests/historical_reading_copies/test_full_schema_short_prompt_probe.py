@@ -26,11 +26,11 @@ VALID = {
     "target_melodic_surprise": None, "trajectory": "single_target",
     "requires_melody_present": True,
     "evidence": {
-        "current_valence": "有点烦", "current_arousal": None,
-        "target_valence": None, "target_arousal": "安静",
+        "current_valence": "somewhat annoyed", "current_arousal": None,
+        "target_valence": None, "target_arousal": "quiet",
         "target_melodic_surprise": None,
-        "trajectory": "想听一首安静、有清楚旋律的音乐",
-        "requires_melody_present": "有清楚旋律",
+        "trajectory": "I want to listen to some quiet music with a clear melody",
+        "requires_melody_present": "clear melody present",
     },
     "constraints": [],
 }

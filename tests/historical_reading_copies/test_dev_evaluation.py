@@ -71,7 +71,7 @@ class DevelopmentEvaluationTests(unittest.TestCase):
             self.assertEqual(result["failure_groups"], {"structure": 3})
             self.assertEqual(result["scores"]["end_to_end"]["denominator"], 3)
             self.assertEqual(result["scores"]["valid_only"]["denominator"], 0)
-            self.assertIn("正确／12", (report_dir / "dev_evaluation.md").read_text(encoding="utf-8"))
+            self.assertIn("Correct／12", (report_dir / "dev_evaluation.md").read_text(encoding="utf-8"))
             self.assertNotIn("sk-fixture-never-print", output.getvalue())
             self.assertNotIn("utterance", (report_dir / "dev_evaluation.trace.jsonl").read_text())
             self.assertFalse((ROOT / "data" / "connection_preflight.json").exists())

@@ -1,36 +1,36 @@
-# 九字段简写输出原型（仅离线）
+# Nine-field shorthand output prototype (offline only)
 
-此原型只测试“模型输出格式 → 现有 V2 意图卡”的确定性转换。代码在 `prototypes/compact_intent_format.py`，正式 OpenRouter 请求、运行时提示词、正式 Schema、校验规则、V2 答案和关键词基线均未改。不能把格式覆盖测试当成模型预测成绩。
+This prototype only tests the deterministic conversion of "model output format → existing V2 intent card". The code is in `prototypes/compact_intent_format.py` , while the official OpenRouter request, runtime prompts, official schema, validation rules, V2 answers, and keyword baselines remain unchanged. Format coverage tests cannot be treated as model prediction scores.
 
-## 格式和映射
+## Format and Mapping
 
-九个顶层字段的名称、必填要求与正式 Schema 一致。`null` 必须明确写出，缺字段直接拒绝；不从其他字段或原句补推。改动只涉及 `target_valence`、`target_arousal` 和 `trajectory` 三个字段的模型输出形态。
+The names and mandatory requirements of the nine top-level fields are consistent with the official schema. `null` must be explicitly written out, and missing fields lead to immediate rejection; do not infer from other fields or the original sentence. Changes only involve the model output forms of three fields: `target_valence` , `target_arousal` , and `trajectory` .
 
-| 字段 | 候选模型输出 | 转成现有 V2 值／处理 |
+| Field | Candidate Model Output | Converted to Existing V2 Value / Processing |
 | --- | --- | --- |
-| `current_valence` | `null` 或整数 `-1`、`0`、`1` | 原样保留；其他类型／越界拒绝 |
-| `current_arousal` | `null` 或整数 `1`、`2`、`3` | 原样保留；其他类型／越界拒绝 |
-| `target_valence` | `null`；`=-1`、`=0`、`=1`；`>=-1`、`>=0`、`>=1`；`<=-1`、`<=0`、`<=1` | `=N` → 精确整数 `N`；`>=N` → `{"relation":"at_least","value":N}`；`<=N` → `{"relation":"at_most","value":N}`；`null` → `null` |
-| `target_arousal` | `null`；`=1`、`=2`、`=3`；`>=1`、`>=2`、`>=3`；`<=1`、`<=2`、`<=3` | 同上；范围仍保留为原 V2 结构，不会改成某个精确档位 |
-| `target_melodic_surprise` | `null` 或整数 `1`、`2`、`3` | 原样保留；其他类型／越界拒绝 |
-| `trajectory` | `none`、`single_target`、`valence:A->B`、`arousal:A->B`、`valence:A->B;arousal:C->D` | 前两者原样；路径串 → 原 V2 `{"type":"from_to", ...}`，维度顺序固定为 valence 后 arousal；端点必须在各维度范围内、不相同，终点必须等于同维度的**精确** target 值 |
-| `requires_melody_present` | `null` 或 `true` | 原样保留；`false` 仍不是本地认可的值 |
-| `evidence` | 原有 7 个必填证据键，各为原句中的连续原文字符串或 `null` | 原样保留并逐字核验；不生成、不改写证据 |
-| `constraints` | 原有对象数组，各项为 `evidence`、`classification="unsupported_constraint"`、`polarity="include"/"exclude"`；无条件时 `[]` | 原样保留；各项原词必须逐字出现在原句。输出约束时仍由现有路由返回 `cannot_guarantee_constraint`；转换器不判断语义、不猜测极性 |
+| `current_valence` | `null` or integer `-1` , `0` , `1` | Retained as-is; other types / out of bounds are rejected |
+| `current_arousal` | `null` or integer `1` , `2` , `3` | Retained as-is; other types / out of bounds are rejected |
+| `target_valence` | `null` ; `=-1` , `=0` , `=1` ; `>=-1` , `>=0` , `>=1` ; `<=-1` , `<=0` , `<=1` | `=N` → exact integer `N` ; `>=N` → `{"relation":"at_least","value":N}` ; `<=N` → `{"relation":"at_most","value":N}` ; `null` → `null` |
+| `target_arousal` | `null` ; `=1` , `=2` , `=3` ; `>=1` , `>=2` , `>=3` ; `<=1` , `<=2` , `<=3` | Same as above; ranges remain in the original V2 structure and will not be changed to an exact level |
+| `target_melodic_surprise` | `null` or integer `1` , `2` , `3` | Retained as-is; other types / out of bounds are rejected |
+| `trajectory` | `none` , `single_target` , `valence:A->B` , `arousal:A->B` , `valence:A->B;arousal:C->D` | The first two as-is; path strings → original V2 `{"type":"from_to", ...}` , dimension order fixed as valence followed by arousal; endpoints must be within the range of each dimension and not identical, and the endpoint must equal the **exact** target value of the same dimension |
+| `requires_melody_present` | `null` or `true` | Retained as-is; `false` is still not a locally accepted value |
+| `evidence` | Original 7 mandatory evidence keys, each being a continuous original text string in the original sentence or `null` | Retained as-is and verified character by character; do not generate or rewrite evidence |
+| `constraints` | Original array of objects, each item having `evidence` , `classification="unsupported_constraint"` , `polarity="include"/"exclude"` ; `[]` when there are no conditions | Retained as-is; every original word of each item must appear verbatim in the original sentence. When outputting constraints, the existing router still returns `cannot_guarantee_constraint` ; the converter does not judge semantics or guess polarity |
 
-上表列的是**允许的语法**，不是“见到这些字就应该填该值”的语义规则。尤其 `>=0` 和 `=0`、`<=2` 和 `=2` 不可互换；`arousal:3->1` 只表示歌曲顺序，不表示说话者状态变化。数字不做截断、四舍五入或夹取。数字字符串只允许规范写法，例如 `=01`、`=-0`、空格、中文符号和省略 `=` 都拒绝。路径可分别表示一个或两个已有维度；重复维度、逆序、缺端点、非整数、越界或终点与 target 冲突均拒绝。
+The above table lists the **allowed syntax**, not the semantic rules of "seeing these characters means filling in that value". In particular, `>=0` and `=0`, `<=2` and `=2` are not interchangeable; `arousal:3->1` only indicates the song sequence, not the speaker's state change. Numbers are not truncated, rounded, or clamped. Number strings only allow canonical writing, for example `=01`, `=-0`, spaces, Chinese symbols, and omitting `=` are all rejected. Paths can represent one or two existing dimensions respectively; duplicate dimensions, reverse order, missing endpoints, non-integers, out-of-bounds, or endpoints conflicting with the target are all rejected.
 
-证据规则完全沿用正式本地校验：`from_to` 必须有逐字顺序证据；`none` 的轨迹证据必须为 `null`；`single_target` 可没有独立轨迹证据，提供时仍必须逐字出现。其他非空意图字段和每项约束仍须逐字证据。未说明的意图必须显式 `null`；未说明的轨迹不能靠转换器推断为 `none` 或 `single_target`。缺字段、未知字段、不支持的取值或证据错误都让转换失败，不产生可用于选歌的意图卡。
+The evidence rules completely follow the official local validation: `from_to` must have verbatim sequential evidence; the trajectory evidence for `none` must be `null`; `single_target` may not have independent trajectory evidence, but if provided, it must still appear verbatim. Other non-empty intent fields and each constraint still require verbatim evidence. Unspecified intents must be explicitly `null`; unspecified trajectories cannot be inferred as `none` or `single_target` by the converter. Missing fields, unknown fields, unsupported values, or evidence errors all cause the conversion to fail, producing no intent card usable for song selection.
 
-## 离线覆盖和边界
+## Offline Coverage and Boundaries
 
-- 从唯一已批准的 V2 TSV **只读取答案作格式覆盖检查**：12 条开发答案、30 条测试答案，共 42 个不重复 ID，均可编码成候选格式，再无损转换回原 V2 核心字段、旋律存在要求、轨迹和证据。测试集原话未写入候选提示词，也未用于调整评分规则；本轮没有模型调用或正式测试评分。
-- 现有 V2 里仅有两条范围答案（`>=0`、`<=2`），两条 `arousal:3->1` 路径；这不足以证明所有未来表达都能被模型稳定填对。人工构造的双维路径测试证明格式也能表达原有 V2 允许的双维对象。
-- V2 仅批准了 `unsupported_condition_phrases` 的原词集合及是否应返回 `cannot_guarantee_constraint`，**没有逐项批准 `polarity`**。覆盖测试对每条原词分别试 `include`、`exclude` 两种传输夹具，证明原词集合和已有字段能无损通过；夹具极性不是标准答案，也不是模型听评或正式成绩。
-- 现有开发报告显示 12 次调用中 7 次必填结构完整、6 次通过本地校验；5 次结构失败涉及目标值或轨迹字段。此前只保存了安全摘要，没有完整预测，无法判定这些失败具体是否由 Schema 复杂度造成。此原型减少嵌套结构与 `anyOf`，但可能牺牲 JSON 对范围、路径细节的约束能力，也可能使模型产生无法解析的缩写。**建议先保留独立原型；待作者审阅后，才考虑一次受控的开发集对照，不直接替换正式运行。**
+- **Read answers only for format coverage check** from the single approved V2 TSV: 12 development answers and 30 test answers, totaling 42 unique IDs, all encodable into candidate formats and then losslessly convertible back to the original V2 core fields, melody presence requirements, trajectories, and evidence. The original utterances of the test set were not written into the candidate prompts, nor were they used to adjust scoring rules; there were no model calls or formal test scoring in this round.
+- There are only two range answers (`>=0`, `<=2`) and two `arousal:3->1` paths in the existing V2; this is not enough to prove that all future expressions can be stably filled correctly by the model. Manually constructed two-dimensional path tests prove that the format can also express the two-dimensional objects allowed by the original V2.
+- V2 has only approved the original word set of `unsupported_condition_phrases` and whether `cannot_guarantee_constraint` should be returned, **without approving `polarity` item by item**. Coverage tests try both `include` and `exclude` transfer fixtures for each original word separately, proving that the original word set and existing fields can pass losslessly; fixture polarity is not a standard answer, nor is it model listening evaluation or formal scores.
+- Existing development reports show that out of 12 calls, 7 had complete required structures and 6 passed local validation; 5 structural failures involved target values or trajectory fields. Previously, only safety summaries were saved without complete predictions, making it impossible to determine whether these failures were specifically caused by Schema complexity. This prototype reduces nested structures and `anyOf`, but may sacrifice JSON's ability to constrain ranges and path details, and may also cause the model to produce unparsable abbreviations. **It is recommended to keep the independent prototype first; consider a controlled development set comparison only after review by the author, without directly replacing the formal run.**
 
-## 下一轮仅在本机保存合成开发句预测的方案
+## Scheme for Saving example Development Utterance Predictions Locally Only in the Next Round
 
-已在 `.gitignore` 加入 `/reports/private_dev_predictions/`。本轮没有生成预测文件。若以后另获授权进行开发集对照，可在该目录写本机 JSONL：仅存合成开发 `case_id`、模型输出内容或解析后的预测卡、校验错误类别、模型 ID、时间及 token；原句通过 `case_id` 回查现有合成开发 CSV 即可。**不存** API key、请求头、HTTP 原始响应包或真实用户资料；不把 30 条正式测试句放入该文件。无效输出若需分析，应只在这个本机目录保留模型生成的内容，不放进公开报告。
+`/reports/private_dev_predictions/` has been added to `.gitignore`. No prediction files were generated in this round. If authorization is obtained later to conduct development set comparisons, local JSONLs can be written to this directory: storing only example development `case_id`, model output content or parsed prediction cards, validation error categories, model ID, time, and tokens; original utterances can be looked up in the existing example development CSV via `case_id`. **Do not store** API keys, request headers, raw HTTP response packages, or real user profiles; do not put the 30 formal test utterances into this file. If invalid outputs need analysis, only the model-generated content should be retained in this local directory, and not put into public reports.
 
-写入器应先检查目标路径被 Git 忽略且不在已跟踪／暂存文件内；否则拒绝写入。目录权限设为仅本人可读写（`0700`），文件权限为 `0600`，并在每次拟提交或推送前检查暂存文件清单。`.gitignore` 可被强制添加覆盖，所以它是防误操作的一层保护，不是绝对保密保证。此次仅提出流程和忽略规则，不创建写入器或预测数据。
+The writer should first check that the target path is ignored by Git and not in tracked/staged files; otherwise, write is refused. Directory permissions are set to owner-read/write only (`0700`), file permissions are `0600`, and the staged file list is checked before each planned commit or push. `.gitignore` can be forcefully added and overridden, so it is a layer of protection against misoperation, not an absolute confidentiality guarantee. This time, only processes and ignore rules are proposed, without creating writers or prediction data.

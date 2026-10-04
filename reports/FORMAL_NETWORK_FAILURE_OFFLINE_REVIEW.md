@@ -1,31 +1,31 @@
-# 正式评估网络失败：离线核查记录
+# Formal Evaluation Network Failed: Offline Verification Records
 
-本文件是对 2026-10-03 那轮失败运行的**事后诊断说明**，没有调用模型、重算成绩、改动冻结答案或覆盖原来的 `evaluation.*` 与 `evaluation_trace.jsonl`。旧运行使用的代码版本以 `evaluation.json` 中的代码哈希为准；下面的异常细分只供将来获授权的连接检查使用，不能倒推旧错误。
+This document is a **post-mortem diagnostic note** for the failed run on 2026-10-03, with no model calls, score recalculations, modifications to frozen answers, or overwriting of the original `evaluation.*` and `evaluation_trace.jsonl`. The code version used by the old run is determined by the code hash in `evaluation.json`; the anomaly breakdown below is for future authorized connection inspections only and cannot be used to retroactively deduce past errors.
 
-## 旧运行目前能确认什么
+## What can currently be confirmed about the old run
 
-| 句子 ID | 已尝试 | 安全错误类别 | 程序阶段 | 已记录 HTTP 状态码 | 能否确认到达服务商 |
+| Sentence ID | Tried | Safety Error Category | Program Stage | Recorded HTTP Status Code | Can Confirm Reaching Service Provider |
 | --- | --- | --- | --- | --- | --- |
-| `test_001` | 是 | `network` | API 请求／读取响应阶段；未进入 JSON 校验 | 无记录 | 不能 |
-| `test_002` | 是 | `network` | API 请求／读取响应阶段；未进入 JSON 校验 | 无记录 | 不能 |
-| `test_003` | 是 | `network` | API 请求／读取响应阶段；未进入 JSON 校验 | 无记录 | 不能 |
+| `test_001` | Yes | `network` | API request / response reading stage; did not enter JSON validation | No record | Cannot |
+| `test_002` | Yes | `network` | API request / response reading stage; did not enter JSON validation | No record | Cannot |
+| `test_003` | Yes | `network` | API request / response reading phase; did not enter JSON validation | No record | Cannot |
 
-三条均无可处理 API 响应、无 token 用量、无模型原始预测。程序在连续三次 API／结构失败后停止，`test_004`—`test_030` 未调用。旧客户端先单独捕获 `HTTPError`，并把已捕获的 4xx/5xx 映射到其他错误类别；因此旧记录**没有证据表明 Python 捕获过直接的 `HTTPError`**。但代理隧道的 HTTP 错误可能包装成 `URLError`，而且旧日志未保存状态码；不能据此断言服务商未收到请求，也不能断言收到了请求。
+All three have no processable API response, no token usage, and no raw model predictions. The program stopped after three consecutive API/structural failures, and `test_004`—`test_030` were not called. The old client separately caught `HTTPError` first, mapping captured 4xx/5xx errors to other error categories; therefore, the old records **show no evidence that Python ever caught a direct `HTTPError`**. However, HTTP errors from the proxy tunnel might be wrapped as `URLError`, and the old logs did not save the status code; it cannot be asserted from this whether the provider received the request, nor can it be asserted that they did not.
 
-旧代码把 `URLError`、`TimeoutError` 和 `OSError` 全部变成 `network`，并且同一 `try` 同时覆盖打开连接和读取响应体。因此现有记录**无法追溯**：DNS、TLS、代理、权限、拒绝连接、连接重置、打开／等候响应超时、读取响应超时中的哪一种发生；也无法确定实际提供方、请求是否到达服务商或是否产生账单。日志没有每次调用的 HTTP 状态码、底层异常类型、阶段细分或服务商请求 ID。不得根据命令完成得快或 token 为零猜测根因。
+The old code lumped `URLError`, `TimeoutError`, and `OSError` all into `network`, with the same `try` block covering both opening the connection and reading the response body. Consequently, the existing records are **unable to trace** which of the following occurred: DNS, TLS, proxy, permissions, connection refused, connection reset, connection/response-waiting timeout, or response-reading timeout; nor can they determine the actual provider, whether the request reached the provider, or whether billing occurred. The logs lack HTTP status codes for each call, underlying exception types, phase breakdowns, or provider request IDs. Do not guess the root cause based on fast command completion or zero tokens.
 
-## 本轮离线改进
+## This Round of Offline Improvements
 
-在共用异常对象和简写格式请求客户端中加入固定的安全类别：DNS、TLS、TLS 证书、打开／等候响应超时、响应体读取超时、本机权限、拒绝连接、连接重置、网络不可达、代理隧道及其他网络错误。只记录固定类别、阶段和可用的数字 HTTP 状态码；不记录异常原文、主机名、代理地址、请求头、密钥或响应正文。即使获得 HTTP 状态码，也不能单凭它证明已到达模型提供方，因为状态可能来自网关或代理。
+Added fixed security categories to the shared exception object and shorthand format request client: DNS, TLS, TLS certificate, open/wait response timeout, response body read timeout, local permissions, connection refused, connection reset, network unreachable, proxy tunnel, and other network errors. Only fixed categories, phases, and available numeric HTTP status codes are logged; raw exception text, hostnames, proxy addresses, request headers, secrets, or response bodies are never logged. Even if an HTTP status code is obtained, it cannot solely prove that the model provider was reached, as the status may originate from a gateway or proxy.
 
-`scripts/check_transport_once.py` 是留给**未来单独授权**的一次性连接诊断入口：固定使用已测试的 `compact-dev-v2`、现有模型和一条不在开发／正式测试集中的合成句；没有 `--allow-paid-connection` 标志时不会读取本机配置或发请求。它不创建正式评估标记，也不碰旧运行文件。成功或失败仅向终端输出安全类别、阶段、可用状态码、token 和估算费用；不保存或打印完整模型回复。
+`scripts/check_transport_once.py` is a one-time connection diagnostic entry point reserved for **future separate authorization**: it fixedly uses the tested `compact-dev-v2`, an existing model, and a example sentence not in the development/production test sets; without the `--allow-paid-connection` flag, it will not read local configurations or send requests. It does not create formal evaluation markers, nor does it touch legacy run files. Success or failure only outputs the security category, phase, available status code, tokens, and estimated cost to the terminal; it does not save or print the complete model response.
 
-## 旧报告的解释
+## Explanation of Old Reports
 
-旧报告按预定端到端分母列出 AI `0/30`，表示 **3 条已尝试却失败、27 条未调用**，不是模型在 30 条上的意图判断错误。有效意图卡为 0，故仅有效输出准确率和模型理解能力均无法评估。关键词基线的分数可以作为同批合成句的独立结果，不能与本次无响应的 AI 作能力优劣比较。旧报告开头已经明确这一点。
+The old report lists the AI as `0/30` based on the scheduled end-to-end denominator, which means **3 attempts that failed and 27 uncalled**, rather than intent judgment errors by the model across 30 items. The valid intent card count is 0, so neither the valid output accuracy nor the model understanding capability can be evaluated. The keyword baseline score can serve as an independent result for the same batch of examples and cannot be compared for capability superiority or inferiority against the unresponsive AI in this run. The beginning of the old report has already clarified this point.
 
-冻结记录 `data/test_set_freeze.json` 的三份文件 SHA-256 已在本轮再次通过核对；没有重新冻结。
+The SHA-256 checksums for the three frozen record files in `data/test_set_freeze.json` have passed verification again in this round; no re-freezing was performed.
 
-## 下一次最小验证（本轮未执行）
+## Next Minimum Verification (Not Executed This Round)
 
-在用户明确授权且本机网络允许的环境中，只对该固定非测试合成句发起**一次**连接请求，不重试、不运行 30 条正式句。优先看脱敏类别和阶段：若仍是本机权限、DNS 或代理错误，先处理环境；若有 HTTP 状态码，再按认证／额度／请求格式类别处理；若取得完整响应，再单独检查结构及本地证据校验。标准费率下这一次可能产生费用；按开发集平均用量估计约 USD 0.0009，实际用量或收费未知。不得把连接成功当成正式评估成绩。
+In an environment with explicit user authorization and local network permission, initiate **only one** connection request for this fixed non-test example sentence, without retrying or running the 30 formal sentences. Prioritize checking the desensitization category and phase: if it is still a local permission, DNS, or proxy error, address the environment first; if there is an HTTP status code, handle it according to the authentication/quota/request format category; if a complete response is obtained, separately inspect the structure and local evidence verification. This single attempt may incur charges under standard rates; estimated at approximately USD 0.0009 based on development set average usage, with actual usage or billing unknown. Do not treat a successful connection as an official evaluation score.

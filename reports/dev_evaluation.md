@@ -1,18 +1,18 @@
-# PE6201 V2 开发集合成句评估
+# PE6201 V2 Development Set example Sentence Evaluation
 
-仅使用作者已批准的 12 条开发句；这不是正式测试成绩，也不是真人用户数据。每次请求只含原话、固定运行时提示词和 Schema，不含答案。
+Only uses the 12 development sentences approved by the author; this is not a formal test score, nor is it real user data. Each request contains only the original utterance, fixed runtime prompts, and schema, without answers.
 
-模型：`google/gemini-3.5-flash-lite`；新加坡开始时间：`2026-10-03T17:29:58+08:00`。
-实际调用 12/12；未调用 0；完整 JSON 12/12；必填结构完整 7/12；本地有效意图卡 6/12。
-API 失败 0；格式／结构失败 5；证据失败 0；字段值失败 1。
-另有 5/6 条本地有效输出与已批准答案不完全一致；这是意图判断差异，未归为格式或证据失败。
-提前停止：否。
+Model: `google/gemini-3.5-flash-lite`; Singapore start time: `2026-10-03T17:29:58+08:00`.
+Actual calls 12/12; uncalled 0; complete JSON 12/12; required structure complete 7/12; local valid intent cards 6/12.
+API failures 0; format/structure failures 5; evidence failures 0; field value failures 1.
+In addition, 5/6 local valid outputs do not completely match the approved answer; this is an intent judgment discrepancy and is not classified as a format or evidence failure.
+Early stopping: No.
 
-失败分组已依据保存的安全结构标志离线校正；没有重新调用模型或改动标准答案。
+Failure groups have been corrected offline based on the saved safety structure flags; no model re-invocation or gold standard modification was performed.
 
-## 六个核心字段
+## Six Core Fields
 
-| 字段 | 开发集覆盖（正确／12） | 已调用端到端 | 仅有效输出 | 关键词基线（已调用） |
+| Field | Dev Set Coverage (Correct / 12) | End-to-End Called | Valid Output Only | Keyword Baseline (Called) |
 | --- | ---: | ---: | ---: | ---: |
 | `current_valence` | 5/12 | 5/12 | 5/6 | 9/12 |
 | `current_arousal` | 5/12 | 5/12 | 5/6 | 11/12 |
@@ -20,39 +20,39 @@ API 失败 0；格式／结构失败 5；证据失败 0；字段值失败 1。
 | `target_arousal` | 5/12 | 5/12 | 5/6 | 8/12 |
 | `target_melodic_surprise` | 5/12 | 5/12 | 5/6 | 11/12 |
 | `trajectory` | 6/12 | 6/12 | 6/6 | 8/12 |
-| 六字段整卡 | 4/12 | 4/12 | 4/6 | 5/12 |
+| All Six Fields Complete | 4/12 | 4/12 | 4/6 | 5/12 |
 | requires_melody_present | 6/12 | 6/12 | 6/6 | — |
-| 不支持条件原词集合全对 | 1/12 | 1/12 | 1/6 | — |
-| cannot_guarantee_constraint 状态 | 4/12 | 4/12 | 4/6 | — |
+| Unsupported Condition Original Term Set All Correct | 1/12 | 1/12 | 1/6 | — |
+| cannot_guarantee_constraint status | 4/12 | 4/12 | 4/6 | — |
 
-开发集覆盖列把未调用句记为未完成，不代表模型对这些句子判断错误。端到端列把已调用但无有效意图卡的句子计入分母；仅有效输出列只衡量通过本地校验的意图卡。
+The dev-set coverage column marks uncalled sentences as incomplete, which does not mean the model judged those sentences incorrectly. The end-to-end column counts sentences that were called but yielded no valid intent cards into the denominator; the valid-output-only column measures only intent cards that passed local validation.
 
-## 不支持条件原词
+## Unsupported Condition Verbatim Terms
 
-已调用句预期原词 7 个；端到端未完成 7 个，其中 3 个属于无有效意图卡。
-仅有效输出：命中 0、误报 6、漏报 4（仅在 6 条有效输出内计算）。
+Expected original words for called sentences: 7; end-to-end incomplete: 7, of which 3 belong to sentences with no valid intent cards.
+Effective output only: 0 hits, 6 false positives, 4 false negatives (calculated within the 6 effective outputs only).
 
-## 安全错误摘要
+## Security Error Summary
 
-- `invalid_field_value`：6 次
+- `invalid_field_value`: 6 times
 
-## 逐句安全摘要
+## Sentence-by-Sentence Safety Summary
 
-- `dev_001`：有效；核心字段错误：current_valence, current_arousal, target_melodic_surprise；不支持条件集合错误：是。
-- `dev_002`：structure / `invalid_field_value` / `target_arousal`
-- `dev_003`：structure / `invalid_field_value` / `target_arousal`
-- `dev_004`：有效；核心字段错误：无；不支持条件集合错误：否。
-- `dev_005`：structure / `invalid_field_value` / `target_valence`
-- `dev_006`：field_value / `invalid_field_value` / `trajectory`
-- `dev_007`：structure / `invalid_field_value` / `trajectory.arousal`
-- `dev_008`：有效；核心字段错误：target_arousal；不支持条件集合错误：是。
-- `dev_009`：有效；核心字段错误：无；不支持条件集合错误：是。
-- `dev_010`：有效；核心字段错误：无；不支持条件集合错误：是。
-- `dev_011`：structure / `invalid_field_value` / `target_arousal`
-- `dev_012`：有效；核心字段错误：无；不支持条件集合错误：是。
+- `dev_001`: valid; core field errors: current_valence, current_arousal, target_melodic_surprise; unsupported condition set error: yes.
+- `dev_002`:structure / `invalid_field_value` / `target_arousal`
+- `dev_003`:structure / `invalid_field_value` / `target_arousal`
+- `dev_004`: valid; core field errors: none; unsupported condition set error: no.
+- `dev_005`:structure / `invalid_field_value` / `target_valence`
+- `dev_006`:field_value / `invalid_field_value` / `trajectory`
+- `dev_007`:structure / `invalid_field_value` / `trajectory.arousal`
+- `dev_008`: valid; core field errors: target_arousal; unsupported condition set error: yes.
+- `dev_009`: Valid; Core field error: None; Unsupported condition set error: Yes.
+- `dev_010`: Valid; Core field error: None; Unsupported condition set error: Yes.
+- `dev_011`:structure / `invalid_field_value` / `target_arousal`
+- `dev_012`: Valid; Core field error: None; Unsupported condition set error: Yes.
 
-## 用量与范围
+## Usage and Scope
 
-输入／完成／总 token：16711／2232／18943；可取得的推理 token 合计：0（缺明细 0 次）。
-估算费用：USD 0.010593；缺少可估费用数据的调用 0 次。实际账单以服务商为准。
-没有下载音频或评估真实曲库推荐效果。测试集未冻结，30 条正式测试未运行。
+Input / Completion / Total tokens: 16711 / 2232 / 18943; Total obtainable reasoning tokens: 0 (missing breakdown 0 times).
+Estimated cost: USD 0.010593; Calls with missing cost-estimation data: 0 times. Actual billing is subject to the service provider.
+No audio was downloaded, and the actual music library recommendation effectiveness was not evaluated. The test set was not frozen, and the 30 formal tests were not run.

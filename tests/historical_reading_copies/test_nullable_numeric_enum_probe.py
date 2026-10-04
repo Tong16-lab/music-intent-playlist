@@ -28,7 +28,7 @@ VALID = {
     "current_valence": -1, "current_arousal": None,
     "target_valence": None, "target_arousal": 1,
     "target_melodic_surprise": None, "trajectory": "single_target",
-    "requires_melody_present": True, "evidence": "安静", "constraints": [],
+    "requires_melody_present": True, "evidence": "quiet", "constraints": [],
 }
 
 

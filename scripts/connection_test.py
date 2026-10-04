@@ -18,7 +18,7 @@ from music_intent.config import get_settings  # noqa: E402
 from music_intent.openrouter_client import OpenRouterFailure, parse_once  # noqa: E402
 from music_intent.pricing import estimate_standard_cost_usd  # noqa: E402
 
-SYNTHETIC_SENTENCE = "我现在有点烦，想听一首安静、有清楚旋律的音乐。"
+SYNTHETIC_SENTENCE = "I'm a bit annoyed right now and want to listen to some quiet music with a clear melody."
 PREFLIGHT = ROOT / "data" / "connection_preflight.json"
 CODE_FILES = ("src/music_intent/intent.py", "src/music_intent/openrouter_client.py",
               "src/music_intent/pricing.py")

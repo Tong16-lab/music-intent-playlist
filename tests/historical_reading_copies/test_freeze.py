@@ -23,7 +23,7 @@ class FreezeTests(unittest.TestCase):
         self.assertEqual(validate_all(approved=True)["test"], 30)
         rows = {r["case_id"]: r for r in expected_outputs()["unsupported_conditions_test.csv"][1]}
         self.assertEqual(json.loads(rows["test_022"]["unsupported_condition_phrases"]), [])
-        self.assertEqual(json.loads(rows["test_024"]["unsupported_condition_phrases"]), ["口水歌", "土嗨歌"])
+        self.assertEqual(json.loads(rows["test_024"]["unsupported_condition_phrases"]), ["viral pop song", "tu-hai song"])
         for name in ("synthetic_intents_dev.csv", "synthetic_intents_test.csv", "unsupported_conditions_test.csv"):
             self.assertTrue((ROOT / "data" / "legacy_v1" / name).exists())
 

@@ -50,9 +50,9 @@ def record(row: dict[str, str], prediction: dict | None, **stages):
 
 class ScoringV3Tests(unittest.TestCase):
     def test_explicit_nullable_range_and_unspoken_false_fill(self):
-        first = answer("dev_001", "想听不太悲的歌", target_valence={"relation": "at_least", "value": 0},
+        first = answer("dev_001", "I want to hear some songs that aren't too sad", target_valence={"relation": "at_least", "value": 0},
                        trajectory="single_target")
-        second = answer("dev_002", "随便来点音乐")
+        second = answer("dev_002", "Play some music, whatever.")
         records = [record(first, intent(first, target_valence=0)),
                    record(second, intent(second, target_valence=1))]
         scores = score_detailed(records, [first, second], [unsupported(first), unsupported(second)])
@@ -67,9 +67,9 @@ class ScoringV3Tests(unittest.TestCase):
 
     def test_only_from_to_is_explicit_order(self):
         path = {"type": "from_to", "arousal": {"from": 3, "to": 1}}
-        first = answer("dev_001", "歌曲先热烈再安静", target_arousal=1, trajectory=path)
-        second = answer("dev_002", "想听安静的歌", target_arousal=1, trajectory="single_target")
-        third = answer("dev_003", "随便来点音乐")
+        first = answer("dev_001", "the song is passionate then quiet", target_arousal=1, trajectory=path)
+        second = answer("dev_002", "I want to hear quiet songs", target_arousal=1, trajectory="single_target")
+        third = answer("dev_003", "Play some music")
         rows = [first, second, third]
         records = [record(first, intent(first)),
                    record(second, intent(second, trajectory="none")),
@@ -85,14 +85,14 @@ class ScoringV3Tests(unittest.TestCase):
         self.assertEqual(trajectory["unspoken"]["ai_no_order_classification_errors"], 1)
 
     def test_failures_are_end_to_end_incomplete_even_when_gold_is_null_or_has_constraints(self):
-        first = answer("dev_001", "不要人声英语摇滚")
-        second = answer("dev_002", "随便来点音乐")
+        first = answer("dev_001", "no vocal English rock")
+        second = answer("dev_002", "Play some music, whatever.")
         records = [record(first, None, api_success=False, json_complete=False,
                           required_structure_complete=False, conversion_complete=False),
                    record(second, None, api_success=True, json_complete=True,
                           required_structure_complete=False, conversion_complete=False)]
         scores = score_detailed(records, [first, second],
-                                [unsupported(first, ["不要人声", "英语", "摇滚"]), unsupported(second)])
+                                [unsupported(first, ["no vocals", "English", "rock"]), unsupported(second)])
         self.assertEqual((scores["total_cases"], scores["valid_responses"], scores["failed_calls"]), (2, 0, 2))
         self.assertEqual(scores["stages"], {"api_success": 1, "json_complete": 1,
                                             "required_structure_complete": 0,
@@ -108,9 +108,9 @@ class ScoringV3Tests(unittest.TestCase):
         self.assertEqual(scores["core_cards"]["end_to_end_correct"], 0)
 
     def test_valid_constraints_status_and_exact_words_are_distinct(self):
-        row = answer("dev_001", "别要英语或摇滚")
-        conditions = unsupported(row, ["英语", "摇滚"])
-        prediction = intent(row, constraints=[{"evidence": "英语", "classification": "unsupported_constraint",
+        row = answer("dev_001", "No English or rock music")
+        conditions = unsupported(row, ["English", "rock"])
+        prediction = intent(row, constraints=[{"evidence": "English", "classification": "unsupported_constraint",
                                                "polarity": "exclude"}])
         scores = score_detailed([record(row, prediction)], [row], [conditions])
         self.assertEqual(scores["unsupported"]["status_end_to_end_correct"], 1)
@@ -120,9 +120,9 @@ class ScoringV3Tests(unittest.TestCase):
         self.assertEqual(scores["core_cards"]["end_to_end_correct"], 1)
 
     def test_baseline_uses_same_sentences_and_gold_without_structure_metrics(self):
-        rows = [answer("dev_001", "我现在烦，想听安静的歌", current_valence=-1,
+        rows = [answer("dev_001", "I'm annoyed right now, I want to listen to quiet songs", current_valence=-1,
                        target_arousal=1, trajectory="single_target"),
-                answer("dev_002", "随便来点音乐")]
+                answer("dev_002", "Play some random music")]
         scores = score_detailed([record(row, intent(row)) for row in rows], rows,
                                 [unsupported(row) for row in rows])
         for field in CORE_FIELDS:
@@ -137,7 +137,7 @@ class ScoringV3Tests(unittest.TestCase):
                                  for field in CORE_FIELDS) for row in rows))
 
     def test_rejects_misalignment_and_fabricated_valid_stage(self):
-        row = answer("dev_001", "随便来点音乐")
+        row = answer("dev_001", "Play some random music")
         with self.assertRaisesRegex(ValueError, "scoring_case_alignment"):
             score_detailed([], [row], [unsupported(row)])
         with self.assertRaisesRegex(ValueError, "valid_intent_without_complete_stages"):
@@ -145,7 +145,7 @@ class ScoringV3Tests(unittest.TestCase):
                            [row], [unsupported(row)])
 
     def test_rejects_unrecognized_approved_constraint_status(self):
-        row = answer("dev_001", "随便来点音乐")
+        row = answer("dev_001", "Play some random music")
         condition = unsupported(row)
         condition["expected_cannot_guarantee_constraint"] = ""
         with self.assertRaisesRegex(ValueError, "scoring_unsupported_status_invalid"):

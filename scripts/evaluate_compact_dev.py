@@ -179,7 +179,7 @@ def _metric_rows(new: dict[str, Any], old: dict[str, Any]) -> list[str]:
     valid_n = new_score["valid_only"]["denominator"]
     old_n = old_score["end_to_end"]["denominator"]
     old_valid_n = old_score["valid_only"]["denominator"]
-    rows = ["| 指标 | 原版端到端 | 候选端到端 | 原版仅有效 | 候选仅有效 | 同一关键词基线 |",
+    rows = ["| Metric | Original End-to-End | Candidate End-to-End | Original Valid-Only | Candidate Valid-Only | Same Keyword Baseline |",
             "| --- | ---: | ---: | ---: | ---: | ---: |"]
     for field in CORE_FIELDS:
         rows.append(f"| `{field}` | {old_score['end_to_end']['core_fields'][field]}/{old_n} | "
@@ -187,10 +187,10 @@ def _metric_rows(new: dict[str, Any], old: dict[str, Any]) -> list[str]:
                     f"{old_score['valid_only']['core_fields'][field]}/{old_valid_n} | "
                     f"{new_score['valid_only']['core_fields'][field]}/{valid_n} | "
                     f"{new_score['keyword_baseline']['core_fields'][field]}/{n} |")
-    for label, name in (("六字段整卡", "core_cards"),
+    for label, name in (("six_field_full_card", "core_cards"),
                         ("requires_melody_present", "requires_melody_present"),
-                        ("不支持条件原词集合全对", "unsupported_exact_sets"),
-                        ("cannot_guarantee_constraint 状态", "cannot_guarantee_constraint_status")):
+                        ("unsupported exact word sets not fully matched", "unsupported_exact_sets"),
+                        ("cannot_guarantee_constraint status", "cannot_guarantee_constraint_status")):
         baseline = (f"{new_score['keyword_baseline']['core_cards']}/{n}" if name == "core_cards" else "—")
         rows.append(f"| {label} | {old_score['end_to_end'][name]}/{old_n} | "
                     f"{new_score['end_to_end'][name]}/{n} | "
@@ -204,46 +204,46 @@ def render_report(result: dict[str, Any], old: dict[str, Any]) -> str:
     valid = score["valid_only"]
     end = score["end_to_end"]
     attempted = result["attempted_calls"]
-    lines = ["# 九字段简写格式：合成开发集受控比较", "",
-             "本次对照改变了**输出 Schema 和解释简写格式所需的提示词两处文字**，并非只改一个 API 参数。模型、12 条合成开发句、其他请求参数、V2 答案、关键词基线与本地校验保持一致。未调用正式测试句。",
-             "", f"候选版本：`{result['version']}`；提示词 SHA-256：`{result['prompt_sha256']}`；Schema SHA-256：`{result['schema_sha256']}`。",
-             f"模型：`{result['model']}`；新加坡开始时间：`{result['started_at']}`。",
-             f"调用 {attempted}/12，提前停止：{'是' if result['stopped_early'] else '否'}；完整 JSON {result['json_complete_calls']}/{attempted}，必填结构完整 {result['required_structure_complete_calls']}/{attempted}，简写转换完成 {result['conversion_complete_calls']}/{attempted}，V2 本地校验通过 {result['locally_valid_calls']}/{attempted}。",
-             f"未取得有效意图卡 {score['failed_calls']} 次（其中 API 失败 {result['failure_groups'].get('api', 0)} 次）；分组 {json.dumps(result['failure_groups'], ensure_ascii=False, sort_keys=True)}；安全错误类别 {json.dumps(result['error_categories'], ensure_ascii=False, sort_keys=True)}。",
-             "", "## 与原版及关键词基线比较", ""]
+    lines = ["# Nine-field shorthand format: controlled comparison of synthetic development sets", "",
+             "This control group modification changed **two text portions: the prompt words required for the output Schema and the explanation shorthand format**, rather than just altering a single API parameter. The model, 12 synthetic development sentences, other request parameters, V2 answers, keyword baselines, and local validation remained consistent. Formal test sentences were not called.",
+             "", f"Candidate version: `{result['version']}`; Prompt SHA-256: `{result['prompt_sha256']}`; Schema SHA-256: `{result['schema_sha256']}`.",
+             f"Model: `{result['model']}`;Singapore start time: `{result['started_at']}`.",
+             f"Calls {attempted}/12; stopped early: {'Yes' if result['stopped_early'] else 'No'}; complete JSON {result['json_complete_calls']}/{attempted}; required structure complete {result['required_structure_complete_calls']}/{attempted}; compact conversion complete {result['conversion_complete_calls']}/{attempted}; V2 local validation passed {result['locally_valid_calls']}/{attempted}.",
+             f"Failed to acquire valid intent card {score['failed_calls']} times (including API failures {result['failure_groups'].get('api', 0)} times); groups {json.dumps(result['failure_groups'], ensure_ascii=False, sort_keys=True)}; safety error categories {json.dumps(result['error_categories'], ensure_ascii=False, sort_keys=True)}.",
+             "", "## Comparison with Original Version and Keyword Baseline", ""]
     if attempted != 12:
-        lines.append("候选版提前停止，候选和基线只统计已调用的开发句；原版统计全部 12 句，横向数值不可直接作为同一分母的性能差异。")
+        lines.append("Candidate version early stopping, candidates and baselines only count called development sentences; original version counts all 12 sentences, horizontal values cannot be directly used as performance differences with the same denominator.")
         lines.append("")
     lines.extend(_metric_rows(result, old))
-    lines.extend(["", "端到端分母包括无有效意图卡的调用；仅有效输出分母只包括通过转换及 V2 本地校验的意图卡。无效输出不算模型对条件的误报或漏报。关键词基线仍使用项目原有实现。",
-                  "", "## 不支持条件原词", "",
-                  f"候选端到端预期原词 {end['unsupported_expected_phrases']} 个，未完成 {end['unsupported_unfulfilled_phrases']} 个；其中 {end['unsupported_unfulfilled_due_to_call_failure']} 个属于无有效意图卡。",
-                  (f"候选仅有效输出：命中 {valid['unsupported_true_positive_phrases']}、误报 {valid['unsupported_false_positive_phrases']}、漏报 {valid['unsupported_missed_phrases']}；分母为 {valid['denominator']} 条有效输出、其中预期原词 {valid['unsupported_expected_phrases']} 个。"
-                   if valid['denominator'] else "候选没有有效输出，不计算模型原词命中／误报／漏报。"),
-                  f"原版仅有效输出：命中 {old['scores']['valid_only']['unsupported_true_positive_phrases']}、误报 {old['scores']['valid_only']['unsupported_false_positive_phrases']}、漏报 {old['scores']['valid_only']['unsupported_missed_phrases']}；分母为 {old['scores']['valid_only']['denominator']} 条。",
-                  "", "## 错误与用量", ""])
+    lines.extend(["", "End-to-end denominator includes calls without valid intent cards; valid-output-only denominator includes only intent cards that pass conversion and V2 local validation. Invalid outputs do not count as model false positives or false negatives for conditions. The keyword baseline still uses the project's original implementation.",
+                  "", "## Unsupported Condition Original Term", "",
+                  f"Candidate end-to-end expected original words: {end['unsupported_expected_phrases']}, unfulfilled: {end['unsupported_unfulfilled_phrases']}; among which {end['unsupported_unfulfilled_due_to_call_failure']} are due to no valid intent cards.",
+                  (f"Candidate valid output only: hit {valid['unsupported_true_positive_phrases']}, false positive {valid['unsupported_false_positive_phrases']}, missed {valid['unsupported_missed_phrases']}; denominator is {valid['denominator']} valid outputs, including {valid['unsupported_expected_phrases']} expected original words."
+                   if valid['denominator'] else "The candidate has no valid output, model original word hit/false alarm/missed rate will not be calculated."),
+                  f"Original valid-only output: hits {old['scores']['valid_only']['unsupported_true_positive_phrases']}, false positives {old['scores']['valid_only']['unsupported_false_positive_phrases']}, misses {old['scores']['valid_only']['unsupported_missed_phrases']}; denominator is {old['scores']['valid_only']['denominator']} items.",
+                  "", "## Errors and Usage", ""])
     for stage, count in sorted(result["failure_stages"].items()):
-        lines.append(f"- `{stage}`：{count} 次")
+        lines.append(f"- `{stage}`: {count} times")
     for case in result["case_summaries"]:
         if not case["intent_valid"]:
-            lines.append(f"- `{case['case_id']}`：{case['failure_group']} / {case['error_category']}" +
+            lines.append(f"- `{case['case_id']}`:{case['failure_group']} / {case['error_category']}" +
                          (f" / {case['error_field']}" if case.get("error_field") else ""))
         else:
-            wrong = ", ".join(case["wrong_core_fields"]) or "无"
-            lines.append(f"- `{case['case_id']}`：有效；核心字段错误：{wrong}；条件集合错误：{'是' if case['unsupported_exact_set_wrong'] else '否'}。")
+            wrong = ", ".join(case["wrong_core_fields"]) or "None"
+            lines.append(f"- `{case['case_id']}`: Valid; core field error: {wrong}; condition set error: {'Yes' if case['unsupported_exact_set_wrong'] else 'No'}.")
     token = result["tokens"]
     false_positive_cases = sum(
         case.get("unsupported_false_positive_count", 0) > 0
         for case in result["case_summaries"] if case["intent_valid"]
     )
-    lines.extend(["", f"候选输入／完成／总 token：{token['prompt_tokens']}／{token['completion_tokens']}／{token['total_tokens']}；可取得的推理 token：{token['reasoning_tokens']}（缺明细 {result['reasoning_unavailable_calls']} 次）。",
-                  f"候选估算费用 USD {result['estimated_cost_usd']:.6f}；缺少可估数据的调用 {result['cost_unavailable_calls']} 次。原版输入／完成／总 token：{old['tokens']['prompt_tokens']}／{old['tokens']['completion_tokens']}／{old['tokens']['total_tokens']}；原版估算费用 USD {old['estimated_cost_usd']:.6f}。实际账单以服务商为准。",
-                  "", "## 对照判断", "",
-                  f"格式方面：原版必填结构 {old['required_structure_complete_calls']}/12、本地有效 {old['locally_valid_calls']}/12；候选必填结构 {result['required_structure_complete_calls']}/{attempted}、转换完成 {result['conversion_complete_calls']}/{attempted}、本地有效 {result['locally_valid_calls']}/{attempted}。这显示本次候选输出更常满足结构要求，但不能单凭一次开发集对照证明原因就是简写 Schema。",
-                  f"意图方面：原版六字段整卡 {old['scores']['end_to_end']['core_cards']}/12，候选 {end['core_cards']}/{attempted}，关键词基线 {score['keyword_baseline']['core_cards']}/{attempted}。候选的有效输出更多，但整卡正确数没有随之增加；有效输出分母也不同（原版 {old['scores']['valid_only']['denominator']}，候选 {valid['denominator']}），不能把格式成功写成意图判断成功。",
-                  f"约束方面：候选在 {false_positive_cases}/{valid['denominator']} 条有效输出中仍有原词误报，共 {valid['unsupported_false_positive_phrases']} 个；另有 {valid['unsupported_missed_phrases']} 个漏报。原版有效输出中有 {old['scores']['valid_only']['unsupported_false_positive_phrases']} 个误报、{old['scores']['valid_only']['unsupported_missed_phrases']} 个漏报。两版有效集合不同，不能仅用总数判定误报率变化。",
-                  "建议：暂不采用候选格式作为正式运行时。它值得保留为结构改善的开发原型，但需先在开发集上解决意图整卡与约束误报，再考虑另一轮受控比较；不得用本次结果改动已批准答案或推断正式测试成绩。",
-                  "", "本报告只比较合成开发句的意图解析。结构或转换成功并不等于意图判断正确；模型原始预测和转换结果仅存于本机被 Git 忽略的目录。未生成正式预检标记，未冻结或运行正式测试。", ""])
+    lines.extend(["", f"Candidate input / completion / total tokens: {token['prompt_tokens']} / {token['completion_tokens']} / {token['total_tokens']}; Available reasoning tokens: {token['reasoning_tokens']} (missing details {result['reasoning_unavailable_calls']} times).",
+                  f"Candidate estimated cost USD {result['estimated_cost_usd']:.6f}; calls with missing estimable data {result['cost_unavailable_calls']}. Original input/completion/total tokens: {old['tokens']['prompt_tokens']}/{old['tokens']['completion_tokens']}/{old['tokens']['total_tokens']}; original estimated cost USD {old['estimated_cost_usd']:.6f}. Actual billing is subject to the provider.",
+                  "", "## Comparative Judgment", "",
+                  f"In terms of format: Original required structure {old['required_structure_complete_calls']}/12, locally valid {old['locally_valid_calls']}/12; Candidate required structure {result['required_structure_complete_calls']}/{attempted}, conversion complete {result['conversion_complete_calls']}/{attempted}, locally valid {result['locally_valid_calls']}/{attempted}. This shows that the current candidate output more frequently meets the structural requirements, but it cannot be proven solely based on a single dev set comparison that the reason is the abbreviated Schema.",
+                  f"Regarding intent: original six-field full card {old['scores']['end_to_end']['core_cards']}/12, candidate {end['core_cards']}/{attempted}, keyword baseline {score['keyword_baseline']['core_cards']}/{attempted}. The candidate has more valid outputs, but the number of correct full cards did not increase accordingly; the valid output denominators are also different (original {old['scores']['valid_only']['denominator']}, candidate {valid['denominator']}), so formatting success cannot be equated to intent judgment success.",
+                  f"In terms of constraints: The candidate still has original-word false positives in {false_positive_cases}/{valid['denominator']} valid outputs, totaling {valid['unsupported_false_positive_phrases']}; there are also {valid['unsupported_missed_phrases']} misses. The original valid outputs have {old['scores']['valid_only']['unsupported_false_positive_phrases']} false positives and {old['scores']['valid_only']['unsupported_missed_phrases']} misses. The valid sets of the two versions differ, so total counts alone cannot be used to determine the change in the false positive rate.",
+                  "Recommendation: Do not adopt the candidate format as the official runtime for now. It is worth keeping as a structural development prototype, but intent card drops and constraint false positives must first be resolved on the development set before considering another round of controlled comparison; do not use these results to modify approved answers or infer official test scores.",
+                  "", "This report only compares intent parsing of synthetic development sentences. Successful structure or conversion does not equate to correct intent judgment; raw model predictions and conversion results reside only in local Git-ignored directories. No formal pre-check flag was generated, and formal tests were not frozen or run.", ""])
     return "\n".join(lines)
 
 

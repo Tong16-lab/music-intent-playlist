@@ -46,42 +46,42 @@ def render_report(result: dict) -> str:
     n = end_to_end["denominator"]
     valid_n = valid_only["denominator"]
     def valid_cell(correct: int) -> str:
-        return f"{correct}/{valid_n}" if valid_n else "未评估（有效响应 0 条）"
-    lines = ["# PE6201 V2 正式合成测试评估", "",
-             "这些是 30 条合成表达，不是真人受访数据。没有把测试答案写入运行时提示词。",
-             "", f"模型：`{result['model']}`", f"冻结记录：`data/{MANIFEST.name}`",
-             f"运行时间（新加坡）：`{result['started_at']}`", "",
-             f"调用总数 {scores['attempted_calls']}；有效响应 {scores['valid_responses']}；失败调用 {scores['failed_calls']}。",
-             "端到端分母包含失败调用；仅有效响应分母只包含通过结构与证据校验的意图卡。失败调用不会算作模型的原词误报或漏报。",
-             "", "| 指标 | 端到端正确／总数 | 仅有效响应正确／总数 |",
+        return f"{correct}/{valid_n}" if valid_n else "Not evaluated (0 valid responses)"
+    lines = ["# PE6201 V2 Official Synthesis Test Evaluation", "",
+             "These are 30 synthetic expressions, not real-person interview data. Test answers were not written into the runtime prompt.",
+             "", f"Model: `{result['model']}`", f"Frozen records: `data/{MANIFEST.name}`",
+             f"Run Time (Singapore): `{result['started_at']}`", "",
+             f"Total calls {scores['attempted_calls']}; valid responses {scores['valid_responses']}; failed calls {scores['failed_calls']}.",
+             "The end-to-end denominator includes failed calls; the valid-response-only denominator only includes intent cards that pass structure and evidence validation. Failed calls will not be counted as false positives or false negatives of the model's verbatim words.",
+             "", "| Metric | End-to-End Correct / Total | Valid Response Only Correct / Total |",
              "| --- | ---: | ---: |"]
     for field in end_to_end["core_fields"]:
         correct = end_to_end["core_fields"][field]
         lines.append(f"| {field} | {correct}/{n} | {valid_cell(valid_only['core_fields'][field])} |")
-    for label, key in (("六字段整卡", "core_cards"),
+    for label, key in (("Six-field full card", "core_cards"),
                        ("requires_melody_present", "requires_melody_present"),
-                       ("不支持条件原词集合全对", "unsupported_exact_sets"),
-                       ("cannot_guarantee_constraint 状态", "cannot_guarantee_constraint_status")):
+                       ("unsupported exact sets", "unsupported_exact_sets"),
+                       ("cannot_guarantee_constraint status", "cannot_guarantee_constraint_status")):
         lines.append(f"| {label} | {end_to_end[key]}/{n} | {valid_cell(valid_only[key])} |")
-    lines.extend(["", "## 关键词基线（全部合成测试句）", "",
-                  f"六字段整卡：{baseline['core_cards']}/{baseline['denominator']}。"])
+    lines.extend(["", "## Keyword Baseline (all test examples)", "",
+                  f"Six-field full cards: {baseline['core_cards']}/{baseline['denominator']}."])
     for field, correct in baseline["core_fields"].items():
-        lines.append(f"- `{field}`：{correct}/{baseline['denominator']}")
-    lines.extend(["", "## 不支持条件原词", "",
-                  f"端到端：预期原词共 {end_to_end['unsupported_expected_phrases']} 个，未完成 {end_to_end['unsupported_unfulfilled_phrases']} 个；其中 {end_to_end['unsupported_unfulfilled_due_to_call_failure']} 个来自调用失败。",
-                  (f"仅有效响应（{valid_n} 条，预期原词 {valid_only['unsupported_expected_phrases']} 个）：精确命中 {valid_only['unsupported_true_positive_phrases']}；误报 {valid_only['unsupported_false_positive_phrases']}；漏报 {valid_only['unsupported_missed_phrases']}。"
-                   if valid_n else "仅有效响应：没有有效意图卡，模型原词识别指标未评估。"),
-                  "", "## 用量与费用", "",
-                  f"输入 token：{result['tokens']['prompt_tokens']}；输出 token：{result['tokens']['completion_tokens']}；总 token：{result['tokens']['total_tokens']}。",
-                  f"按标准标价估算费用：{result['estimated_cost_usd']} USD；实际账单以 OpenRouter 为准。",
-                  f"用量或模型费率缺失的调用：{result['usage_unavailable_calls']}；若非零，上述费用只是可取得记录的部分估算。",
-                  "", "## 失败案例", ""])
+        lines.append(f"- `{field}`:{correct}/{baseline['denominator']}")
+    lines.extend(["", "## Unsupported Condition Original Words", "",
+                  f"End-to-end: Expected original phrases: {end_to_end['unsupported_expected_phrases']}, unfulfilled: {end_to_end['unsupported_unfulfilled_phrases']}; of which {end_to_end['unsupported_unfulfilled_due_to_call_failure']} are due to call failures.",
+                  (f"Only valid responses ({valid_n}, expected original phrases {valid_only['unsupported_expected_phrases']}): exact hits {valid_only['unsupported_true_positive_phrases']}; false positives {valid_only['unsupported_false_positive_phrases']}; missed {valid_only['unsupported_missed_phrases']}."
+                   if valid_n else "Valid response only: No valid intent card, model verbatim recognition metrics not evaluated."),
+                  "", "## Usage & Fees", "",
+                  f"Input tokens: {result['tokens']['prompt_tokens']}; Output tokens: {result['tokens']['completion_tokens']}; Total tokens: {result['tokens']['total_tokens']}.",
+                  f"Estimated cost based on standard pricing: {result['estimated_cost_usd']} USD; actual billing is subject to OpenRouter.",
+                  f"Calls missing usage or model rates: {result['usage_unavailable_calls']}; if non-zero, the above costs are only partial estimates based on available records.",
+                  "", "## Failure Cases", ""])
     if not scores["failures"]:
-        lines.append("无。")
+        lines.append("None.")
     else:
         for item in scores["failures"]:
-            lines.append(f"- `{item['case_id']}`：{json.dumps({k: v for k, v in item.items() if k != 'case_id'}, ensure_ascii=False)}")
-    lines.extend(["", "本报告只衡量合成找歌意图解析；正式 35 首曲库尚未接入，未声称验证真实曲库推荐效果。", ""])
+            lines.append(f"- `{item['case_id']}`:{json.dumps({k: v for k, v in item.items() if k != 'case_id'}, ensure_ascii=False)}")
+    lines.extend(["", "This report only measures synthetic song-finding intent parsing; the official 35-song music library has not yet been integrated, and no claim is made to have verified the actual music library recommendation effectiveness.", ""])
     return "\n".join(lines)
 
 

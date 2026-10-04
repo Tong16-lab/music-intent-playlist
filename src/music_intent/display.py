@@ -25,18 +25,18 @@ def _card(utterance: str, *, target_valence: Any = None, target_arousal: Any = N
 def fixed_samples() -> dict[str, tuple[str, dict[str, Any]]]:
     """Prewritten cards for selection demonstration; these are not model predictions."""
     return {
-        "explore": _card("随便来点音乐"),
-        "calm": _card("我想听安静舒缓的歌", target_arousal=1,
-                      trajectory="single_target", evidence={"target_arousal": "安静舒缓"}),
-        "path": _card("先来有冲劲的歌，再逐渐安静下来", target_arousal=1,
+        "explore": _card("Play some music"),
+        "calm": _card("I want to listen to quiet and soothing songs", target_arousal=1,
+                      trajectory="single_target", evidence={"target_arousal": "quiet and soothing"}),
+        "path": _card("Play an energetic song first, then gradually quiet down", target_arousal=1,
                       trajectory={"type": "from_to", "arousal": {"from": 3, "to": 1}},
-                      evidence={"target_arousal": "安静下来", "trajectory": "先来有冲劲的歌，再逐渐安静下来"}),
-        "melody": _card("想听旋律清楚、走向有惊喜的歌", target_melodic_surprise=3,
+                      evidence={"target_arousal": "quiet down", "trajectory": "Play an energetic song first, then gradually quiet down"}),
+        "melody": _card("Want to hear a melody that is clear and has surprising progressions", target_melodic_surprise=3,
                         requires_melody_present=True,
-                        evidence={"target_melodic_surprise": "走向有惊喜",
-                                  "requires_melody_present": "旋律清楚"}),
-        "unsupported": _card("不要英文歌", constraints=[{
-            "evidence": "不要英文歌", "classification": "unsupported_constraint",
+                        evidence={"target_melodic_surprise": "surprising progressions",
+                                  "requires_melody_present": "melody that is clear"}),
+        "unsupported": _card("No English songs", constraints=[{
+            "evidence": "No English songs", "classification": "unsupported_constraint",
             "polarity": "exclude"}]),
     }
 
@@ -61,40 +61,40 @@ def render_result(result: dict[str, Any], intent: dict[str, Any],
         return _render_result_en(result, intent, heading=heading, heading_level=heading_level)
     if language != "zh":
         raise ValueError("unsupported_display_language")
-    lines = [f"{'#' * heading_level} {heading or '推荐结果'}", "",
-             f"状态：`{result['status']}`。"]
+    lines = [f"{'#' * heading_level} {heading or 'Recommended Results'}", "",
+             f"Status: `{result['status']}`."]
     if result["status"] == "cannot_guarantee_constraint":
-        lines.append("当前曲库标签无法可靠保证原句中的硬条件；未选歌。")
+        lines.append("Current music library tags cannot reliably guarantee hard conditions in the original sentence; no song selected.")
     elif result["status"] == "catalog_not_ready":
-        lines.append("没有通过身份与标签核查的可用歌曲；未选歌。")
+        lines.append("No available songs passed the identity and tag verification; no songs selected.")
     elif result["status"] == "insufficient_catalog":
-        lines.append(f"满足当前硬条件的歌曲不足三首；只找到 {len(result['tracks'])} 首，不补足。")
+        lines.append(f"Fewer than three songs meet the current hard conditions; only found {len(result['tracks'])}, not supplementing.")
     elif result.get("mode") == "exploration":
-        lines.append("未指定可执行的歌曲目标；按已核对标签组合探索。")
+        lines.append("No executable song target specified; exploring by verified tag combinations.")
     else:
-        lines.append("以下依据已核对的歌曲标签与明确的音乐目标匹配。")
+        lines.append("The following matches are based on verified song tags and clear musical goals.")
     if result["tracks"]:
-        lines.extend(["", "| 顺序 | 歌曲（Jamendo 原始页面） | 艺术家 | 已核对标签 | 依据 |",
+        lines.extend(["", "| Order | Song (Jamendo Original Page) | Artist | Verified Tags | Basis |",
                       "| ---: | --- | --- | --- | --- |"])
     listening_hints = []
     for index, item in enumerate(result["tracks"], 1):
-        labels = (f"valence={item['valence']}；arousal={item['arousal']}；"
-                  f"melody_present={item['melody_present']}；"
+        labels = (f"valence={item['valence']};arousal={item['arousal']};"
+                  f"melody_present={item['melody_present']};"
                   f"melodic_surprise={item['melodic_surprise']}")
         reasons = [f"{name}={value}" for name, value in item["used_labels"].items()]
         if intent["requires_melody_present"] is True:
-            reasons.append("可辨旋律=yes")
+            reasons.append("distinguishable_melody=yes")
         if isinstance(intent["trajectory"], dict):
-            reasons.append(f"歌曲顺序路径第 {index} 首")
-        reason = "；".join(reasons) if reasons else "已核对标签；探索选择"
+            reasons.append(f"Song sequence path, track {index} in playlist")
+        reason = ";".join(reasons) if reasons else "Checked tags; explored options"
         title = item["title"].replace("|", "\\|").replace("[", "\\[").replace("]", "\\]")
         artist = item["artist"].replace("|", "\\|")
         lines.append(f"| {index} | [{title}]({item['source_url']}) | {artist} | {labels} | {reason} |")
         if intent["target_melodic_surprise"] is not None and item["surprise_evidence"]:
-            listening_hints.append(f"- 第 {index} 首（{item['track_id']}）：{item['surprise_evidence']}")
+            listening_hints.append(f"- Track {index} ({item['track_id']}): {item['surprise_evidence']}")
     if listening_hints:
-        lines.extend(["", "试听提示（作者原有记录）：", "", *listening_hints])
-    lines.extend(["", "标签匹配与规则通过不代表真人喜欢这些歌；音频许可尚未核查，本页只提供外部链接。", ""])
+        lines.extend(["", "Audition tips (author's original notes):", "", *listening_hints])
+    lines.extend(["", "Tag matching and rule passing do not mean real people like these songs; audio licensing has not been verified, and this page only provides external links.", ""])
     return "\n".join(lines)
 
 

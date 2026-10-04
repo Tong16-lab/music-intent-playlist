@@ -60,34 +60,34 @@ def estimate_run_cost(v1_result: dict[str, Any], v1_prompt: str, v2_prompt: str)
 
 def _metric_tables(result: dict[str, Any], original: dict[str, Any],
                    v1: dict[str, Any]) -> list[str]:
-    versions = (("原版", original), ("简写 v1", v1), ("提示词 v2", result))
-    lines = ["| 指标 | 原版端到端 | 简写 v1 端到端 | 提示词 v2 端到端 | 同一关键词基线 |",
+    versions = (("Original", original), ("Abbreviated v1", v1), ("Prompt v2", result))
+    lines = ["| Metric | Original End-to-End | Abbreviated v1 End-to-End | Prompt v2 End-to-End | Same Keyword Baseline |",
              "| --- | ---: | ---: | ---: | ---: |"]
     for field in CORE_FIELDS:
         values = [f"{item['scores']['end_to_end']['core_fields'][field]}/{item['scores']['end_to_end']['denominator']}"
                   for _, item in versions]
         base = result["scores"]["keyword_baseline"]
         lines.append(f"| `{field}` | {' | '.join(values)} | {base['core_fields'][field]}/{base['denominator']} |")
-    for label, key in (("六字段整卡", "core_cards"),
+    for label, key in (("Six-field full card", "core_cards"),
                        ("requires_melody_present", "requires_melody_present"),
-                       ("不支持条件原词集合全对", "unsupported_exact_sets"),
-                       ("cannot_guarantee_constraint 状态正确", "cannot_guarantee_constraint_status")):
+                       ("unsupported exact sets", "unsupported_exact_sets"),
+                       ("cannot_guarantee_constraint status correct", "cannot_guarantee_constraint_status")):
         values = [f"{item['scores']['end_to_end'][key]}/{item['scores']['end_to_end']['denominator']}"
                   for _, item in versions]
         baseline = (f"{result['scores']['keyword_baseline']['core_cards']}/{result['scores']['keyword_baseline']['denominator']}"
                     if key == "core_cards" else "—")
         lines.append(f"| {label} | {' | '.join(values)} | {baseline} |")
-    lines.extend(["", "仅有效输出的分母分别为原版 6、简写 v1 9、提示词 v2 " +
-                  str(result["scores"]["valid_only"]["denominator"]) + "；下表只衡量通过转换及本地校验的卡片。",
-                  "", "| 指标 | 原版仅有效 | 简写 v1 仅有效 | 提示词 v2 仅有效 |",
+    lines.extend(["", "The denominators for the only valid outputs are original 6, shorthand v1 9, prompt v2 " +
+                  str(result["scores"]["valid_only"]["denominator"]) + ";the table below only measures cards that passed conversion and local validation.",
+                  "", "| Metric | Original only valid | Abbreviation v1 only valid | Prompt v2 only valid |",
                   "| --- | ---: | ---: | ---: |"])
     for field in CORE_FIELDS:
         values = [f"{item['scores']['valid_only']['core_fields'][field]}/{item['scores']['valid_only']['denominator']}"
                   for _, item in versions]
         lines.append(f"| `{field}` | {' | '.join(values)} |")
-    for label, key in (("六字段整卡", "core_cards"),
-                       ("不支持条件原词集合全对", "unsupported_exact_sets"),
-                       ("cannot_guarantee_constraint 状态正确", "cannot_guarantee_constraint_status")):
+    for label, key in (("Six-field full card", "core_cards"),
+                       ("unsupported exact sets", "unsupported_exact_sets"),
+                       ("cannot_guarantee_constraint status correct", "cannot_guarantee_constraint_status")):
         values = [f"{item['scores']['valid_only'][key]}/{item['scores']['valid_only']['denominator']}"
                   for _, item in versions]
         lines.append(f"| {label} | {' | '.join(values)} |")
@@ -100,37 +100,37 @@ def render_report(result: dict[str, Any], original: dict[str, Any],
     scores = result["scores"]
     end = scores["end_to_end"]
     valid = scores["valid_only"]
-    lines = ["# compact-dev-v2：只改提示词的合成开发集比较", "",
-             "本轮沿用简写 v1 的 Schema、转换器、模型、请求参数、V2 已批准答案、关键词基线和本地校验器；只增加通用意图判定说明。所有请求只发送单条合成开发原话，不发送答案。没有使用正式测试句设计规则或进行调用。",
-             "", f"版本：`{VERSION}`；v2 提示词 SHA-256：`{result['prompt_sha256']}`；v1 提示词 SHA-256：`{result['v1_prompt_sha256']}`；两版共同 Schema SHA-256：`{result['schema_sha256']}`。",
-             f"模型：`{result['model']}`；新加坡开始时间：`{result['started_at']}`。",
-             f"预先估算费用 USD {result['pre_run_estimate']['estimated_cost_usd']:.6f}（依据 v1 实测，用新增字符每字 2 个输入 token、完成 token 增加 25% 的假设）。",
-             f"实际调用 {attempted}/12；提前停止：{'是' if result['stopped_early'] else '否'}。完整 JSON {result['json_complete_calls']}/{attempted}；必填结构完整 {result['required_structure_complete_calls']}/{attempted}；简写转换完成 {result['conversion_complete_calls']}/{attempted}；V2 本地校验通过 {result['locally_valid_calls']}/{attempted}。",
-             f"无有效卡片 {scores['failed_calls']} 次，其中 API 失败 {result['failure_groups'].get('api', 0)} 次；失败分组 {json.dumps(result['failure_groups'], ensure_ascii=False, sort_keys=True)}；安全错误类别 {json.dumps(result['error_categories'], ensure_ascii=False, sort_keys=True)}。",
-             "", "## 三版与同一关键词基线", ""]
+    lines = ["# compact-dev-v2: Comparison of synthetic development sets with prompt-only modifications", "",
+             "This round reuses the v1 schema, converter, model, request parameters, approved V2 answers, keyword baseline, and local validator; only the general intent-judgment instructions change. Each request sends one development example without its answer. No formal test example was used in a call or to design the rules.",
+             "", f"Version: `{VERSION}`; v2 prompt SHA-256: `{result['prompt_sha256']}`; v1 prompt SHA-256: `{result['v1_prompt_sha256']}`; Common Schema SHA-256 for both versions: `{result['schema_sha256']}`.",
+             f"Model: `{result['model']}`;Singapore start time: `{result['started_at']}`.",
+             f"Pre-estimated cost USD {result['pre_run_estimate']['estimated_cost_usd']:.6f} (based on v1 actual measurements, assuming 2 input tokens per added character and a 25% increase in completion tokens).",
+             f"Actual calls {attempted}/12; Early stopped: {'Yes' if result['stopped_early'] else 'No'}. Complete JSON {result['json_complete_calls']}/{attempted}; Required structure complete {result['required_structure_complete_calls']}/{attempted}; Abbreviation conversion complete {result['conversion_complete_calls']}/{attempted}; V2 local validation passed {result['locally_valid_calls']}/{attempted}.",
+             f"No valid cards {scores['failed_calls']} times, including API failures {result['failure_groups'].get('api', 0)} times; failure groups {json.dumps(result['failure_groups'], ensure_ascii=False, sort_keys=True)}; security error categories {json.dumps(result['error_categories'], ensure_ascii=False, sort_keys=True)}.",
+             "", "## Version 3 and Same Keyword Baseline", ""]
     if attempted != 12:
-        lines.extend(["v2 提前停止，仅统计已调用的句子；其他版本覆盖 12 句，因此横向正确数不是同一分母。", ""])
+        lines.extend(["v2 early stopping, only counting called sentences; other versions cover 12 sentences, so the horizontal correct counts do not share the same denominator.", ""])
     lines.extend(_metric_tables(result, original, v1))
-    lines.extend(["", "端到端分母包含无有效卡片的调用；这种调用不记作模型原词误报或漏报。格式完整只表示输出可解析，不表示意图判断正确。",
-                  "", "## 不支持条件：状态与原词分别计分", "",
-                  f"状态正确（端到端）：原版 {original['scores']['end_to_end']['cannot_guarantee_constraint_status']}/12、简写 v1 {v1['scores']['end_to_end']['cannot_guarantee_constraint_status']}/12、v2 {end['cannot_guarantee_constraint_status']}/{attempted}。",
-                  f"原词集合完全一致（端到端）：原版 {original['scores']['end_to_end']['unsupported_exact_sets']}/12、简写 v1 {v1['scores']['end_to_end']['unsupported_exact_sets']}/12、v2 {end['unsupported_exact_sets']}/{attempted}。",
-                  f"v2 仅有效输出：预期原词 {valid['unsupported_expected_phrases']} 个；精确命中 {valid['unsupported_true_positive_phrases'] if valid['denominator'] else '未评估'}、误报 {valid['unsupported_false_positive_phrases'] if valid['denominator'] else '未评估'}、漏报 {valid['unsupported_missed_phrases'] if valid['denominator'] else '未评估'}（{valid['denominator']} 条有效卡片）。端到端未完成原词 {end['unsupported_unfulfilled_phrases']} 个，其中 {end['unsupported_unfulfilled_due_to_call_failure']} 个来自无有效卡片。",
-                  "", "## 安全错误摘要", ""])
+    lines.extend(["", "The end-to-end denominator includes calls without valid cards; such calls are not counted as model verbatim false positives or false negatives. Complete format only indicates that the output is parsable, not that the intent judgment is correct.",
+                  "", "## Unsupported conditions: State and original term are scored separately", "",
+                  f"Correct status (end-to-end): original {original['scores']['end_to_end']['cannot_guarantee_constraint_status']}/12, shorthand v1 {v1['scores']['end_to_end']['cannot_guarantee_constraint_status']}/12, v2 {end['cannot_guarantee_constraint_status']}/{attempted}.",
+                  f"Original word sets completely identical (end-to-end): original {original['scores']['end_to_end']['unsupported_exact_sets']}/12, shorthand v1 {v1['scores']['end_to_end']['unsupported_exact_sets']}/12, v2 {end['unsupported_exact_sets']}/{attempted}.",
+                  f"v2 valid-only output: expected original phrases {valid['unsupported_expected_phrases']}; exact hits {valid['unsupported_true_positive_phrases'] if valid['denominator'] else 'unevaluated'}, false positives {valid['unsupported_false_positive_phrases'] if valid['denominator'] else 'unevaluated'}, false negatives {valid['unsupported_missed_phrases'] if valid['denominator'] else 'unevaluated'} ({valid['denominator']} valid cards). End-to-end unfulfilled original phrases {end['unsupported_unfulfilled_phrases']}, of which {end['unsupported_unfulfilled_due_to_call_failure']} are from cards without valid output.",
+                  "", "## Security Error Summary", ""])
     for stage, count in sorted(result["failure_stages"].items()):
-        lines.append(f"- `{stage}`：{count} 次")
+        lines.append(f"- `{stage}`: {count} times")
     for case in result["case_summaries"]:
         if not case["intent_valid"]:
-            lines.append(f"- `{case['case_id']}`：{case['failure_group']} / {case['error_category']}" +
+            lines.append(f"- `{case['case_id']}`:{case['failure_group']} / {case['error_category']}" +
                          (f" / {case['error_field']}" if case.get("error_field") else ""))
         elif case["wrong_core_fields"] or case["unsupported_exact_set_wrong"]:
-            wrong = ", ".join(case["wrong_core_fields"]) or "无"
-            lines.append(f"- `{case['case_id']}`：有效；核心字段错误：{wrong}；原词集合错误：{'是' if case['unsupported_exact_set_wrong'] else '否'}。")
+            wrong = ", ".join(case["wrong_core_fields"]) or "None"
+            lines.append(f"- `{case['case_id']}`:Valid; core field error: {wrong}; original term set error: {'Yes' if case['unsupported_exact_set_wrong'] else 'No'}.")
     t = result["tokens"]
-    lines.extend(["", "## 用量和边界", "",
-                  f"v2 输入／完成／总 token：{t['prompt_tokens']}／{t['completion_tokens']}／{t['total_tokens']}；可取得的推理 token：{t['reasoning_tokens']}（缺明细 {result['reasoning_unavailable_calls']} 次）。",
-                  f"v2 估算费用 USD {result['estimated_cost_usd']:.6f}；缺可估数据 {result['cost_unavailable_calls']} 次。原版 USD {original['estimated_cost_usd']:.6f}；简写 v1 USD {v1['estimated_cost_usd']:.6f}。实际账单以服务商为准。",
-                  "原始模型预测和转换卡只存在本机被 Git 忽略的私有目录；公开报告不包含完整原始回复、请求头或密钥。未接入正式运行时、冻结或评估正式测试集。", ""])
+    lines.extend(["", "## Usage and Boundaries", "",
+                  f"v2 input/completion/total tokens: {t['prompt_tokens']}/{t['completion_tokens']}/{t['total_tokens']}; available reasoning tokens: {t['reasoning_tokens']} (missing breakdown {result['reasoning_unavailable_calls']} times).",
+                  f"v2 estimated cost USD {result['estimated_cost_usd']:.6f}; unestimatable data {result['cost_unavailable_calls']} times. Original USD {original['estimated_cost_usd']:.6f}; shorthand v1 USD {v1['estimated_cost_usd']:.6f}. Actual bill subject to the service provider.",
+                  "Raw model predictions and conversion cards exist only locally in private directories ignored by Git; public reports do not contain complete raw responses, request headers, or keys. Not integrated into the official runtime, frozen, or evaluating the official test set.", ""])
     return "\n".join(lines)
 
 

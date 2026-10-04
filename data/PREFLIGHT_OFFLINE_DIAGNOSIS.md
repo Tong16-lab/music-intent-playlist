@@ -1,18 +1,18 @@
-# 单句预检离线排查（2026-10-03）
+# Single-Sentence Pre-check Offline Troubleshooting (2026-10-03)
 
-本记录只检查本地代码与此前已经报告的安全用量数据；本次没有读取 `.env` 中的密钥、发起 API 请求、冻结测试集或运行正式评估。下方 JSON 是手工构造的**离线估算样例**，不是模型回复，也不是测试集标准答案。
+This record only inspects local code and previously reported safety usage data; no keys in `.env` were read, no API requests were initiated, the test set was not frozen, and no formal evaluation was run this time. The JSON below is a manually constructed **offline estimation sample**, not a model reply, nor is it the test set standard answer.
 
-## 实际请求设置与本地处理
+## Actual Request Settings and Local Processing
 
-- `build_request` 发送一个 system 消息和一个 user 消息；模型由 `OPENROUTER_MODEL` 提供。此前两次预检报告的模型为 `google/gemini-3.1-flash-lite`。本次未读取 `.env`，因此不重新断言当前运行时环境变量的值。
-- 当前代码发送 `max_tokens=2048`、`reasoning={"effort":"minimal"}`、`temperature=0`、`response_format.type=json_schema`、`json_schema.strict=true`、`provider.require_parameters=true` 和 `usage.include=true`。没有并存的第二种 token 上限或推理参数，也没有重复的 system 消息。
-- JSON Schema 压缩后约 3192 UTF-8 字节：顶层 9 个必需字段、`evidence` 中 7 个必需字段，另有范围值、歌单路径和不支持条件结构。system 提示词约 734 字符。它们确有一定复杂度，但没有要求输出歌曲列表或长篇解释；提示词和 Schema 都要求全部字段，是相互对应的约束。
-- 响应解析先检查 `finish_reason`，再解析内容及逐字证据。`length` 会直接归类为 `output_token_limit`，即使响应中已有部分内容也不会被当作有效意图卡。
-- 用量解析原本已读取 `usage.completion_tokens_details.reasoning_tokens`，但预检终端未显示该值。本次改为在有值时显示，并兼容顶层 `usage.reasoning_tokens`；无值时显示 `unavailable`，不能写作 0。完成原因只保留允许的状态词，其他服务商文本归为 `other`，不会原样打印。
+- `build_request` sends one system message and one user message; the model is provided by `OPENROUTER_MODEL`. The models reported in the previous two pre-checks were `google/gemini-3.1-flash-lite`. `.env` was not read this time, so the current runtime environment variable values are not re-asserted.
+- The current code sends `max_tokens=2048`, `reasoning={"effort":"minimal"}`, `temperature=0`, `response_format.type=json_schema`, `json_schema.strict=true`, `provider.require_parameters=true`, and `usage.include=true`. There is no concurrent second token upper limit or reasoning parameter, nor are there duplicate system messages.
+- The JSON Schema is about 3192 UTF-8 bytes when compressed: 9 required fields at the top level, 7 required fields in `evidence`, plus range values, playlist paths, and unsupported condition structures. The system prompt is about 734 characters. They indeed have some complexity, but do not require outputting song lists or long explanations; both the prompt and Schema require all fields, serving as mutually corresponding constraints.
+- Response parsing checks `finish_reason` first, then parses content and verbatim evidence. `length` is directly categorized as `output_token_limit`, and even if the response already contains partial content, it will not be treated as a valid intent card.
+- Usage parsing previously read `usage.completion_tokens_details.reasoning_tokens`, but the preview terminal did not display this value. It is now changed to display when a value is present, and compatible with the top-level `usage.reasoning_tokens`; when no value is present, it displays `unavailable`, and cannot be written as 0. The finish reason retains only allowed status words, and other provider texts are classified as `other` without being printed as-is.
 
-## 仅供长度估算的合法示例
+## Valid Example for Length Estimation Only
 
-对应现有非测试句单句预检输入，以下样例通过 `validate_intent` 的字段和逐字证据校验：
+Corresponding to the existing non-test single-sentence preflight input, the following sample passes the field and verbatim evidence validation of `validate_intent`:
 
 ```json
 {
@@ -24,32 +24,32 @@
   "trajectory": "single_target",
   "requires_melody_present": true,
   "evidence": {
-    "current_valence": "有点烦",
+    "current_valence": "feeling a bit annoyed",
     "current_arousal": null,
     "target_valence": null,
-    "target_arousal": "安静",
+    "target_arousal": "quiet",
     "target_melodic_surprise": null,
-    "trajectory": "想听一首安静、有清楚旋律的音乐",
-    "requires_melody_present": "有清楚旋律"
+    "trajectory": "I want to listen to a quiet piece of music with a clear melody",
+    "requires_melody_present": "has clear melody"
   },
   "constraints": []
 }
 ```
 
-去掉展示用空格与换行后，它有 **394 个字符、444 个 UTF-8 字节**。按一般文本 token 化的粗略量级，可先把完成这种 JSON 的需求估为**约 100–250 token**；Gemini 实际 token 化可能不同，不能把此范围当成计费测量。即使写成带缩进的 JSON，也无需数千 token。此比较不能证明模型实际把输出额度花在推理、冗长内容或其他位置。
+After removing display spaces and line breaks, it has **394 characters and 444 UTF-8 bytes**. According to the rough magnitude of general text tokenization, the requirement to complete such JSON can first be estimated as **about 100–250 tokens**; Gemini's actual tokenization may differ, and this range cannot be taken as a billing measurement. Even if written as indented JSON, thousands of tokens are not required. This comparison cannot prove that the model actually spent its output quota on reasoning, verbose content, or other locations.
 
-## 既有记录能确定什么
+## What Existing Records Can Determine
 
-- 两次预检分别触及 1024 与 2048 的设置上限；此前安全报告分别记录 `completion_tokens=1008` 和 `2032`，第二次有 `prompt_tokens=409`。两次都因 `finish_reason=length` 归类为 `output_token_limit`，没有生成成功预检标记。
-- 仓库没有保存这两次的原始响应或推理 token 明细；此前终端报告也没有显示 `reasoning_tokens`。从现有本地记录看，**两次的推理 token 数均无法追溯**。本次不访问服务商后台，无法确认其是否另有可查询记录。
-- 当前静态请求没有发现明显参数冲突或意外重复消息。旧版 1024 设置不是当前代码的设置；不能仅凭现在的代码重建第一次调用的完整请求。
+- The two preflight checks hit the setting limits of 1024 and 2048 respectively; previous security reports recorded `completion_tokens=1008` and `2032` respectively, with `prompt_tokens=409` for the second one. Both were classified as `output_token_limit` due to `finish_reason=length`, and no successful preflight marker was generated.
+- The repository does not save the raw responses or reasoning token details for these two instances; previous terminal reports also did not display `reasoning_tokens`. Judging from existing local records, **the number of reasoning tokens for both instances is untraceable**. Without accessing the provider's backend this time, it is impossible to confirm whether there are other queryable records.
+- No obvious parameter conflicts or accidental duplicate messages were found in the current static request. The old 1024 setting is not the current code's setting; the complete request of the first call cannot be reconstructed solely from the current code.
 
-## 可能原因与下一次最小诊断
+## Possible Causes and Next Minimal Diagnosis
 
-1. **确定的近因：完成 token 预算耗尽。** 两次均以 `length` 结束，且已报告的完成用量接近各自上限；短 JSON 本身不足以解释全部用量。
-2. **待验证：推理 token 占用了完成预算。** 当前档位虽是 `minimal`，但旧报告没有细分用量。下一次应先看 `tokens_reasoning` 是否返回，以及它占完成用量多少。
-3. **待验证：实际生成内容过长或结构化输出过程耗尽预算。** 现有代码不保存或打印原始响应，无法区分这类情况；下一次若推理用量很低而仍到上限，只能确认“非已报告的推理 token 消耗”，不能凭空判定具体文本内容。
-4. **较弱的可能：Schema 与提示词复杂度导致生成困难。** 两者有多个嵌套结构，但合法样例很短，且没有发现重复消息。需要完成原因和用量明细来判断是否值得进一步简化措辞；不能为通过预检放宽字段或证据校验。
-5. **目前无代码证据：参数冲突或配置错误。** 静态请求仅有一种模型、推理档位和 token 上限。下一次单句预检应核对安全报告中的实际响应模型；本次没有读取 `.env` 或覆盖配置。
+1. **Confirmed proximate cause: Completion token budget exhausted.** Both ended with `length`, and the reported completion usage was close to their respective limits; a short JSON by itself is insufficient to explain the full usage.
+2. **To be verified: Reasoning tokens consumed the completion budget.** Although the current tier is `minimal`, the old report did not break down usage. The next step should first check whether `tokens_reasoning` is returned and how much of the completion usage it accounts for.
+3. **To be verified: Actually generated content is too long or the structured output process exhausts the budget.** Existing code does not save or print raw responses, making it impossible to distinguish such situations; if the reasoning usage is very low next time and still hits the limit, it can only be confirmed as "non-reported reasoning token consumption", and specific text content cannot be judged out of thin air.
+4. **Weaker possibility: Schema and prompt complexity cause generation difficulties.** Both have multiple nested structures, but the valid sample is very short, and no duplicate messages were found. Finish reasons and usage details are needed to determine whether it is worth further simplifying the wording; fields or evidence validation cannot be relaxed just to pass preflight.
+5. **Currently no code evidence: parameter conflict or configuration error.** Static requests have only one model, reasoning tier, and token limit. The next single-sentence pre-check should verify the actual response model in the safety report; this run did not read `.env` or override configuration.
 
-下一次付费预检须由作者另行授权，只调用现有的一条合成句且不自动重试。核心问题是：服务商是否提供 `reasoning_tokens`，以及它能否解释接近上限的 `completion_tokens`。若没有该明细，继续加大上限不会成为有证据的修复方案。测试集目前未冻结，30 条正式评估尚未运行。
+The next paid pre-check must be separately authorized by the author, calling only a single existing example sentence without automatic retries. The core issue is whether the provider supplies `reasoning_tokens` and whether it can explain `completion_tokens` approaching the limit. Without this breakdown, continuing to increase the limit will not become an evidence-based fix. The test set is currently unfrozen, and the 30 formal evaluations have not yet been run.

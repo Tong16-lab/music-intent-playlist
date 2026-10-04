@@ -1,6 +1,6 @@
 # English codebook for intents and song labels
 
-The operational input and approved evidence remain Chinese. This codebook explains their meaning in English without changing the frozen answers.
+The recorded experiment used Chinese operational inputs and approved evidence. Their exact bytes remain in commit `a39e3fc`; the current files explain their meanings in English without changing the recorded score.
 
 | Request field | Values and meaning | Song-side relation |
 | --- | --- | --- |

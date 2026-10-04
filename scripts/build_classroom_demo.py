@@ -16,24 +16,24 @@ REPORT = ROOT / "reports/CLASSROOM_RECOMMENDATION_DEMO.md"
 
 def build() -> str:
     catalog = load_catalog(ROOT / "data/catalog.csv")
-    lines = ["# PE6201：35 首正式曲库的本机推荐演示", "",
-             "以下均为**固定的合成样例及预设意图卡**，不调用模型，也不是冻结的 30 条正式测试句。"
-             "歌曲和顺序由当前确定性选歌器对 35 首正式曲库计算；标题链接仅指向 Jamendo 原始页面。", "",
-             "规则使用作者已核对的 `valence`、`arousal`、`melody_present`、`melodic_surprise`；"
-             "MTG 原有 mood/theme 仅用于候选来源，不当作听评证据。", ""]
+    lines = ["# PE6201: Local Recommendation Demonstration of 35 Official Tracks", "",
+             "The following are **fixed examples and preset intent cards**, which do not call the model and are not the 30 frozen test examples. "
+             "Songs and order are calculated by the current deterministic song selector over the 35 official tracks; title links point only to the original Jamendo pages.", "",
+             "Rules use `valence`, `arousal`, `melody_present`, and `melodic_surprise` verified by the author;"
+             "MTG original mood/theme is only used as a candidate source, not as listening evaluation evidence.", ""]
     samples = fixed_samples()
     for name in ("explore", "calm", "path", "melody", "unsupported"):
         utterance, card = samples[name]
         result = recommend(card, catalog)
-        lines.extend([f"## 样例 `{name}`", "", f"合成输入：{utterance}", "",
-                      render_result(result, card, heading="实际推荐", heading_level=3), ""])
-    lines.extend(["## 评价边界", "",
-                  "这些结果只证明当前规则和已核对标签能产生可复现的匹配，"
-                  "不证明歌曲质量更高，也不证明真实听众喜欢。作者后续试听反馈请填"
-                  " [`data/RECOMMENDATION_LISTENING_REVIEW_TO_FILL.md`](../data/RECOMMENDATION_LISTENING_REVIEW_TO_FILL.md)。"
-                  "当前音频许可为 `not_checked`，演示仅打开外部页面。", "",
-                  "冻结后正式意图评估以 [`formal_run_02/evaluation.md`](formal_run_02/evaluation.md) 为准；"
-                  "本报告没有重跑意图模型。", ""])
+        lines.extend([f"## Example `{name}`", "", f"Synthetic input: {utterance}", "",
+                      render_result(result, card, heading="Actual Recommendation", heading_level=3), ""])
+    lines.extend(["## Evaluation Boundaries", "",
+                  "These results only prove that the current rules and verified tags produce reproducible matches,"
+                  "and do not prove higher song quality or that real listeners will like them. Enter subsequent author listening feedback in "
+                  " [`data/RECOMMENDATION_LISTENING_REVIEW_TO_FILL.md`](../data/RECOMMENDATION_LISTENING_REVIEW_TO_FILL.md)."
+                  "Current audio license is `not_checked`, demo only opens external page.", "",
+                  "After freezing, the formal intent evaluation shall be based on [`formal_run_02/evaluation.md`](formal_run_02/evaluation.md);"
+                  "This report did not rerun the intent model.", ""])
     return "\n".join(lines)
 
 

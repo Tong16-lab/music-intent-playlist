@@ -1,15 +1,15 @@
-# 九字段简写格式：合成开发集受控比较
+# Nine-field shorthand format: Controlled comparison of example development sets
 
-本次对照改变了**输出 Schema 和解释简写格式所需的提示词两处文字**，并非只改一个 API 参数。模型、12 条合成开发句、其他请求参数、V2 答案、关键词基线与本地校验保持一致。未调用正式测试句。
+This comparison modified two text locations: the prompt required for the output schema and the explanation shorthand format, rather than just changing a single API parameter. The model, 12 development examples, other request parameters, V2 answers, keyword baseline, and local validation remain consistent. Official test sentences were not called.
 
-候选版本：`compact-dev-v1`；提示词 SHA-256：`8d32673870f7798f8e46d63a13ea5d31fe5a66d813044fcfb13f526fa1412b2a`；Schema SHA-256：`c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344`。
-模型：`google/gemini-3.5-flash-lite`；新加坡开始时间：`2026-10-03T18:07:39+08:00`。
-调用 12/12，提前停止：否；完整 JSON 12/12，必填结构完整 12/12，简写转换完成 11/12，V2 本地校验通过 9/12。
-未取得有效意图卡 3 次（其中 API 失败 0 次）；分组 {"field_value": 2, "structure": 1}；安全错误类别 {"invalid_field_value": 3}。
+Candidate version: `compact-dev-v1`; Prompt SHA-256: `8d32673870f7798f8e46d63a13ea5d31fe5a66d813044fcfb13f526fa1412b2a`; Schema SHA-256: `c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344`.
+Model: `google/gemini-3.5-flash-lite`; Singapore start time: `2026-10-03T18:07:39+08:00`.
+Calls 12/12, early stopping: No; complete JSON 12/12, required structure complete 12/12, shorthand conversion completed 11/12, V2 local validation passed 9/12.
+Failed to obtain a valid intent card 3 times (including API failures 0 times); groupings {"field_value": 2, "structure": 1}; safety error categories {"invalid_field_value": 3}.
 
-## 与原版及关键词基线比较
+## Comparison with Original Version and Keyword Baselines
 
-| 指标 | 原版端到端 | 候选端到端 | 原版仅有效 | 候选仅有效 | 同一关键词基线 |
+| Metric | Original End-to-End | Candidate End-to-End | Original Valid-Only | Candidate Valid-Only | Same Keyword Baseline |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `current_valence` | 5/12 | 9/12 | 5/6 | 9/9 | 9/12 |
 | `current_arousal` | 5/12 | 7/12 | 5/6 | 7/9 | 11/12 |
@@ -17,44 +17,44 @@
 | `target_arousal` | 5/12 | 4/12 | 5/6 | 4/9 | 8/12 |
 | `target_melodic_surprise` | 5/12 | 8/12 | 5/6 | 8/9 | 11/12 |
 | `trajectory` | 6/12 | 7/12 | 6/6 | 7/9 | 8/12 |
-| 六字段整卡 | 4/12 | 3/12 | 4/6 | 3/9 | 5/12 |
+| Six-Field Full Card | 4/12 | 3/12 | 4/6 | 3/9 | 5/12 |
 | requires_melody_present | 6/12 | 9/12 | 6/6 | 9/9 | — |
-| 不支持条件原词集合全对 | 1/12 | 3/12 | 1/6 | 3/9 | — |
-| cannot_guarantee_constraint 状态 | 4/12 | 6/12 | 4/6 | 6/9 | — |
+| Unsupported Condition Original Term Set All Correct | 1/12 | 3/12 | 1/6 | 3/9 | — |
+| cannot_guarantee_constraint Status | 4/12 | 6/12 | 4/6 | 6/9 | — |
 
-端到端分母包括无有效意图卡的调用；仅有效输出分母只包括通过转换及 V2 本地校验的意图卡。无效输出不算模型对条件的误报或漏报。关键词基线仍使用项目原有实现。
+The end-to-end denominator includes calls without valid intent cards; the valid-output-only denominator includes only intent cards that passed conversion and V2 local validation. Invalid outputs are not counted as model false positives or false negatives for conditions. The keyword baseline still uses the project's original implementation.
 
-## 不支持条件原词
+## Unsupported Condition Verbatim Terms
 
-候选端到端预期原词 7 个，未完成 4 个；其中 0 个属于无有效意图卡。
-候选仅有效输出：命中 3、误报 7、漏报 4；分母为 9 条有效输出、其中预期原词 7 个。
-原版仅有效输出：命中 0、误报 6、漏报 4；分母为 6 条。
+Candidate end-to-end expected original terms: 7, unfinished: 4; among them, 0 belong to invalid intent cards.
+Candidate valid-only output: hits 3, false positives 7, false negatives 4; denominator is 9 valid outputs, of which 7 are expected original terms.
+Original valid-only output: hits 0, false positives 6, false negatives 4; denominator is 6 items.
 
-## 错误与用量
+## Errors and Usage
 
-- `conversion`：1 次
-- `local_validation`：2 次
-- `dev_001`：有效；核心字段错误：current_arousal, target_valence, target_melodic_surprise；条件集合错误：是。
-- `dev_002`：有效；核心字段错误：current_arousal, target_arousal；条件集合错误：否。
-- `dev_003`：有效；核心字段错误：target_arousal, trajectory；条件集合错误：否。
-- `dev_004`：structure / invalid_field_value / target_valence
-- `dev_005`：有效；核心字段错误：target_valence, target_arousal；条件集合错误：是。
-- `dev_006`：field_value / invalid_field_value / trajectory
-- `dev_007`：有效；核心字段错误：target_arousal, trajectory；条件集合错误：否。
-- `dev_008`：有效；核心字段错误：target_arousal；条件集合错误：是。
-- `dev_009`：有效；核心字段错误：无；条件集合错误：是。
-- `dev_010`：有效；核心字段错误：无；条件集合错误：是。
-- `dev_011`：field_value / invalid_field_value / trajectory.arousal
-- `dev_012`：有效；核心字段错误：无；条件集合错误：是。
+- `conversion`: 1 time
+- `local_validation`: 2 times
+- `dev_001`: valid; core field errors: current_arousal, target_valence, target_melodic_surprise; condition set error: yes.
+- `dev_002`: valid; core field errors: current_arousal, target_arousal; condition set error: no.
+- `dev_003`: valid; core field errors: target_arousal, trajectory; condition set error: no.
+- `dev_004`:structure / invalid_field_value / target_valence
+- `dev_005`: Valid; Core field errors: target_valence, target_arousal; Condition set error: Yes.
+- `dev_006`:field_value / invalid_field_value / trajectory
+- `dev_007`: Valid; Core field errors: target_arousal, trajectory; Condition set error: No.
+- `dev_008`: Valid; Core field error: target_arousal; Condition set error: Yes.
+- `dev_009`: Valid; Core field error: None; Condition set error: Yes.
+- `dev_010`: Valid; Core field error: None; Condition set error: Yes.
+- `dev_011`:field_value / invalid_field_value / trajectory.arousal
+- `dev_012`: Valid; Core field error: None; Condition set error: Yes.
 
-候选输入／完成／总 token：15247／2085／17332；可取得的推理 token：0（缺明细 0 次）。
-候选估算费用 USD 0.009787；缺少可估数据的调用 0 次。原版输入／完成／总 token：16711／2232／18943；原版估算费用 USD 0.010593。实际账单以服务商为准。
+Candidate input/completion/total tokens: 15247/2085/17332; Available reasoning tokens: 0 (missing details 0 times).
+Candidate estimated cost USD 0.009787; Calls with missing estimable data: 0. Original input/completion/total tokens: 16711/2232/18943; Original estimated cost USD 0.010593. Actual billing is subject to the service provider.
 
-## 对照判断
+## Comparison Judgment
 
-格式方面：原版必填结构 7/12、本地有效 6/12；候选必填结构 12/12、转换完成 11/12、本地有效 9/12。这显示本次候选输出更常满足结构要求，但不能单凭一次开发集对照证明原因就是简写 Schema。
-意图方面：原版六字段整卡 4/12，候选 3/12，关键词基线 5/12。候选的有效输出更多，但整卡正确数没有随之增加；有效输出分母也不同（原版 6，候选 9），不能把格式成功写成意图判断成功。
-约束方面：候选在 6/9 条有效输出中仍有原词误报，共 7 个；另有 4 个漏报。原版有效输出中有 6 个误报、4 个漏报。两版有效集合不同，不能仅用总数判定误报率变化。
-建议：暂不采用候选格式作为正式运行时。它值得保留为结构改善的开发原型，但需先在开发集上解决意图整卡与约束误报，再考虑另一轮受控比较；不得用本次结果改动已批准答案或推断正式测试成绩。
+Format aspect: Original required structure 7/12, local valid 6/12; candidate required structure 12/12, conversion completed 11/12, local valid 9/12. This shows that the current candidate output more frequently satisfies the structural requirements, but we cannot conclude solely from a single development set comparison that the reason is the shorthand schema.
+Intent aspect: Original six-field whole-card 4/12, candidate 3/12, keyword baseline 5/12. The candidate has more valid outputs, but the number of correct whole-card outputs did not increase accordingly; the valid output denominators also differ (original 6, candidate 9), so format success cannot be conflated with intent judgment success.
+Constraint aspect: The candidate still has original-term false positives in 6/9 valid outputs, totaling 7; there are also 4 false negatives. The original valid outputs have 6 false positives and 4 false negatives. Since the valid sets differ between the two versions, the total count alone cannot be used to determine the change in the false positive rate.
+Recommendation: Do not adopt the candidate format as the official runtime for now. It is worth keeping as a development prototype for structural improvement, but intent card clipping and constraint false positives must first be resolved on the development set before considering another round of controlled comparison; do not use these results to modify approved answers or infer official test scores.
 
-本报告只比较合成开发句的意图解析。结构或转换成功并不等于意图判断正确；模型原始预测和转换结果仅存于本机被 Git 忽略的目录。未生成正式预检标记，未冻结或运行正式测试。
+This report only compares intent parsing on development examples. Structural or conversion success does not equal correct intent judgment; raw model predictions and conversion results reside only in local Git-ignored directories. No official pre-check tokens were generated, and no official tests were frozen or run.

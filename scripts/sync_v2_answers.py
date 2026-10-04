@@ -135,11 +135,11 @@ def apply() -> None:
         (DATA / name).write_text(render(fields, rows), encoding="utf-8")
     summary = check()
     source_hash = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
-    note = ["# V2 答案迁移记录", "", "唯一已获作者核对的来源：`user_intents_v2_review.tsv`。旧版 CSV 原样保存在 `legacy_v1/`。",
-            "", f"V2 TSV SHA-256: `{source_hash}`", "", "| 文件 | 旧版 SHA-256 | V2 行数 |", "| --- | --- | ---: |"]
+    note = ["# V2 Answer Migration Record", "", "The only source verified by the author: `user_intents_v2_review.tsv`. The old CSV is kept as is in `legacy_v1/`.",
+            "", f"V2 TSV SHA-256: `{source_hash}`", "", "| File | Legacy SHA-256 | V2 Lines |", "| --- | --- | ---: |"]
     for name in NAMES:
         note.append(f"| `{name}` | `{old_hashes[name]}` | {summary[name]} |")
-    note.extend(["", "迁移仅改变程序使用的答案文件；未冻结，也未运行正式评估。"])
+    note.extend(["", "Migration only changes the answer file used by the program; it neither freezes nor runs the formal evaluation."])
     (DATA / "V2_MIGRATION.md").write_text("\n".join(note) + "\n", encoding="utf-8")
 
 

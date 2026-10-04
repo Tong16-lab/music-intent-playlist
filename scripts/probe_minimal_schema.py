@@ -19,11 +19,11 @@ from music_intent.openrouter_client import ENDPOINT, classify_http_error, safe_f
 from music_intent.pricing import estimate_standard_cost_usd  # noqa: E402
 
 MODEL = "google/gemini-3.5-flash-lite"
-SYNTHETIC_SENTENCE = "我现在有点烦，想听一首安静、有清楚旋律的音乐。"
+SYNTHETIC_SENTENCE = "I'm a bit annoyed right now and want to listen to some quiet music with a clear melody."
 PROBE_PROMPT = (
-    "只根据用户的找歌句输出符合 schema 的 JSON，不加说明。"
-    "mood 只表示想听的音乐：明确想听安静的音乐填 calm，否则填 other。"
-    "constraints 只列明确指定的人声、歌词语言或流派要求原词；没有时填 []。"
+    "Output only JSON that conforms to the schema based on the user's song-seeking query, without any explanation."
+    "mood only indicates the music you want to hear: enter calm for explicitly quiet music, otherwise enter other."
+    "constraints should only list explicitly specified vocal types, lyric language, or genre requirements as original terms; if none, fill in []."
 )
 PROBE_SCHEMA = {
     "type": "object", "additionalProperties": False,

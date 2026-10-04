@@ -78,13 +78,13 @@ def response_schema() -> dict[str, Any]:
     }
 
 
-SYSTEM_PROMPT = """你是中文找歌原话解析器，只读取用户原句，不读取歌曲或标准答案。严格输出 schema 中的全部字段；无不支持条件时 constraints 必须是 []，没有依据的字段用 null，evidence 中对应项也用 null。
-current_* 只指人现在的状态；target_* 只指想听到的音乐。事件或场景本身不自动产生情绪值。valence 为 -1/0/1，arousal 与 melodic_surprise 为 1/2/3。
-明确的音乐情绪／活跃度边界可在原 target 字段用 {"relation":"at_least|at_most","value":整数}，不要把范围改成单个档位。
-只有明确要求歌曲按顺序变化，trajectory 才用 {"type":"from_to","arousal":{"from":起点,"to":终点}} 或同结构的 valence 路径；终点必须与对应 target 精确值相同。人的状态慢慢改变不代表歌曲需要这个顺序。有音乐目标但无音乐顺序时用 single_target；仅旋律偏好、仅不支持条件或仅软愿望时用 none。
-只有明确要求可辨旋律才填 requires_melody_present=true，否则为 null；不要从旋律意外感推断。可辨旋律也不能证明无人声。
-constraints 只列曲库没有可靠字段可保证的明确歌曲属性要求，如人声、语言、流派、速度、音量及主观风格词；主观陪伴或治愈效果不当作硬约束。可由情绪、活跃度或旋律维度表达的要求不要重复列入 constraints。
-from_to 的 trajectory 必须有原句逐字证据；none 的 trajectory 证据必须为 null。single_target 是由明确音乐目标推得的无顺序目标，其 trajectory 证据可为 null；若填写仍须是原句逐字片段。其他非空意图字段及每项约束都必须有原句逐字证据。不得输出额外字段、解释或歌曲。"""
+SYSTEM_PROMPT = """You are a parser for Chinese-language song requests. Read only the user's original sentence, not songs or gold answers. Output every schema field. Use constraints=[] when there are no unsupported conditions; use null for fields without evidence and for their corresponding evidence entries.
+current_* refers only to the person's current state; target_* refers only to the music they want to hear. Events or scenes themselves do not automatically generate emotional values. valence is -1/0/1, arousal and melodic_surprise are 1/2/3.
+Explicit music mood/energy boundaries can be set in the original target field using `{"relation":"at_least|at_most","value":integer}`, do not change the range into a single tier.
+Only when songs are explicitly requested to change in order should trajectory use {"type":"from_to","arousal":{"from":start,"to":end}} or a valence path of the same structure; the end point must be identical to the exact value of the corresponding target. A gradual change in a person's state does not mean the songs need to follow this order. Use single_target when there is a musical goal but no musical order; use none for melody preference only, unsupported conditions only, or soft wishes only.
+Fill in requires_melody_present=true only when recognizable melody is explicitly requested, otherwise null; do not infer from melody surprise. Recognizable melody also does not prove the absence of vocals.
+constraints lists only explicit song property requirements that the music library has no reliable fields to guarantee, such as vocals, language, genre, tempo, volume, and subjective style words; subjective companionship or healing effects are not treated as hard constraints. Requirements that can be expressed by emotion, arousal, or melody dimensions should not be repeatedly listed in constraints.
+The trajectory of from_to must have verbatim evidence from the original sentence; the trajectory evidence for none must be null. single_target is an unordered target derived from a clear music target, and its trajectory evidence can be null; if filled, it must still be a verbatim segment from the original sentence. Other non-empty intent fields and each constraint must have verbatim evidence from the original sentence. Do not output extra fields, explanations, or songs. """
 
 
 class InvalidIntent(ValueError):

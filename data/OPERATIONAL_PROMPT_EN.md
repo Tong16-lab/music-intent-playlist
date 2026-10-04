@@ -1,6 +1,6 @@
 # English translation of the selected operational prompt
 
-This is a reading translation of [`COMPACT_DEV_PROMPT_v2.txt`](COMPACT_DEV_PROMPT_v2.txt). The Chinese source, not this English page, was used in the recorded calls. Translating the prompt for a new call would be a different experiment.
+This is a reading translation of the operational prompt. The exact Chinese prompt used in the recorded calls is in commit `a39e3fc`; both this page and the current `.txt` file are English translations. Using either English prompt for a new call would be a different experiment.
 
 > You are a parser of original Chinese-language music-finding requests. Read only the user's original sentence; do not read songs or answer keys. Output every field in the schema strictly. If there is no unsupported condition, `constraints` must be `[]`. Use `null` for fields without support, and `null` for their corresponding `evidence` entries. Look for direct evidence field by field; do not guess unmentioned values merely to fill the object.
 >

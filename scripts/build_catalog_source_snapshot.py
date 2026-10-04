@@ -20,8 +20,8 @@ def rows(section: str) -> list[str]:
 
 def main() -> None:
     source = ORIGINAL.read_text(encoding="utf-8")
-    source_part = source.split("## 3. 来源记录、歌曲链接与许可边界", 1)[1].split("## 4. 歌曲标签", 1)[0]
-    label_part = source.split("### 逐首标签记录", 1)[1].split("### 程序接口与选歌规则", 1)[0]
+    source_part = source.split("## 3. Source Records, Song Links and License Boundaries", 1)[1].split("## 4. Song Tags", 1)[0]
+    label_part = source.split("### Track-by-Track Tag Records", 1)[1].split("### Program Interfaces and Song Selection Rules", 1)[0]
     if source_part.count(SOURCE_HEADER) != 1:
         raise ValueError("source_header_missing")
     label_header = next(line for line in label_part.splitlines() if line.startswith("| track_id"))

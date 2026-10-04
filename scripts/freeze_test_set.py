@@ -14,7 +14,7 @@ from review_test_answers import DATA, validate_all
 
 MANIFEST = DATA / "test_set_freeze.json"
 TEST_FILES = ("user_intents_v2_review.tsv", "synthetic_intents_test.csv", "unsupported_conditions_test.csv")
-CONFIRMATION = "我确认冻结V2正式测试答案"
+CONFIRMATION = "I confirm to freeze the V2 official test answers"
 
 
 def digest(path: Path) -> str:
@@ -45,9 +45,9 @@ def freeze(data_dir: Path = DATA) -> None:
     validate_all(data_dir, approved=True)
     if not sys.stdin.isatty():
         raise ValueError("interactive_author_confirmation_required")
-    print("确认前请逐行核对 V2 正式答案。输入以下完整句子才会冻结：")
+    print("Please check the V2 official answers line by line before confirming. You must enter the following complete sentence to freeze:")
     print(CONFIRMATION)
-    if input("确认：").strip() != CONFIRMATION:
+    if input("Confirm: ").strip() != CONFIRMATION:
         raise ValueError("author_confirmation_missing")
     manifest = {
         "schema_version": 2,

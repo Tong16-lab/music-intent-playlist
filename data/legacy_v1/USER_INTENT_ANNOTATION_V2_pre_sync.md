@@ -1,608 +1,608 @@
-> **历史记录：以下内容是 V2 迁移前的旧说明或展示，不代表当前答案状态。现行 V2 已获作者核对并迁移；测试集尚未冻结，也未运行 30 条正式评估。**
+> **History: The following content consists of old instructions or displays prior to the V2 migration and does not represent the current answer status. The current V2 has been verified by the author and migrated; the test set is not yet frozen, and 30 formal evaluations have not been run.**
 
-# 用户表达与意图标注 V2（待作者核对）
+# User Expression and Intent Annotation V2 (Pending Author Review)
 
-本页由 [V2 标注表](../user_intents_v2_review.tsv) 机械转换；保留原有 42 条合成表达（12 条开发、30 条测试），没有新增真人数据。判定规则与待裁定问题见 [V2 说明](../USER_INTENT_ANNOTATION_V2_README.md)。本页不是已冻结的测试答案。
+This page is mechanically converted from the [V2 Annotation Table](../user_intents_v2_review.tsv); the original 42 examples (12 development, 30 test) are retained, with no newly added human data. For judgment rules and pending adjudication questions, see [V2 README](../USER_INTENT_ANNOTATION_V2_README.md). This page is not a frozen test answer.
 
-空白字段显示为“未说明”；每个非空字段后面列出原句中的证据。所有记录目前都需要作者核对。
+Blank fields are displayed as "Unspecified"; each non-empty field is followed by the evidence from the original sentence. All records currently require the author's review.
 
-## 开发样例（12 条）
+## Development Examples (12 Items)
 
 ### dev_001 · P01
 
-> 加班到现在脑子嗡嗡的，想听点安静的让我缓缓，别太花里胡哨的。
+> Working overtime until my head is buzzing, I want to listen to something quiet to help me unwind, nothing too fancy.
 
-- 当前情绪：-1（偏负）；证据：“脑子嗡嗡的”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：1（低）；证据：“安静的”
-- 旋律意外感：1（低）；证据：“别太花里胡哨的”
-- 歌单路径：single_target（单一目标；证据：“想听点安静的让我缓缓”）
-- 无法保证的明确条件：无
-- 标注说明：“让我缓缓”是期望感受；不推断目标 valence=0 或当前 arousal=3。
-- 审核状态：verified
+- Current Valence: -1 (slightly negative); Evidence: "head is buzzing"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Target Arousal: 1 (low); Evidence: "quiet"
+- Melody Novelty: 1 (low); Evidence: "nothing too fancy"
+- Playlist Path: single_target (single target; Evidence: "I want to listen to something quiet to help me unwind")
+- Unguaranteed Explicit Conditions: None
+- Annotation Notes: "help me unwind" is an expected feeling; do not infer target valence = 0 or current arousal = 3.
+- Review status: verified
 
 ### dev_002 · P01
 
-> 早上挤地铁已经够烦了，来点让人精神一点、心情亮堂点的，但别太吵。别给我放口水歌。
+> Squeezing onto the subway in the morning is annoying enough, give me something that's a bit more uplifting and brightens my mood, but not too loud. Don't play generic bubblegum pop for me.
 
-- 当前情绪：-1（偏负）；证据：“够烦了”
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“心情亮堂点”
-- 想听的活跃度：2（中）；证据：“精神一点”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“来点让人精神一点、心情亮堂点的”）
-- 无法保证的明确条件：“别太吵”；“别给我放口水歌”
-- 标注说明：“吵”按音量要求，不由 arousal 保证。
-- 审核状态：verified
+- Current Valence: -1 (slightly negative); Evidence: "annoying enough"
+- Current Arousal: Unspecified
+- Target Valence: 1 (slightly positive); Evidence: "brightens my mood"
+- Target Arousal: 2 (medium); Evidence: "a bit more uplifting"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "give me something that perks me up and brightens my mood")
+- Explicit conditions that cannot be guaranteed: "don't be too noisy"; "don't play bubblegum pop for me"
+- Annotation note: "Noisy" is handled via volume requirements, not guaranteed by arousal.
+- Review status: verified
 
 ### dev_003 · P01
 
-> 睡前想放空一下，不想听有人唱的。
+> Want to zone out before bed, don't want to hear anyone singing.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“不想听有人唱的”
-- 标注说明：“放空”是期望体验，不自动推断中性情绪或低唤醒。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Explicit conditions that cannot be guaranteed: "don't want to hear anyone singing"
+- Annotation note: "Zone out" is an expected experience, and does not automatically imply neutral emotion or low arousal.
+- Review status: Pending author review
 
 ### dev_004 · P02
 
-> 今天心里有点堵，想听点能陪我一起丧一会儿的。
+> Feeling a bit stuffy inside today, want to listen to something that can accompany me in feeling gloomy for a while.
 
-- 当前情绪：-1（偏负）；证据：“心里有点堵”
-- 当前唤醒度：未说明
-- 想听的情绪：-1（偏负）；证据：“丧一会儿”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点能陪我一起丧一会儿的”）
-- 无法保证的明确条件：无
-- 标注说明：用户明确想听偏负向表达；“陪”不作效果保证。
-- 审核状态：待作者核对
+- Current emotion: -1 (tendency towards negative); evidence: "feeling a bit stuffy inside"
+- Current Arousal: Unspecified
+- Desired emotion: -1 (tendency towards negative); evidence: "feeling gloomy for a while"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want to listen to something that can accompany me in feeling gloomy for a while")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: The user explicitly wants to listen to negative-leaning expressions; "accompany" is not treated as an effect guarantee.
+- Review status: Pending author review
 
 ### dev_005 · P02
 
-> 我在敲代码，想要有点带劲的，别太苦情，听着更没心思干活。
+> I am coding, want something energetic, don't be too sentimental, otherwise I'll be even less in the mood to work.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：0（中性）；证据：“别太苦情”
-- 想听的活跃度：2（中）；证据：“有点带劲的”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想要有点带劲的”）
-- 无法保证的明确条件：无
-- 标注说明：“别太苦情”暂按中性目标近似，非严格等于 valence=0。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 0 (neutral); Evidence: "don't be too bitter/tragic"
+- Desired arousal: 2 (medium); evidence: "a bit energetic"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want something energetic")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Not too sorrowful" is temporarily approximated as a neutral target, not strictly equal to valence=0.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### dev_006 · P02
 
-> 老听到那种一开头就知道下一句是啥的，腻了，想来点没想到的。
+> I keep hearing those songs where you know what the next line will be right from the start. I'm sick of it; I want something unexpected.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：3（高）；证据：“没想到的”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：按项目预设口径，将可预测性表达映射到旋律意外感。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melodic surprise: 3 (high); evidence: "unexpected"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation note: According to the project's preset definition, predictability expressions are mapped to melodic surprise.
+- Review status: Pending author review
 
 ### dev_007 · P03
 
-> 明天要考试，现在心慌得不行，想让自己慢慢踏实下来。
+> I have an exam tomorrow and my heart is racing so much right now, I want to calm down and feel grounded.
 
-- 当前情绪：-1（偏负）；证据：“心慌得不行”
-- 当前唤醒度：3（高）；证据：“心慌得不行”
-- 想听的情绪：未说明
-- 想听的活跃度：1（低）；证据：“踏实下来”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想让自己慢慢踏实下来”）
-- 无法保证的明确条件：无
-- 标注说明：个人情绪逐渐缓和，不等于明确要求第一首高、末首低。
-- 审核状态：待作者核对
+- Current valence: -1 (negative-leaning); evidence: "heart is racing so much"
+- Current arousal: 3 (high); evidence: "heart is racing so much"
+- Target Valence: Unspecified
+- Target arousal: 1 (low); evidence: "settle down"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want to slowly settle down")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: Personal emotions gradually easing does not equate to an explicit requirement for the first song to be high and the last song to be low.
+- Review status: Pending author review
 
 ### dev_008 · P03
 
-> 今天心情特别好，想听点欢快的，但别放土嗨歌。
+> I'm in a really great mood today, I want to hear something upbeat, but don't play cheesy club tracks.
 
-- 当前情绪：1（偏正）；证据：“心情特别好”
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“欢快的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点欢快的”）
-- 无法保证的明确条件：“别放土嗨歌”
-- 标注说明：土嗨歌无可核验曲目字段。
-- 审核状态：待作者核对
+- Current valence: 1 (positive-leaning); evidence: "in a really great mood"
+- Current Arousal: Unspecified
+- Target valence: 1 (positive-leaning); evidence: "upbeat"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want to hear something upbeat")
+- Unguaranteed explicit condition: "don't play cheesy club tracks"
+- Annotation note: Cheesy club tracks have no verifiable track metadata fields.
+- Review status: Pending author review
 
 ### dev_009 · P03
 
-> 别放摇滚也别放说唱，听着头疼。
+> Don't play rock and don't play rap, listening to them gives me a headache.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“别放摇滚”；“别放说唱”
-- 标注说明：“听着头疼”是理由，不是已发生的当前情绪。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed explicit conditions: "no rock"; "no rap"
+- Annotation note: "gives me a headache" is the reason, not the current emotion that has already occurred.
+- Review status: Pending author review
 
 ### dev_010 · P04
 
-> 我要去跑步，想听特别带劲的，最好还有点出乎意料的地方，别是那种口水歌。
+> I'm going for a run and want to listen to something really energetic, preferably with some unexpected elements, and not that kind of bubblegum pop.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：3（高）；证据：“特别带劲的”
-- 旋律意外感：3（高）；证据：“出乎意料的地方”
-- 歌单路径：single_target（单一目标；证据：“想听特别带劲的”）
-- 无法保证的明确条件：“别是那种口水歌”
-- 标注说明：宽泛“出乎意料”按本项目旋律探索口径解释。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal level: 3 (high); evidence: "really energetic"
+- Melodic unexpectedness: 3 (high); evidence: "unexpected elements"
+- Playlist path: single_target (single target; evidence: "want to listen to something really energetic")
+- Unguaranteed explicit conditions: "not that kind of bubblegum pop"
+- Annotation note: Broad "unexpected" is interpreted according to this project's melody exploration criteria.
+- Review status: Pending author review
 
 ### dev_011 · P04
 
-> 有点烦，想先来点猛的发泄一下，然后慢慢软下来。
+> Feeling a bit annoyed, want something intense to vent first, and then slowly soften down.
 
-- 当前情绪：-1（偏负）；证据：“有点烦”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：1（低）；证据：“慢慢软下来”
-- 旋律意外感：未说明
-- 歌单路径：from_to（明确的先后变化；证据：“先来点猛的发泄一下，然后慢慢软下来”）
-- 无法保证的明确条件：无
-- 标注说明：第一首应强烈有明确证据，但六个核心字段没有“首曲目标唤醒度”；不能冒充用户当前唤醒度。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: -1 (slightly negative); evidence: "feeling a bit annoyed"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal level: 1 (low); evidence: "slowly soften down"
+- Melody surprise: Not specified
+- Playlist path: from_to (clear sequential change; evidence: "first give me some intense music to vent, and then slowly soften down")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: The first track should strongly have clear evidence, but the six core fields do not include "first track target arousal"; cannot impersonate the user's current arousal.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### dev_012 · P04
 
-> 随便来点不悲不喜的背景音乐就行。
+> Just give me some background music that is neither sad nor happy.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：0（中性）；证据：“不悲不喜的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“来点不悲不喜的背景音乐”）
-- 无法保证的明确条件：无
-- 标注说明：“背景音乐”未被解释为无人声硬条件。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 0 (neutral); evidence: "neither sad nor happy"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "some background music that is neither sad nor happy")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Background music" is not interpreted as a hard condition for instrumental music.
+- Review status: Pending author review
 
-## 测试样例（30 条）
+## Test Samples (30 items)
 
 ### test_001 · P05
 
-> 刚吵完架，心里堵得慌，想听点能让我慢慢静下来的。
+> Just finished an argument, feeling stuffy inside, want to listen to something that can slowly calm me down.
 
-- 当前情绪：-1（偏负）；证据：“心里堵得慌”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：1（低）；证据：“慢慢静下来”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点能让我慢慢静下来的”）
-- 无法保证的明确条件：无
-- 标注说明：不把“堵得慌”硬标为高唤醒，也不把“静下来”硬标为中性情绪。
-- 审核状态：待作者核对
+- Current emotion: -1 (slightly negative); Evidence: "feeling stuffy inside"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired energy level: 1 (low); Evidence: "slowly calm down"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to listen to something that can slowly calm me down")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: Do not rigidly label "stuffy" as high arousal, nor "calm down" as neutral emotion.
+- Review status: Pending author review
 
 ### test_002 · P05
 
-> 周末下午懒洋洋的，想听点暖暖的、轻松的。
+> Lazy weekend afternoon, want to listen to something warm and relaxing.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“暖暖的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点暖暖的、轻松的”）
-- 无法保证的明确条件：无
-- 标注说明：“轻松”不自动等于低唤醒；“懒洋洋”未必是当前负面情绪。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 1 (slightly positive); Evidence: "warm"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to listen to something warm and relaxing")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Relaxing" does not automatically equal low arousal; "lazy" is not necessarily a current negative emotion.
+- Review status: Pending author review
 
 ### test_003 · P05
 
-> 不要太吵的电子乐，也别给我放土嗨歌。
+> No overly noisy electronic music, and don't play cheesy club tracks for me.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“电子乐”；“不要太吵”；“别给我放土嗨歌”
-- 标注说明：电子乐是正向风格要求；三项均无可靠歌曲字段保证。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed explicit conditions: "electronic music"; "not too noisy"; "don't play cheesy club tracks for me"
+- Annotation note: Electronic music is a positive style requirement; none of the three items have reliable song metadata guarantees.
+- Review status: Pending author review
 
 ### test_004 · P06
 
-> 最近压力特别大，想听点治愈的，简单点就好，别搞得太复杂。
+> Under a lot of pressure lately, want to listen to something healing, just keep it simple, don't make it too complicated.
 
-- 当前情绪：-1（偏负）；证据：“压力特别大”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：1（低）；证据：“别搞得太复杂”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：“治愈”是软体验目标；“复杂”按项目已确认口径映射低旋律意外感。
-- 审核状态：待作者核对
+- Current emotion: -1 (slightly negative); Evidence: "under a lot of pressure"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: 1 (low); Evidence: "don't make it too complicated"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Healing" is a soft experience goal; "complicated" maps to low melody surprise according to project-confirmed criteria.
+- Review status: Pending author review
 
 ### test_005 · P06
 
-> 想听点让我“咦？”一下的，别一听就能猜到后面。
+> Want to listen to something that makes me go "huh?", don't let me guess the rest the moment I hear it.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：3（高）；证据：“别一听就能猜到后面”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：按项目口径映射高旋律意外感。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: 3 (high); Evidence: "don't let me guess the rest the moment I hear it"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation note: Map high melodic surprise according to project criteria.
+- Review status: Pending author review
 
 ### test_006 · P06
 
-> 下雨天，感觉整个人都湿湿的，想听点忧伤的。
+> It's raining, and I feel all damp and humid. I want to listen to something sad.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：-1（偏负）；证据：“忧伤的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点忧伤的”）
-- 无法保证的明确条件：无
-- 标注说明：天气和“湿湿的”不单独推出用户当前情绪。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired valence: -1 (negative bias); Evidence: "sad"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to listen to something sad")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: Weather and "dampness" do not independently determine the user's current emotion.
+- Review status: Pending author review
 
 ### test_007 · P07
 
-> 我现在困得睁不开眼，来点提神的，别放慢歌。
+> I'm so sleepy I can't keep my eyes open, give me something energizing, don't play slow songs.
 
-- 当前情绪：未说明
-- 当前唤醒度：1（低）；证据：“困得睁不开眼”
-- 想听的情绪：未说明
-- 想听的活跃度：3（高）；证据：“提神的”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“来点提神的”）
-- 无法保证的明确条件：“别放慢歌”
-- 标注说明：慢歌属速度要求，不能只凭 arousal 保证。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current arousal: 1 (low); Evidence: "so sleepy I can't keep my eyes open"
+- Target Valence: Unspecified
+- Desired activity: 3 (high); Evidence: "energizing"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "give me something energizing")
+- Explicit condition that cannot be guaranteed: "don't play slow songs"
+- Annotation note: Slow songs pertain to tempo requirements and cannot be guaranteed solely based on arousal.
+- Review status: Pending author review
 
 ### test_008 · P07
 
-> 做饭的时候想放点轻快的。
+> I want to play something upbeat while cooking.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“轻快的”
-- 想听的活跃度：2（中）；证据：“轻快的”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想放点轻快的”）
-- 无法保证的明确条件：无
-- 标注说明：“轻快”同时表达较正向与中等活跃。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired valence: 1 (positive bias); Evidence: "upbeat"
+- Desired activity: 2 (medium); Evidence: "upbeat"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to play something upbeat")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Upbeat" simultaneously expresses relatively positive valence and moderate activity.
+- Review status: Pending author review
 
 ### test_009 · P07
 
-> 我要看书，别放有人唱词的，会分心。
+> I'm going to read a book, don't play anything with vocals, it will distract me.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“别放有人唱词的”
-- 标注说明：要求涉及人声／歌词，现有歌曲标签不能保证。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Explicit condition that cannot be guaranteed: "don't play anything with vocals"
+- Annotation note: Requirements involve vocals/lyrics, which current song tags cannot guarantee.
+- Review status: Pending author review
 
 ### test_010 · P08
 
-> 刚失恋，想先听点难过的，哭一哭，然后慢慢好起来。
+> Just broke up, I want to listen to something sad first, have a good cry, and then slowly start to feel better.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：-1（偏负）；证据：“难过的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想先听点难过的”）
-- 无法保证的明确条件：无
-- 标注说明：只明确了先听负向音乐；“慢慢好起来”是期望效果，未明确后续歌曲如何变化，不能硬标完整音乐路径。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired valence: -1 (tends negative); Evidence: "sad"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to listen to something sad first")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: Only specifies listening to negative music first; "getting better gradually" is the expected effect, and subsequent song changes are not specified, so a complete music path cannot be rigidly annotated.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_011 · P08
 
-> 想听点劲儿大的，但别太绕，我听不懂那些复杂的。
+> I want to hear something high-energy, but not too convoluted; I don't understand those complex things.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：3（高）；证据：“劲儿大的”
-- 旋律意外感：1（低）；证据：“别太绕”
-- 歌单路径：single_target（单一目标；证据：“想听点劲儿大的”）
-- 无法保证的明确条件：无
-- 标注说明：“绕／复杂”按项目已确认口径映射低旋律意外感。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired energy/arousal: 3 (high); Evidence: "high-energy"
+- Melody surprise/unpredictability: 1 (low); Evidence: "not too convoluted"
+- Playlist path: single_target (single target; Evidence: "want to hear something high-energy")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Convoluted / complex" maps to low melody surprise according to the project's confirmed guidelines.
+- Review status: Pending author review
 
 ### test_012 · P08
 
-> 别放那种慢悠悠的抒情歌，也别放口水歌，听着没感觉。
+> Don't play those slow ballads, and don't play bubblegum pop either; listening to them feels like nothing.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“别放那种慢悠悠的抒情歌”；“别放口水歌”
-- 标注说明：慢速／抒情风格／口水歌均非现有可靠字段。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Explicit conditions that cannot be guaranteed: "Don't play those slow ballads"; "Don't play bubblegum pop"
+- Annotation note: Slow tempo / ballad style / bubblegum pop are none of them reliable existing fields.
+- Review status: Pending author review
 
 ### test_013 · P09
 
-> 今天太开心了，想听点更嗨的！
+> Today is way too happy, I want to listen to something even more hyped!
 
-- 当前情绪：1（偏正）；证据：“太开心了”
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“更嗨的”
-- 想听的活跃度：3（高）；证据：“更嗨的”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点更嗨的”）
-- 无法保证的明确条件：无
-- 标注说明：“嗨”在此按积极且高活跃的音乐表达处理。
-- 审核状态：待作者核对
+- Current valence: 1 (tends positive); Evidence: "too happy"
+- Current Arousal: Unspecified
+- Desired valence: 1 (tends positive); Evidence: "even more hyped"
+- Desired energy/arousal: 3 (high); Evidence: "even more hyped"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to listen to something even more hyped")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "hai" is treated here as a positive and high-arousal musical expression.
+- Review status: Pending author review
 
 ### test_014 · P09
 
-> 有点焦虑，想听点稳稳的，别忽然来个大变化吓我一跳。
+> Feeling a bit anxious, I want to listen to something steady, without any sudden changes to startle me.
 
-- 当前情绪：-1（偏负）；证据：“有点焦虑”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：1（低）；证据：“别忽然来个大变化”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：“稳稳的”不指定精确唤醒档位；“变化”按项目已确认口径映射旋律意外感。
-- 审核状态：待作者核对
+- Current emotion: -1 (slightly negative); evidence: "feeling a bit anxious"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: 1 (low); evidence: "without any sudden changes"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "steady" does not specify an exact arousal tier; "changes" maps to melody surprise according to the project's confirmed criteria.
+- Review status: Pending author review
 
 ### test_015 · P09
 
-> 来点听着有新鲜感的吧，但别是土嗨歌那种。
+> Give me something that sounds fresh, but not like cheesy high-energy club tracks.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：2（中）；证据：“新鲜感”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“别是土嗨歌那种”
-- 标注说明：新鲜感映射中档旋律意外感是作者已确认的项目口径。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: 2 (medium); evidence: "fresh"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed explicit condition: "not like cheesy high-energy club tracks"
+- Annotation note: Mapping freshness to medium melody surprise is a project standard confirmed by the authors.
+- Review status: Pending author review
 
 ### test_016 · P10
 
-> 晚上走路回家，想听点安静的，再有点温柔的感觉。
+> Walking home at night, I want to listen to something quiet with a tender feeling.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“温柔的感觉”
-- 想听的活跃度：1（低）；证据：“安静的”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点安静的”）
-- 无法保证的明确条件：无
-- 标注说明：“安静”低唤醒；“温柔”暂按正向音乐表达。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 1 (slightly positive); evidence: "tender feeling"
+- Target Arousal: 1 (low); Evidence: "quiet"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want to listen to something quiet")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "quiet" implies low arousal; "tender" is temporarily treated as positive musical expression.
+- Review status: Pending author review
 
 ### test_017 · P10
 
-> 烦死了烦死了，想听点吵吵闹闹的发泄一下。
+> So annoying, so annoying, I want to listen to something noisy to vent.
 
-- 当前情绪：-1（偏负）；证据：“烦死了烦死了”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：3（高）；证据：“吵吵闹闹的发泄一下”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点吵吵闹闹的发泄一下”）
-- 无法保证的明确条件：无
-- 标注说明：“吵吵闹闹”在此按高能量音乐表达，不当成可保证的音量阈值。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: -1 (slightly negative); evidence: "so annoying, so annoying"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: 3 (high); evidence: "noisy to vent"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want to listen to something noisy to vent")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Noisy" is expressed here as high-energy music, not treated as a guaranteed volume threshold.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_018 · P10
 
-> 别放英文歌，也不想听土嗨歌。
+> Do not play English songs, and I don't want to listen to cheesy dance/EDM tracks.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“别放英文歌”；“不想听土嗨歌”
-- 标注说明：英文歌词语言及土嗨歌类别均无可靠字段。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed explicit conditions: "Do not play English songs"; "I don't want to listen to cheesy dance/EDM tracks"
+- Annotation notes: Neither English lyric language nor cheesy dance/EDM categories have reliable fields.
+- Review status: Pending author review
 
 ### test_019 · P11
 
-> 先来点紧张刺激的，后面慢慢让我放松下来。
+> Start with something tense and exciting, and slowly let me relax later.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：1（低）；证据：“放松下来”
-- 旋律意外感：未说明
-- 歌单路径：from_to（明确的先后变化；证据：“先来点紧张刺激的，后面慢慢让我放松下来”）
-- 无法保证的明确条件：无
-- 标注说明：第一首高活跃音乐明确，但不能写进“用户当前唤醒度”；需要另设首曲目标字段。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: 1 (low); evidence: "relax later"
+- Melody surprise: Not specified
+- Playlist path: from_to (clear sequential change; evidence: "first give me something intense and thrilling, and then slowly let me relax afterwards")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: The first high-activity music is clear, but cannot be written into "user's current arousal"; a separate first-track target field is needed.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_020 · P11
 
-> 想听点不悲不喜的，平平淡淡那种。
+> I want to listen to something neither sad nor happy, just plain and ordinary.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：0（中性）；证据：“不悲不喜的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点不悲不喜的”）
-- 无法保证的明确条件：无
-- 标注说明：中性情绪明确；“平平淡淡”不自动设定精确唤醒度。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 0 (neutral); evidence: "neither sad nor happy"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "want to listen to something neither sad nor happy")
+- Unguaranteed Explicit Conditions: None
+- Annotation notes: Neutral emotion is clear; "plain and ordinary" does not automatically set a precise arousal level.
+- Review status: Pending author review
 
 ### test_021 · P11
 
-> 想要点出乎意料的感觉，但别太吵。
+> I want something unexpected, but not too noisy.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：3（高）；证据：“出乎意料的感觉”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“别太吵”
-- 标注说明：仅有旋律偏好，不是情绪路径；吵是无法保证的音量要求。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody unexpectedness: 3 (high); evidence: "unexpected feel"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed explicit conditions: "not too noisy"
+- Annotation notes: Only melody preference, not an emotional path; noisy is an volume requirement that cannot be guaranteed.
+- Review status: Pending author review
 
 ### test_022 · P12
 
-> 有点孤单，想听点能陪着我的。
+> Feeling a bit lonely, I want to listen to something that can accompany me.
 
-- 当前情绪：-1（偏负）；证据：“有点孤单”
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：“陪伴”是软愿望，不能作为必须保证的硬条件，也不自动推断目标音乐情绪。
-- 审核状态：待作者核对
+- Current emotion: -1 (slightly negative); evidence: "feeling a bit lonely"
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation notes: "Companionship" is a soft wish and cannot be used as a mandatory hard condition, nor does it automatically infer the target music emotion.
+- Review status: Pending author review
 
 ### test_023 · P12
 
-> 想听点让人觉得天亮了、有盼头的。
+> I want to listen to something that makes people feel like dawn has broken and there is hope.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“有盼头的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点让人觉得天亮了、有盼头的”）
-- 无法保证的明确条件：无
-- 标注说明：“有盼头”按正向音乐表达；不保证听众实际心情改变。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 1 (positive); Evidence: "something to look forward to"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "wanting to hear something that makes it feel like dawn is breaking, with something to look forward to")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "something to look forward to" is treated as a positive musical expression; listener's actual mood change is not guaranteed.
+- Review status: Pending author review
 
 ### test_024 · P12
 
-> 别太悲，也别太闹，口水歌和土嗨歌都不要。
+> Not too sad, not too rowdy, and no bubblegum pop or cheesy club tracks.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：0（中性）；证据：“别太悲”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“别太悲”）
-- 无法保证的明确条件：“口水歌”；“土嗨歌”
-- 标注说明：“别太悲→中性”是近似；“别太闹”可指活跃度或音量，暂不强填目标唤醒度或计入不支持条件。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Desired emotion: 0 (neutral); Evidence: "not too sad"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; evidence: "not too sad")
+- Explicit conditions that cannot be guaranteed: "bubblegum pop"; "cheesy club tracks"
+- Annotation note: "Not too sad -> neutral" is an approximation; "not too noisy" can refer to activity level or volume, and the target arousal is temporarily not forcibly filled in nor counted as an unsupported condition.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_025 · P13
 
-> 早上爬不起来，想用歌把自己叫醒，最好从软软的慢慢变得有精神。
+> Can't get out of bed in the morning, want to use songs to wake myself up, preferably starting soft and slowly becoming energetic.
 
-- 当前情绪：未说明
-- 当前唤醒度：1（低）；证据：“爬不起来”
-- 想听的情绪：未说明
-- 想听的活跃度：3（高）；证据：“变得有精神”
-- 旋律意外感：未说明
-- 歌单路径：from_to（明确的先后变化；证据：“从软软的慢慢变得有精神”）
-- 无法保证的明确条件：无
-- 标注说明：用户当前低活跃与首曲“软软的”是两种不同事实；首曲目标未在六字段单列。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current arousal level: 1 (low); Evidence: "can't get out of bed"
+- Target Valence: Unspecified
+- Desired energy level: 3 (high); Evidence: "becoming energetic"
+- Melody surprise: Not specified
+- Playlist path: from_to (clear sequential change; evidence: "from soft and slow to gradually energetic")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: The user's current low activity and the first track being "soft" are two different facts; the first track goal is not listed as a single column in the six fields.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_026 · P13
 
-> 想听没人唱的，但得有个能跟着哼的调调。
+> Want to hear something without vocals, but it needs to have a tune you can hum along to.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：“没人唱的”
-- 标注说明：“能跟着哼的调调”是可由 melody_present=yes 支持的明确要求，但现六字段缺少该请求字段；不能忽略。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Explicit condition that cannot be guaranteed: "without vocals"
+- Annotation note: "A tune you can hum along to" is a clear requirement that can be supported by melody_present=yes, but the current six fields lack this request field; it cannot be ignored.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_027 · P13
 
-> 最好每首都有点不一样的小惊喜，别从头到尾一个样。
+> It's best if each song has a bit of a different small surprise, instead of being the same from start to finish.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：3（高）；证据：“小惊喜”
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：“小惊喜”按作者已确认口径映射高旋律意外感。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: 3 (high); Evidence: "small surprise"
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "small surprise" is mapped to high melody surprise per the author's confirmed standard.
+- Review status: Pending author review
 
 ### test_028 · P14
 
-> 终于考完了，整个人轻飘飘的，想听点放松又开心的。
+> Finally finished exams, I feel totally light and carefree, want to listen to something relaxing and happy.
 
-- 当前情绪：1（偏正）；证据：“整个人轻飘飘的”
-- 当前唤醒度：未说明
-- 想听的情绪：1（偏正）；证据：“开心的”
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“想听点放松又开心的”）
-- 无法保证的明确条件：无
-- 标注说明：“放松”不自动等于低唤醒；保留为软描述。
-- 审核状态：待作者核对
+- Current mood: 1 (positive); Evidence: "feel totally light and carefree"
+- Current Arousal: Unspecified
+- Target mood: 1 (positive); Evidence: "happy"
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "want to listen to something relaxing and happy")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Relaxing" does not automatically equal low arousal; kept as a soft description.
+- Review status: Pending author review
 
 ### test_029 · P14
 
-> 心情很低落，不想听太欢快的，就想安安静静待一会儿。
+> Feeling very down, don't want to hear anything too upbeat, just want to sit quietly for a while.
 
-- 当前情绪：-1（偏负）；证据：“心情很低落”
-- 当前唤醒度：未说明
-- 想听的情绪：0（中性）；证据：“不想听太欢快的”
-- 想听的活跃度：1（低）；证据：“安安静静”
-- 旋律意外感：未说明
-- 歌单路径：single_target（单一目标；证据：“就想安安静静待一会儿”）
-- 无法保证的明确条件：无
-- 标注说明：“不太欢快→中性”是近似，不表示用户明确要求正向音乐。
-- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。
-- 审核状态：待作者核对
+- Current mood: -1 (negative); Evidence: "feeling very down"
+- Current Arousal: Unspecified
+- Target mood: 0 (neutral); Evidence: "don't want to hear anything too upbeat"
+- Target energy: 1 (low); Evidence: "quietly"
+- Melody surprise: Not specified
+- Playlist path: single_target (single target; Evidence: "just want to sit quietly for a while")
+- Unguaranteed Explicit Conditions: None
+- Annotation note: "Not too cheerful -> neutral" is an approximation and does not indicate the user explicitly requests positive music.
+- Pending adjudication: Yes; temporarily cannot be directly used as a complete and sole golden standard for the entire card.
+- Review status: Pending author review
 
 ### test_030 · P14
 
-> 随便放吧。
+> Play whatever.
 
-- 当前情绪：未说明
-- 当前唤醒度：未说明
-- 想听的情绪：未说明
-- 想听的活跃度：未说明
-- 旋律意外感：未说明
-- 歌单路径：none（没有明确音乐顺序）
-- 无法保证的明确条件：无
-- 标注说明：没有可据以推断的情绪或旋律条件，应按探索推荐处理。
-- 审核状态：待作者核对
+- Current emotion: Not specified
+- Current Arousal: Unspecified
+- Target Valence: Unspecified
+- Desired arousal: Not specified
+- Melody surprise: Not specified
+- Playlist path: none (no explicit music sequence)
+- Unguaranteed Explicit Conditions: None
+- Annotation note: No mood or melody conditions can be inferred, should be treated as exploratory recommendation.
+- Review status: Pending author review

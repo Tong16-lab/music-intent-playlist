@@ -16,24 +16,24 @@ PROMPT_FILE = ROOT / "data" / "COMPACT_DEV_PROMPT_v2.txt"
 # approved answer, new dimension, or changed format instruction appears here.
 ADDITIONS = (
     (
-        "没有依据的字段用 null，evidence 中对应项也用 null。",
-        "没有依据的字段用 null，evidence 中对应项也用 null。逐字段查找直接证据；不要为了填满对象猜测未提及的值。",
+        "Use null for unsupported fields, and use null for the corresponding items in evidence.",
+        "Use null for unsupported fields, and use null for the corresponding items in evidence. Search field by field for direct evidence; do not guess unmentioned values just to fill the object.",
     ),
     (
-        "事件或场景本身不自动产生情绪值。",
-        "事件或场景本身不自动产生情绪值。先区分本人当前状态、使用场景和想听的歌曲；睡前、通勤等场景本身不能支持 current_* 或 target_* 的具体档位。只有明确描述本人状态才填 current_*，只有明确要求音乐表达才填 target_*。",
+        "Events or scenes themselves do not automatically generate emotional values.",
+        "Events or scenarios themselves do not automatically generate emotional values. First distinguish the user's current state, use case, and the songs they want to hear; scenarios like bedtime or commuting cannot support specific levels for current_* or target_*. Only fill in current_* when the user's state is explicitly described, and only fill in target_* when music expression is explicitly requested.",
     ),
     (
-        "不要把范围改成单个档位。",
-        "不要把范围改成单个档位。恰好某档才写 =N；至少、至多某档分别写 >=N、<=N，不能把边界当作精确目标。",
+        "Do not change the range to a single level.",
+        "Do not change the range to a single level. Write =N only when it happens to be a specific level; write >=N or <=N for at least or at most a level respectively, and do not treat boundaries as exact targets.",
     ),
     (
-        "终点必须与对应 target 的 \"=N\" 精确值相同。",
-        "终点必须与对应 target 的 \"=N\" 精确值相同。若原句不支持一致的终点和目标，不得补造路径端点或目标值。",
+        "The end point must be identical to the \"=N\" exact value of the corresponding target.",
+        "The end point must be identical to the \"=N\" exact value of the corresponding target. If the original sentence does not support consistent end points and targets, path endpoints or target values must not be fabricated.",
     ),
     (
-        "可由情绪、活跃度或旋律维度表达的要求不要重复列入 constraints。",
-        "可由情绪、活跃度或旋律维度表达的要求不要重复列入 constraints。先检查现有情绪、活跃度、旋律意外感及可辨旋律标签能否可靠表达该偏好；能表达就不要列为不支持条件。场景、背景用途及期望心理效果本身不是歌曲属性硬限制。只有明确要求、且现有曲库标签无法可靠核验的歌曲属性限制才列入 constraints；其 evidence 保留否定、程度和对象，截取原句中表达该限制的完整连续短语，不只摘关键词。",
+        "Requirements that can be expressed via emotion, arousal, or melody dimensions should not be redundantly listed in constraints.",
+        "Requirements that can be expressed via emotion, arousal, or melody dimensions should not be redundantly listed in constraints. First check whether existing emotion, arousal, melodic surprise, and identifiable melody tags can reliably express this preference; if they can, do not list it as an unsupported condition. Scenarios, background uses, and expected psychological effects are not hard constraints on song attributes by themselves. Only song attribute constraints that are explicitly requested and cannot be reliably verified by existing song library tags should be listed in constraints; their evidence must retain negation, degree, and target, capturing the complete contiguous phrase expressing that constraint in the original sentence rather than just extracting keywords.",
     ),
 )
 

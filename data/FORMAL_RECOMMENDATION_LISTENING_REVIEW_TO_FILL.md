@@ -1,24 +1,24 @@
-# 正式运行歌单：作者试听审核表
+# Official Run Playlist: Author Listening Review Table
 
-本表取自冻结后第二次正式运行保存的预测及 35 首正式曲库，**没有重新调用模型**。在 21 个可给出三首歌的案例中，按 `case_id` 升序取第 1、6、11、16、21 个；在 7 个拒绝案例中取 ID 最小的 2 个。所选案例不是随机样本，不能代表大众满意度。原有四个固定演示歌单的审核表保持独立。
+This table is taken from the predictions saved in the second official run after freezing and the 35 official song libraries, **without re-calling the model**. Among the 21 cases that can provide three songs, take the 1st, 6th, 11th, 16th, and 21st in ascending order of `case_id`; among the 7 rejection cases, take the 2 with the smallest IDs. The selected cases are not random samples and cannot represent public satisfaction. Review tables for the original four fixed demo playlists remain independent.
 
-请只填写实际试听或亲自核对后的判断。歌曲符合标签规则、你个人喜欢、AI 正确理解原话，是三件不同的事；播放失败时不猜测听感。同一首歌重复出现，只需听一次，但应分别判断它在不同请求中是否合适。本表不用于修改已冻结的意图标准答案或正式成绩。下列“系统选歌理解”只是本次已保存输出的简述，**不是正确答案**。
+Please fill in only judgments after actual listening or personal verification. Whether a song meets tag rules, whether you personally like it, and whether the AI correctly understood the original sentence are three different things; do not guess the listening experience when playback fails. If the same song appears repeatedly, you only need to listen to it once, but you should judge separately whether it is suitable in different requests. This table is not used to modify frozen intent ground truths or official scores. The "System Song Selection Understanding" below is only a brief summary of this saved output, **not the correct answer**.
 
-## 1. 原话与系统选歌理解
+## 1. Original Utterance and System Song Selection Understanding
 
-| 案例 | 用户原话 | 系统实际用于选歌的理解 |
+| Case | User Original Utterance | System Understanding Actually Used for Song Selection |
 | --- | --- | --- |
-| `test_001` | 刚吵完架，心里堵得慌，想听点能让我慢慢静下来的。 | 想听偏正向、低活跃度的歌 |
-| `test_010` | 刚失恋，想先听点难过的，哭一哭，然后慢慢好起来。 | 将三首歌排成情绪由负到正的顺序 |
-| `test_017` | 烦死了烦死了，想听点吵吵闹闹的发泄一下。 | 想听高活跃度的歌 |
-| `test_023` | 想听点让人觉得天亮了、有盼头的。 | 想听偏正向的歌 |
-| `test_030` | 随便放吧。 | 没有明确目标，采用探索推荐 |
+| `test_001` | Just finished arguing, my heart feels stuffed, want to listen to something that can slowly calm me down. | Wants to listen to songs leaning positive with low arousal |
+| `test_010` | Just broke up, want to listen to something sad first, have a cry, and then slowly get better. | Arranges three songs in order of emotion from negative to positive |
+| `test_017` | So annoying, so annoying, want to listen to something noisy to vent. | Wants to listen to high-arousal songs |
+| `test_023` | Want to listen to something that makes people feel dawn has broken and there is hope. | Wants to listen to songs leaning positive |
+| `test_030` | Play anything. | No clear goal, adopts exploratory recommendation |
 
-## 2. 逐首试听
+| `test_2. Per-Song Listening` |
 
-“符合原话”可填“是／部分／否”，“个人喜欢”可填“喜欢／一般／不喜欢”。请填写实际试听日期；若无法播放，记“否”并留空听感判断。备注可记录具体的不符之处或听到旋律变化的时间点，不必为每首都写长评。
+"Meets original utterance" can be filled with "Yes/Partially/No", and "Personally like" can be filled with "Like/Neutral/Dislike". Please fill in the actual listening date; if unable to play, record "No" and leave the listening experience judgment blank. Remarks can record specific discrepancies or timestamps when melody changes are heard; there is no need to write long reviews for every song.
 
-| 案例 | 顺序 | 实际推荐歌曲 | 试听日期 | 播放成功？ | 符合原话？ | 个人喜欢？ | 备注／听到的具体变化 |
+| Case | Sequence | Actual Recommended Song | Listening Date | Playback Successful? | Meets Original Utterance? | Personally Like? | Remarks / Specific Changes Heard |
 | --- | ---: | --- | --- | --- | --- | --- | --- |
 | `test_001` | 1 | [Binz Flow](https://www.jamendo.com/track/114199) · `track_0114199` |  |  |  |  |  |
 | `test_001` | 2 | [Simplicity](https://www.jamendo.com/track/579315) · `track_0579315` |  |  |  |  |  |
@@ -36,11 +36,11 @@
 | `test_030` | 2 | [Binz Flow](https://www.jamendo.com/track/114199) · `track_0114199` |  |  |  |  |  |
 | `test_030` | 3 | [Robot_Star](https://www.jamendo.com/track/287980) · `track_0287980` |  |  |  |  |  |
 
-## 3. 整张歌单的判断
+## 3. Evaluation of the Entire Playlist
 
-请分别判断 AI 对原话的理解、三首连听的过渡及整单是否满足请求；每个案例至少写一句具体原因。即使歌曲好听，AI 仍可能误解原话。
+Please evaluate whether the AI's understanding of the original prompt, the transitions among the three consecutive tracks, and the overall playlist meet the request, respectively; write at least one specific reason for each case. Even if the songs sound good, the AI may still misunderstand the original prompt.
 
-| 案例 | AI 对原话的理解合理吗？ | 三首连听是否自然？ | 整体是否满足原话？ | 一句具体原因 |
+| Case | Is the AI's understanding of the original prompt reasonable? | Are the three consecutive tracks natural? | Does the overall playlist meet the original prompt? | One specific reason |
 | --- | --- | --- | --- | --- |
 | `test_001` |  |  |  |  |
 | `test_010` |  |  |  |  |
@@ -48,11 +48,11 @@
 | `test_023` |  |  |  |  |
 | `test_030` |  |  |  |  |
 
-## 4. 拒绝推荐的审核：无需试听
+## 4. Review of Rejected Recommendations: No Listening Required
 
-这里审核的是“拒绝是否合理”及“系统给出的理由是否完整”，不是歌曲体验。系统当前识别的拒绝依据列在表中；请按原话自行核对是否有遗漏或误判。
+What is reviewed here is whether "the refusal is reasonable" and "the reason provided by the system is complete", rather than the song experience. The refusal criteria currently identified by the system are listed in the table; please check against the original prompt yourself for any omissions or misjudgments.
 
-| 案例 | 用户原话 | 系统给出的拒绝依据 | 拒绝是否合理？ | 理由是否完整？ | 备注 |
+| Case | User's Original Prompt | System-Provided Refusal Basis | Is the Refusal Reasonable? | Is the Reason Complete? | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `test_003` | 不要太吵的电子乐，也别给我放土嗨歌。 | 曲库无法保证“电子乐”“土嗨歌”，因此不选歌 |  |  |  |
-| `test_007` | 我现在困得睁不开眼，来点提神的，别放慢歌。 | 曲库无法保证“别放慢歌”，因此不选歌 |  |  |  |
+| `test_003` | Not too noisy electronic music, and don't play cheesy club tracks for me. | The music library cannot guarantee "electronic music" or "cheesy club tracks", so no songs are selected |  |  |  |
+| `test_007` | I am so sleepy I can barely keep my eyes open, give me something invigorating, don't play slow songs. | The music library cannot guarantee "do not play slow songs", so no songs are selected |  |  |  |

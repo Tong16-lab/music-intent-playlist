@@ -56,7 +56,7 @@ class SelectionTests(unittest.TestCase):
 
     def test_unsupported_and_unverified(self):
         tracks = [fixture("a", 1), fixture("b", 2), fixture("c", 3)]
-        request = intent(constraints=[{"evidence": "英文歌", "classification": "unsupported_constraint",
+        request = intent(constraints=[{"evidence": "English song", "classification": "unsupported_constraint",
                                        "polarity": "exclude"}])
         self.assertEqual(select_tracks(request, tracks)["status"], "cannot_guarantee_constraint")
         tracks[0]["label_status"] = "unknown"
@@ -119,9 +119,9 @@ class EvaluationTests(unittest.TestCase):
                                 "started_at": "fixture-time", "tokens": {
                                     "prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
                                 "estimated_cost_usd": 0, "usage_unavailable_calls": 1})
-        self.assertIn("失败调用 1", report)
-        self.assertIn("未完成 3 个；其中 3 个来自调用失败", report)
-        self.assertIn("模型原词识别指标未评估", report)
+        self.assertIn("Failed call 1", report)
+        self.assertIn("3 incomplete; 3 of which are from call failures", report)
+        self.assertIn("Model original word recognition metric not evaluated", report)
         valid_but_missing = {"case_id": "test_003", "utterance": answer["utterance"],
                              "intent": {**decode_answer(answer), "constraints": []}}
         model_miss = score_records([valid_but_missing], [answer], [conditions])

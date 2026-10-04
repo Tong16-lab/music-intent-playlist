@@ -1,6 +1,6 @@
 # English reading copy of the thirty recorded formal predictions
 
-This table follows the case IDs and valid V2 field values in [`validated_cards_for_audit.jsonl`](validated_cards_for_audit.jsonl). It presents **model predictions**, not approved answers; compare with the [English answer table](../../data/USER_INTENTS_EN.md). `—` means a null/unset field. `CV/CA/TV/TA/MS/MP/Tr` have the meanings in the [codebook](../../docs/INTENT_AND_LABEL_CODEBOOK_EN.md). `≥` and `≤` are bounded predictions, not exact levels. `single` abbreviates `single_target`; `none` remains `none`. Invalid cases have no usable card and no fabricated field values. The Chinese provider-evidence phrases are retained in the machine artifact; the English constraint phrases below are for reading, not a new exact-phrase score.
+This table follows the case IDs and valid V2 field values in [`validated_cards_for_audit.jsonl`](validated_cards_for_audit.jsonl). It presents **historical model predictions**, not approved answers; compare with the [English answer table](../../data/USER_INTENTS_EN.md). `—` means a null/unset field. `CV/CA/TV/TA/MS/MP/Tr` have the meanings in the [codebook](../../docs/INTENT_AND_LABEL_CODEBOOK_EN.md). `≥` and `≤` are bounded predictions, not exact levels. `single` abbreviates `single_target`; `none` remains `none`. Invalid cases have no usable card and no fabricated field values. The exact Chinese provider-evidence phrases are in the machine artifact at commit `a39e3fc`; current English phrases are for reading, not a new exact-phrase score.
 
 | Case | Valid? | CV / CA | TV / TA / MS / MP / Tr | Predicted unsupported conditions, rendered in English |
 | --- | --- | --- | --- | --- |
@@ -39,7 +39,7 @@ Examples of the difference between prediction and approved answer: `test_010`'s 
 
 ## Predicted evidence phrases, translated for reading
 
-These are the phrases attached to the *predicted* non-null fields. They are not the approved evidence in [`INTENT_EVIDENCE_EN.md`](../../data/INTENT_EVIDENCE_EN.md). A missing field in a row means the provider card supplied no phrase for it. The original Chinese spans in the JSONL remain authoritative for exact-substring validation.
+These are English readings of phrases attached to *predicted* non-null fields, not the approved evidence in [`INTENT_EVIDENCE_EN.md`](../../data/INTENT_EVIDENCE_EN.md). A missing field means the provider card supplied no phrase. The exact Chinese spans used for historical exact-substring validation remain in commit `a39e3fc`; the current JSONL is a translation, not a fresh model result.
 
 | Case | Predicted evidence phrases by field |
 | --- | --- |

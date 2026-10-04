@@ -12,38 +12,38 @@ SOURCE = ROOT / "data" / "user_intents_v2_review.tsv"
 DESTINATION = ROOT / "data" / "USER_INTENT_ANNOTATION_V2.md"
 
 FIELD_LABELS = (
-    ("current_valence", "当前情绪"),
-    ("current_arousal", "当前唤醒度"),
-    ("target_valence", "想听的情绪"),
-    ("target_arousal", "想听的活跃度"),
-    ("target_melodic_surprise", "旋律意外感"),
+    ("current_valence", "Current valence"),
+    ("current_arousal", "Current arousal"),
+    ("target_valence", "Target valence"),
+    ("target_arousal", "Target arousal"),
+    ("target_melodic_surprise", "Target melodic surprise"),
 )
 VALUE_LABELS = {
-    "current_valence": {"-1": "偏负", "0": "中性", "1": "偏正"},
-    "target_valence": {"-1": "偏负", "0": "中性", "1": "偏正"},
-    "current_arousal": {"1": "低", "2": "中", "3": "高"},
-    "target_arousal": {"1": "低", "2": "中", "3": "高"},
-    "target_melodic_surprise": {"1": "低", "2": "中", "3": "高"},
+    "current_valence": {"-1": "slightly negative", "0": "neutral", "1": "slightly positive"},
+    "target_valence": {"-1": "negative", "0": "neutral", "1": "positive"},
+    "current_arousal": {"1": "Low", "2": "Medium", "3": "High"},
+    "target_arousal": {"1": "Low", "2": "Medium", "3": "High"},
+    "target_melodic_surprise": {"1": "Low", "2": "Medium", "3": "High"},
 }
 TRAJECTORY_LABELS = {
-    "none": "没有明确音乐顺序",
-    "single_target": "单一目标",
-    "from_to": "明确的先后变化",
+    "none": "No explicit music order",
+    "single_target": "single target",
+    "from_to": "Explicit sequential change",
 }
 
 
 def field_text(row: dict[str, str], evidence: dict[str, str], field: str) -> str:
     value = row[field]
     if not value:
-        return "未说明"
+        return "Unspecified"
     if value.startswith("{"):
         rule = json.loads(value)
-        relation = {"at_most": "不高于", "at_least": "不低于"}[rule["relation"]]
+        relation = {"at_most": "not higher than", "at_least": "not lower than"}[rule["relation"]]
         level = str(rule["value"])
-        detail = f"{relation} {level}（{VALUE_LABELS[field][level]}为边界，不是精确目标）"
+        detail = f"{relation} {level} (boundary: {VALUE_LABELS[field][level]}, not an exact target)"
     else:
-        detail = f"{value}（{VALUE_LABELS[field][value]}）"
-    return f"{detail}；证据：“{evidence[field]}”"
+        detail = f"{value} ({VALUE_LABELS[field][value]})"
+    return f'{detail}; evidence: "{evidence[field]}"'
 
 
 def render_case(row: dict[str, str]) -> str:
@@ -56,37 +56,37 @@ def render_case(row: dict[str, str]) -> str:
         "",
     ]
     for field, label in FIELD_LABELS:
-        lines.append(f"- {label}：{field_text(row, evidence, field)}")
+        lines.append(f"- {label}: {field_text(row, evidence, field)}")
     if row["requires_melody_present"] == "true":
         lines.append(
-            "- 明确要求可辨旋律：是；证据：“"
+            "- Explicitly requires discernible melody: Yes; Evidence: \""
             + evidence["requires_melody_present"]
-            + "”"
+            + '"'
         )
     else:
-        lines.append("- 明确要求可辨旋律：未说明")
+        lines.append("- Explicitly requires discernible melody: Not specified")
     trajectory = row["trajectory"]
     if trajectory.startswith("{"):
         path = json.loads(trajectory)
         levels = path["arousal"]
         path_label = path["type"]
-        sequence = f"歌曲活跃度从 {levels['from']} 逐渐到 {levels['to']}"
+        sequence = f"Song activity gradually changes from {levels['from']} to {levels['to']}"
     else:
         path_label = trajectory
         sequence = TRAJECTORY_LABELS[trajectory]
     if path_label != "none":
-        sequence += f"；证据：“{evidence['trajectory']}”"
-    lines.append(f"- 歌单路径：{path_label}（{sequence}）")
+        sequence += f'; evidence: "{evidence["trajectory"]}"'
+    lines.append(f"- Playlist path: {path_label} ({sequence})")
     lines.append(
-        "- 无法保证的明确条件："
-        + ("；".join(f"“{phrase}”" for phrase in unsupported) if unsupported else "无")
+        "- Unguaranteed explicit conditions: "
+        + ("; ".join(f'"{phrase}"' for phrase in unsupported) if unsupported else "None")
     )
     if row["other_request_or_note"]:
-        lines.append(f"- 标注说明：{row['other_request_or_note']}")
+        lines.append(f"- Annotation notes: {row['other_request_or_note']}")
     if row["ambiguous"] == "true":
-        lines.append("- 待裁定：是；暂不能直接当作完整、唯一的整卡金标准。")
-    status = {"approved": "作者已核对", "needs_author_review": "待作者核对"}[row["review_status"]]
-    lines += [f"- 审核状态：{status}", ""]
+        lines.append("- Pending adjudication: Yes; not ready as a whole-card gold answer.")
+    status = {"approved": "Author Verified", "needs_author_review": "Pending Author Verification"}[row["review_status"]]
+    lines += [f"- Audit status: {status}", ""]
     return "\n".join(lines)
 
 
@@ -131,14 +131,14 @@ def main() -> None:
         elif trajectory not in TRAJECTORY_LABELS:
             raise ValueError(f"invalid_trajectory:{row['case_id']}")
     parts = [
-        "# 用户表达与意图标注 V2（作者已核对，正式测试已完成）",
+        "# User Expression and Intent Annotation V2 (Verified by author, formal testing completed)",
         "",
-        "本页由 [V2 标注表](user_intents_v2_review.tsv) 机械转换；保留原有 42 条表达示例（12 条开发、30 条测试），不是从受访者收集的原话。作者已核对这些 V2 标注，现已迁移到正式 CSV；判定规则见 [V2 说明](USER_INTENT_ANNOTATION_V2_README.md)。冻结记录见 [test_set_freeze.json](test_set_freeze.json)，完成的结果见 [第二次正式评估](../reports/formal_run_02/EVALUATION_EN.md)。",
+        "This page is generated from the [English V2 annotation table](user_intents_v2_review.tsv) and presents all 42 examples (12 development and 30 test). These are not quotations collected from participants. The author approved the annotations. This English rendering was not used in the recorded Chinese-input evaluation; the exact evaluated table is preserved at commit `a39e3fc`. See the [V2 README](USER_INTENT_ANNOTATION_V2_README.md) for the rules and the [completed result](../reports/formal_run_02/EVALUATION_EN.md) for the historical score.",
         "",
-        "空白字段显示为“未说明”；每个非空字段后面列出原句中的证据。可辨旋律要求是六个核心意图字段之外的独立字段。42 条记录均已由作者核对。",
+        "Blank fields are displayed as \"Unspecified\"; each non-empty field is followed by evidence from its English rendering. Recognizable melody is separate from the six core intent fields. All 42 records were reviewed by the author.",
         "",
     ]
-    for split, title in (("dev", "开发样例（12 条）"), ("test", "测试样例（30 条）")):
+    for split, title in (("dev", "Development Examples (12 items)"), ("test", "Test Examples (30 items)")):
         parts += [f"## {title}", ""]
         parts.extend(render_case(row) for row in rows if row["split"] == split)
     DESTINATION.write_text("\n".join(parts).rstrip() + "\n", encoding="utf-8")
