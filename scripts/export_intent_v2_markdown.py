@@ -131,9 +131,9 @@ def main() -> None:
         elif trajectory not in TRAJECTORY_LABELS:
             raise ValueError(f"invalid_trajectory:{row['case_id']}")
     parts = [
-        "# 用户表达与意图标注 V2（作者已核对，未冻结）",
+        "# 用户表达与意图标注 V2（作者已核对，正式测试已完成）",
         "",
-        "本页由 [V2 标注表](user_intents_v2_review.tsv) 机械转换；保留原有 42 条合成表达（12 条开发、30 条测试），没有新增真人数据。作者已核对这些 V2 标注，现已迁移到正式 CSV；判定规则见 [V2 说明](USER_INTENT_ANNOTATION_V2_README.md)。测试集尚未冻结，30 条正式评估尚未运行。",
+        "本页由 [V2 标注表](user_intents_v2_review.tsv) 机械转换；保留原有 42 条表达示例（12 条开发、30 条测试），不是从受访者收集的原话。作者已核对这些 V2 标注，现已迁移到正式 CSV；判定规则见 [V2 说明](USER_INTENT_ANNOTATION_V2_README.md)。冻结记录见 [test_set_freeze.json](test_set_freeze.json)，完成的结果见 [第二次正式评估](../reports/formal_run_02/EVALUATION_EN.md)。",
         "",
         "空白字段显示为“未说明”；每个非空字段后面列出原句中的证据。可辨旋律要求是六个核心意图字段之外的独立字段。42 条记录均已由作者核对。",
         "",

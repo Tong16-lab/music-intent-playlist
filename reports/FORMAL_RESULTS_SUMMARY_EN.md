@@ -1,6 +1,6 @@
 # English results summary — completed second formal run
 
-This is a readable summary of the preserved result artifacts in `reports/formal_run_02/`. The first formal attempt stopped after three network failures and is stored in `reports/evaluation.md`; it is not pooled with this completed run. The 30 Chinese test requests and answers were frozen before the completed run. The requests are constructed, author-reviewed examples, not participant statements.
+This is a readable summary of the preserved result artifacts in `reports/formal_run_02/`. The first formal attempt stopped after three network failures and is stored in `reports/evaluation.md`; it is not pooled with this completed run. The 30 Chinese test requests and answers were frozen before the completed run. The requests are author-reviewed examples, not participant statements.
 
 | Measure | Language-model pipeline | Keyword baseline |
 | --- | ---: | ---: |

@@ -1,8 +1,8 @@
-# 用户表达与意图标注 V2：作者已核对，未冻结
+# 用户表达与意图标注 V2：作者已核对，正式测试已完成
 
-完整 42 行见 [user_intents_v2_review.tsv](user_intents_v2_review.tsv)。这是 **Codex 于 2026-10-02 提出、2026-10-03 按作者反馈修订，并由作者确认已全部核对的 V2 标注**，不是新的真人数据。V2 已迁移到现行 12／30 两份 CSV 和 30 条不支持条件 CSV；迁移记录及旧版原件见 [V2_MIGRATION.md](V2_MIGRATION.md) 与 `legacy_v1/`。测试集尚未冻结，30 条正式评估尚未运行。
+完整 42 行见 [user_intents_v2_review.tsv](user_intents_v2_review.tsv)。V2 标注已由作者逐项核对；这些表达是示例，不是从受访者收集的原话。V2 已迁移到现行 12／30 两份 CSV 和 30 条不支持条件 CSV；迁移记录及旧版原件见 [V2_MIGRATION.md](V2_MIGRATION.md) 与 `legacy_v1/`。测试集冻结记录见 [test_set_freeze.json](test_set_freeze.json)，完成的正式结果见 [第二次评估报告](../reports/formal_run_02/EVALUATION_EN.md)。
 
-V2 保留了原先 42 句合成表达的字面文本、case ID、P01–P14 合成角色及 12/30 分组。evidence_json 中的每个短语均须是对应原句中的连续原文；空白数值及 `requires_melody_present` 空白表示 null，trajectory=none 没有证据短语。unsupported_condition_phrases 是 JSON 数组，非空时才预期 cannot_guarantee_constraint。全表 review_status=approved、ambiguous=false，表示作者已核对 V2 标注；现行正式 CSV 已与 V2 逐项同步，**但尚未冻结，也未运行正式评估**。
+V2 保留了原先 42 句表达示例的字面文本、case ID、P01–P14 角色编号及 12/30 分组。角色编号不代表实际受访者。evidence_json 中的每个短语均须是对应原句中的连续原文；空白数值及 `requires_melody_present` 空白表示 null，trajectory=none 没有证据短语。unsupported_condition_phrases 是 JSON 数组，非空时才预期 cannot_guarantee_constraint。全表 review_status=approved、ambiguous=false，表示作者已核对 V2 标注；现行正式 CSV 已与 V2 逐项同步，并已按冻结记录用于正式评估。
 
 ## V2 判定口径
 
@@ -24,7 +24,7 @@ V2 保留了原先 42 句合成表达的字面文本、case ID、P01–P14 合�
 - test_019：作者核定的是**歌曲**从高活跃度 3 逐渐走向低活跃度 1，起点与终点均写在原 `trajectory` 字段；target_arousal=1 是终点，不写到 current_arousal。
 - test_024：“别太闹”指音乐活跃度上限 2，而非音量或精确目标 2；只允许已知活跃度为 1／2 的歌满足此项。`target_valence=0` 仍是作者确认的中性近似。
 
-以上句子的**语义判断**已由作者核定，表中这些行标为 ambiguous=false。整份 V2 已获作者核对并迁移为现行正式测试答案，但尚未冻结。
+以上句子的**语义判断**已由作者核定，表中这些行标为 ambiguous=false。整份 V2 已获作者核对并迁移为现行正式测试答案，随后完成冻结与评估。
 
 ## 同类案例复核与剩余判断
 
@@ -35,8 +35,8 @@ V2 保留了原先 42 句合成表达的字面文本、case ID、P01–P14 合�
 - dev_001、test_004、test_011 的“别太花哨／复杂／绕”和 test_014 的“别忽然来个大变化”已有作者确认的低旋律意外感口径，保留精确 1；test_012 的“慢悠悠”涉及速度，不能按低活跃度重标。它们不是本次可直接转成情绪或活跃度范围的案例。
 - dev_007、test_001、test_010、test_025 说的是**人的变化**，不改成歌曲 `from_to`。test_027 的“每首不一样”包含跨歌曲多样性要求；现有逐首高旋律意外感标签不能保证曲目彼此不同，选歌端若未做去重／多样性检查须单独说明这一局限。
 
-42 条 V2 标注的 ambiguous 均为 false，review_status 均为 approved；现行正式测试 CSV 与 V2 一致。运行时 schema、提示词、校验器和选歌规则已支持结构化路径、范围值与 `requires_melody_present`，并有离线测试；`≤2` 不会当成 `=2`。这些准备**不等于**单句 API 预检已通过、测试集已冻结或正式评估已运行。
+42 条 V2 标注的 ambiguous 均为 false，review_status 均为 approved；现行正式测试 CSV 与 V2 一致。运行时 schema、提示词、校验器和选歌规则支持结构化路径、范围值与 `requires_melody_present`，并有离线测试；`≤2` 不会当成 `=2`。冻结记录和已完成的评估结果分别保存在上述文件中。
 
 ## 与现有代码的关系
 
-现行正式 CSV 由 `scripts/sync_v2_answers.py` 从本 TSV 转换；`scripts/review_test_answers.py` 会核对它们与 V2 的逐项一致性。`scripts/export_test_sets.py` 是**历史旧版导出器**，不可用于重建 V2 答案。冻结工具会在作者另行确认后记录真实新加坡时间与 V2 源文件、30 条测试答案、30 条不支持条件答案各自的 SHA-256；目前无冻结记录。正式评估须在成功单句预检和冻结之后才运行。
+现行正式 CSV 由 `scripts/sync_v2_answers.py` 从本 TSV 转换；`scripts/review_test_answers.py` 会核对它们与 V2 的逐项一致性。`scripts/export_test_sets.py` 是**历史旧版导出器**，不可用于重建 V2 答案。`scripts/freeze_test_set.py verify` 可核对已保存的冻结时间及 V2 源文件、30 条测试答案、30 条不支持条件答案各自的 SHA-256。第二次正式评估在冻结后运行，其结果与首次网络失败的运行分开保存。

@@ -1,6 +1,6 @@
 # Development-set evaluations — English reading copy
 
-This page translates and consolidates the substantive findings in [`dev_evaluation.md`](dev_evaluation.md), [`compact_dev_evaluation.md`](compact_dev_evaluation.md), and [`compact_dev_v2_evaluation.md`](compact_dev_v2_evaluation.md). These are **development**, not formal-test, results. Each version processed the same twelve approved constructed requests once per case, without retries, using `google/gemini-3.5-flash-lite`. The model was sent each request with the fixed prompt/schema, not the answer key. All results were compared with the same keyword baseline.
+This page translates and consolidates the substantive findings in [`dev_evaluation.md`](dev_evaluation.md), [`compact_dev_evaluation.md`](compact_dev_evaluation.md), and [`compact_dev_v2_evaluation.md`](compact_dev_v2_evaluation.md). These are **development**, not formal-test, results. Each version processed the same twelve approved request examples once per case, without retries, using `google/gemini-3.5-flash-lite`. The model was sent each request with the fixed prompt/schema, not the answer key. All results were compared with the same keyword baseline.
 
 | End-to-end result | Original full format | Compact v1 | Compact v2 | Keyword baseline |
 | --- | ---: | ---: | ---: | ---: |

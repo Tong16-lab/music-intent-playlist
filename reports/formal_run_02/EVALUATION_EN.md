@@ -1,6 +1,6 @@
 # Completed formal run 2: detailed English result
 
-This is an English rendering of the preserved Chinese `evaluation.md` and `evaluation.json`, not a new run or a recalculation with translated inputs. The first run called three cases and stopped after three network failures; it is separate and must not be pooled with this one. The 30 approved Chinese requests are constructed examples, not statements collected from participants. This run does not by itself measure recommendation quality.
+This is an English rendering of the preserved Chinese `evaluation.md` and `evaluation.json`, not a new run or a recalculation with translated inputs. The first run called three cases and stopped after three network failures; it is separate and must not be pooled with this one. The 30 approved Chinese requests are examples, not statements collected from participants. This run does not by itself measure recommendation quality.
 
 Run configuration: candidate `compact-dev-v2`; model `google/gemini-3.5-flash-lite`; scoring `formal-scoring-v3`; started 2026-10-03 19:38:01 Singapore time. Prompt SHA-256 `1177a979ad7a42aa2a3d02c04563eed950c4ef74d9f081aa44bb1044742e3eb2`; schema SHA-256 `c2d9e08fabefa74124fe3c22f9c74a991731a0bf67f42ca29e4ced9d2a44c344`; frozen answers recorded in `data/test_set_freeze.json`.
 

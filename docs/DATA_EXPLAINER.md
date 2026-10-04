@@ -2,7 +2,7 @@
 
 ## What is in the repository
 
-The intent set has 42 author-reviewed Chinese requests: 12 development cases and 30 formal-test cases. They are constructed examples, **not statements collected from participants**. Persona IDs P01–P14 are fictional grouping IDs, not recruited people. The set is useful for a controlled comparison of clearly specified input types, but cannot estimate how often people use these expressions or how the system will perform on a population of listeners.
+The intent set has 42 author-reviewed Chinese request examples: 12 development cases and 30 formal-test cases. They are **not statements collected from participants**. Persona IDs P01–P14 are grouping IDs, not recruited people. The set is useful for a controlled comparison of clearly specified input types, but cannot estimate how often people use these expressions or how the system will perform on a population of listeners.
 
 `data/user_intents_v2_review.tsv` is the authoritative reviewed field-and-evidence table. The machine-readable exports are `data/synthetic_intents_dev.csv`, `data/synthetic_intents_test.csv`, and `data/unsupported_conditions_test.csv`. Their row counts are 12, 30, and 30. Original Chinese requests, exact quoted evidence, and approved answers remain in Chinese. [Every request and approved value](../data/USER_INTENTS_EN.md) and [every recorded evidence phrase](../data/INTENT_EVIDENCE_EN.md) has an English reading translation, but **replacing the Chinese model inputs with English would create a different experiment**.
 
